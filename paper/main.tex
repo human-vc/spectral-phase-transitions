@@ -1141,25 +1141,6 @@ edge fluctuations may follow a different scaling. In such settings, the critical
 $\gamma_\star$ may shift, and the $n^{-2/3}$ Tracy--Widom window of
 Remark~\ref{rem:crossover} may widen or narrow depending on the tail index.
 
-\subsection{Open questions}
-
-\begin{enumerate}
-  \item \textbf{Deep networks:} Does a similar phase transition occur for networks with
-  $L > 2$ layers? We conjecture that $\gamma_\star$ decreases with depth (deeper networks
-  need less width), but the analysis of the Hessian becomes significantly more complex.
-
-  \item \textbf{Algorithmic implications:} Our results are about the landscape geometry,
-  not about the trajectory of gradient descent. Does GD find global minima in polynomial
-  time for $\gamma > \gamma_\star$? The positive spectral gap suggests yes (by the
-  {\L}ojasiewicz inequality in a neighborhood of global minima), but global convergence
-  requires additional arguments.
-
-  \item \textbf{Universality:} Section~\ref{sec:universality} conjectures universality for
-  sub-Gaussian data. A full proof requires extending the spectral decoupling
-  (Lemma~\ref{lem:decoupling}) to non-Gaussian activation patterns, where the gating sets
-  $S_j$ may exhibit more complex dependencies.
-\end{enumerate}
-
 \section{Conclusion}
 
 We have established a sharp phase transition in the loss landscape of two-layer ReLU
