@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 15:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 15:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -975,29 +975,28 @@ m/it/10.95 x[]x[]$\T1/cmr/m/n/10.95 .
 
 [7{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }]
-<figures/fig5_spectral_density.pdf, id=306, 867.24pt x 505.89pt>
+<figures/fig5_spectral_density.pdf, id=313, 867.24pt x 505.89pt>
 File: figures/fig5_spectral_density.pdf Graphic file (type pdf)
 <use figures/fig5_spectral_density.pdf>
 Package pdftex.def Info: figures/fig5_spectral_density.pdf  used on input line 
-452.
+511.
 (pdftex.def)             Requested size: 339.72592pt x 198.17628pt.
 
 
-[8
-pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.495     \item \textbf
-                       {Subcritical regime} ($\gamma < \gamma_\star$): With ...
- <./figures/fig5_spectral_density.pdf>]
+[8]
 Package pgfplots info on input line 571: Using 'lua backend=false' for axis: xm
 ode=log unsupported (yet).
 Package pgfplots info on input line 571: Using 'lua backend=false' for axis: ym
 ode=log unsupported (yet).
 
 
-[9]
+[9
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.598 
+       <./figures/fig5_spectral_density.pdf>]
 
 [10
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
@@ -1164,7 +1163,7 @@ nts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/font
 s/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/
 type1/public/cm-super/sfti1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/ty
 pe1/public/cm-super/sfti1095.pfb>
-Output written on main.pdf (25 pages, 646747 bytes).
+Output written on main.pdf (25 pages, 646773 bytes).
 PDF statistics:
  858 PDF objects out of 1000 (max. 8388607)
  624 compressed objects within 7 object streams
