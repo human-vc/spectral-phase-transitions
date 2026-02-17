@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 14:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 14:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1005,14 +1005,14 @@ n-dence)\T1/cmr/bx/n/10.95 . []\T1/cmr/m/it/10.95 For $\OT1/cmr/m/n/10.95 ^^F$
 
 
 [16]
-<figures/fig7_mnist_phase_boundary.pdf, id=507, 419.57614pt x 316.3086pt>
+<figures/fig7_mnist_phase_boundary.pdf, id=508, 419.57614pt x 316.3086pt>
 File: figures/fig7_mnist_phase_boundary.pdf Graphic file (type pdf)
 <use figures/fig7_mnist_phase_boundary.pdf>
 Package pdftex.def Info: figures/fig7_mnist_phase_boundary.pdf  used on input l
-ine 1119.
+ine 1120.
 (pdftex.def)             Requested size: 339.72592pt x 256.11685pt.
 
-Underfull \hbox (badness 1147) in paragraph at lines 1125--1125
+Underfull \hbox (badness 1147) in paragraph at lines 1126--1126
 []\T1/cmr/m/n/10.95 Figure 5: []Training dy-nam-ics on whitened MNIST data ($\O
 ML/cmm/m/it/10.95 n \OT1/cmr/m/n/10.95 = 500$\T1/cmr/m/n/10.95 ). Color en-code
 s
@@ -1021,24 +1021,24 @@ s
 
 
 [17]
-<figures/fig8_cifar10_phase_boundary.pdf, id=523, 418.05609pt x 316.3086pt>
+<figures/fig8_cifar10_phase_boundary.pdf, id=524, 418.05609pt x 316.3086pt>
 File: figures/fig8_cifar10_phase_boundary.pdf Graphic file (type pdf)
 <use figures/fig8_cifar10_phase_boundary.pdf>
 Package pdftex.def Info: figures/fig8_cifar10_phase_boundary.pdf  used on input
- line 1143.
+ line 1144.
 (pdftex.def)             Requested size: 339.72592pt x 257.05318pt.
 
 
 [18 <./figures/fig7_mnist_phase_boundary.pdf>]
 
 [19 <./figures/fig8_cifar10_phase_boundary.pdf>]
-Overfull \hbox (3.56403pt too wide) in paragraph at lines 1249--1250
+Overfull \hbox (3.56403pt too wide) in paragraph at lines 1251--1252
 []\T1/cmr/m/n/10.95 The proof re-lies on es-tab-lish-ing that the key spec-tral
  prop-er-ties of the Hessian---specifically
  []
 
 
-Overfull \hbox (4.9839pt too wide) in paragraph at lines 1254--1256
+Overfull \hbox (4.9839pt too wide) in paragraph at lines 1256--1258
 []\T1/cmr/bx/n/10.95 2. Gat-ing con-cen-tra-tion via Hanson--Wright. \T1/cmr/m/
 n/10.95 For the de-cou-pling ar-gu-ment (Lemma []3.6[])
  []
@@ -1048,7 +1048,7 @@ n/10.95 For the de-cou-pling ar-gu-ment (Lemma []3.6[])
 [20]
 
 [21]
-Overfull \hbox (3.36018pt too wide) in paragraph at lines 1338--1343
+Overfull \hbox (3.36018pt too wide) in paragraph at lines 1340--1345
 \T1/cmr/m/n/10.95 along tra-jec-to-ries that are im-plic-itly regularized---SGD
  fol-lows the man-i-fold of near-minimal
  []
@@ -1056,7 +1056,7 @@ Overfull \hbox (3.36018pt too wide) in paragraph at lines 1338--1343
 
 
 [22]
-Package pgfplots info on input line 1408: Using 'lua backend=false' for axis: y
+Package pgfplots info on input line 1411: Using 'lua backend=false' for axis: y
 mode=log unsupported (yet).
 
 
@@ -1108,10 +1108,10 @@ nts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/font
 s/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/
 type1/public/cm-super/sfti1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/ty
 pe1/public/cm-super/sfti1095.pfb>
-Output written on main.pdf (24 pages, 647199 bytes).
+Output written on main.pdf (24 pages, 647499 bytes).
 PDF statistics:
- 841 PDF objects out of 1000 (max. 8388607)
- 608 compressed objects within 7 object streams
+ 844 PDF objects out of 1000 (max. 8388607)
+ 611 compressed objects within 7 object streams
  148 named destinations out of 1000 (max. 500000)
  273 words of extra memory for PDF output out of 10000 (max. 10000000)
 
