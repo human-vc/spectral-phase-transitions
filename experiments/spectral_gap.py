@@ -4,6 +4,7 @@ import os
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
 import matplotlib.pyplot as plt
 
@@ -21,7 +22,7 @@ class TwoLayerReLU(nn.Module):
         self.fc2 = nn.Linear(m, 1, bias=False)
 
     def forward(self, x):
-        return self.fc2(torch.relu(self.fc1(x)))
+        return self.fc2(F.softplus(self.fc1(x), beta=10))
 
 
 def compute_full_hessian(model, X, y):
@@ -34,7 +35,7 @@ def compute_full_hessian(model, X, y):
         w1 = flat_params[idx:idx + numels[0]].view(shapes[0])
         idx += numels[0]
         w2 = flat_params[idx:idx + numels[1]].view(shapes[1])
-        h = torch.relu(X @ w1.t())
+        h = F.softplus(X @ w1.t(), beta=10)
         pred = h @ w2.t()
         return nn.functional.mse_loss(pred, y)
 
@@ -67,7 +68,7 @@ def run_experiment():
     parser.add_argument("--output", type=str, default="experiments/results/spectral_gap.json")
     args = parser.parse_args()
 
-    n = 50
+    n = 100
     deltas = [0.5, 1.0]
     gamma_offsets = [-0.5, -0.3, -0.1, 0.0, 0.1, 0.3, 0.5]
     num_seeds = 5
