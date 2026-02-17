@@ -7,8 +7,10 @@ import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
 
+
 def get_gamma_star(delta):
     return 4.0 / (2.0 + 3.0 * delta)
+
 
 class TwoLayerReLU(nn.Module):
     def __init__(self, d, m):
@@ -19,63 +21,65 @@ class TwoLayerReLU(nn.Module):
     def forward(self, x):
         return self.fc2(torch.relu(self.fc1(x)))
 
+
 def train_one(n, d, m, seed, device):
     torch.manual_seed(seed)
     np.random.seed(seed)
-    
+
     X = torch.randn(n, d).to(device)
-    
+
     m_teacher = max(1, n // 4)
     teacher = TwoLayerReLU(d, m_teacher).to(device)
     with torch.no_grad():
-        nn.init.normal_(teacher.fc1.weight, std=1.0/np.sqrt(d))
-        nn.init.normal_(teacher.fc2.weight, std=1.0/np.sqrt(m_teacher))
+        nn.init.normal_(teacher.fc1.weight, std=1.0 / np.sqrt(d))
+        nn.init.normal_(teacher.fc2.weight, std=1.0 / np.sqrt(m_teacher))
         y = teacher(X)
-    
+
     model = TwoLayerReLU(d, m).to(device)
     with torch.no_grad():
-        nn.init.normal_(model.fc1.weight, std=1.0/np.sqrt(d))
-        nn.init.normal_(model.fc2.weight, std=1.0/np.sqrt(m))
-    
-    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', factor=0.5, patience=500)
-    
-    for step in range(5000):
+        nn.init.normal_(model.fc1.weight, std=1.0 / np.sqrt(d))
+        nn.init.normal_(model.fc2.weight, std=1.0 / np.sqrt(m))
+
+    optimizer = optim.Adam(model.parameters(), lr=0.01)
+
+    for step in range(10000):
         optimizer.zero_grad()
         pred = model(X)
         loss = nn.functional.mse_loss(pred, y)
         loss.backward()
         optimizer.step()
-        scheduler.step(loss)
-        
-        if loss.item() < 1e-4:
-            return True
-            
-    return False
+
+        if loss.item() < 1e-6:
+            break
+
+    return loss.item() < 1e-4
+
 
 def run_experiment():
     parser = argparse.ArgumentParser()
     parser.add_argument("--quick", action="store_true")
     args = parser.parse_args()
-    
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     n = 100
-    deltas = [0.25, 0.5, 0.75, 1.0, 1.5, 2.0]
+    deltas = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0]
     gammas = np.linspace(0.1, 2.5, 20).tolist()
     num_seeds = 10
-    
+
     if args.quick:
         deltas = [0.5, 1.0]
         gammas = np.linspace(0.5, 1.5, 5).tolist()
         num_seeds = 2
-        
+
     results = {}
-    
+
     for delta in deltas:
         d = int(delta * n)
         results[delta] = []
         for gamma in gammas:
             m = int(gamma * n)
+            if m < 1:
+                m = 1
             successes = 0
             for seed in range(num_seeds):
                 if train_one(n, d, m, seed, device):
@@ -86,41 +90,45 @@ def run_experiment():
 
     os.makedirs("experiments/results", exist_ok=True)
     with open("experiments/results/phase_boundary_empirical.json", "w") as f:
-        json.dump(results, f)
-        
+        json.dump({str(k): v for k, v in results.items()}, f)
+
     plt.figure(figsize=(10, 6))
-    
+
     empirical_deltas = []
     empirical_gammas = []
-    
-    for delta, res in results.items():
+
+    for delta in deltas:
+        res = results[delta]
         res.sort(key=lambda x: x["gamma"])
         rates = [r["rate"] for r in res]
         gs = [r["gamma"] for r in res]
-        
+
         transition_gamma = None
         for i in range(len(rates) - 1):
-            if rates[i] <= 0.5 and rates[i+1] >= 0.5:
-                t = (0.5 - rates[i]) / (rates[i+1] - rates[i] + 1e-9)
-                transition_gamma = gs[i] + t * (gs[i+1] - gs[i])
+            if rates[i] <= 0.5 and rates[i + 1] >= 0.5:
+                t = (0.5 - rates[i]) / (rates[i + 1] - rates[i] + 1e-9)
+                transition_gamma = gs[i] + t * (gs[i + 1] - gs[i])
                 break
-        
+
         if transition_gamma is not None:
             empirical_deltas.append(delta)
             empirical_gammas.append(transition_gamma)
-            
-    plt.plot(empirical_deltas, empirical_gammas, 'bo-', label='Empirical (50% success)')
-    
-    d_grid = np.linspace(min(deltas), max(deltas), 100)
+
+    plt.plot(empirical_deltas, empirical_gammas, "bo-", markersize=8, linewidth=2, label="Empirical (50% success)")
+
+    d_grid = np.linspace(0.1, 2.5, 200)
     g_star = [get_gamma_star(d) for d in d_grid]
-    plt.plot(d_grid, g_star, 'r--', label='Theoretical gamma*')
-    
-    plt.xlabel('delta = d/n')
-    plt.ylabel('gamma = m/n')
-    plt.title('Phase Transition Boundary')
-    plt.legend()
-    plt.grid(True)
-    plt.savefig("experiments/results/phase_boundary_empirical.pdf")
+    plt.plot(d_grid, g_star, "r--", linewidth=2, label=r"Theoretical $\gamma^* = 4/(2+3\delta)$")
+
+    plt.xlabel(r"$\delta = d/n$", fontsize=14)
+    plt.ylabel(r"$\gamma = m/n$", fontsize=14)
+    plt.title("Phase Transition Boundary: Empirical vs Theoretical", fontsize=14)
+    plt.legend(fontsize=12)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig("experiments/results/phase_boundary_empirical.pdf", dpi=150)
+    plt.close()
+
 
 if __name__ == "__main__":
     run_experiment()

@@ -1,0 +1,21 @@
+/Users/jacobcrainic/projects/spectral-phase-transitions/venv/lib/python3.14/site-packages/torch/optim/lr_scheduler.py:1694: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:837.)
+  current = float(metrics)
+delta=0.25, gamma=0.10, rate=0.8
+delta=0.25, gamma=0.23, rate=1.0
+delta=0.25, gamma=0.35, rate=1.0
+delta=0.25, gamma=0.48, rate=1.0
+delta=0.25, gamma=0.61, rate=1.0
+delta=0.25, gamma=0.73, rate=1.0
+delta=0.25, gamma=0.86, rate=1.0
+delta=0.25, gamma=0.98, rate=1.0
+delta=0.25, gamma=1.11, rate=1.0
+delta=0.25, gamma=1.24, rate=0.8
+delta=0.25, gamma=1.36, rate=0.1
+delta=0.25, gamma=1.49, rate=0.0
+delta=0.25, gamma=1.62, rate=0.0
+delta=0.25, gamma=1.74, rate=0.0
+delta=0.25, gamma=1.87, rate=0.0
+delta=0.25, gamma=1.99, rate=0.0
+delta=0.25, gamma=2.12, rate=0.0
+delta=0.25, gamma=2.25, rate=0.0

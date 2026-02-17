@@ -1,0 +1,3 @@
+/Users/jacobcrainic/projects/spectral-phase-transitions/experiments/run_safe.sh: line 22: 78210 Terminated: 15          /Users/jacobcrainic/projects/spectral-phase-transitions/venv/bin/python -u empirical_phase_boundary.py > phase.log 2>&1
+/Users/jacobcrainic/projects/spectral-phase-transitions/experiments/run_safe.sh: line 22: 78211 Terminated: 15          /Users/jacobcrainic/projects/spectral-phase-transitions/venv/bin/python -u spectral_density.py > density.log 2>&1
+/Users/jacobcrainic/projects/spectral-phase-transitions/experiments/run_safe.sh: line 22: 78212 Terminated: 15          /Users/jacobcrainic/projects/spectral-phase-transitions/venv/bin/python -u spectral_gap.py > gap.log 2>&1
