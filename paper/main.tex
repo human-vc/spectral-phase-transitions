@@ -41,13 +41,14 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 
 \title{Spectral Phase Transitions in the Loss Landscape\\of Finite-Width Neural Networks}
-\author{Research Note --- February 2026}
-\date{}
+\author{Jacob Crainic}
+\date{February 2026}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
+A central puzzle in deep learning theory is why gradient descent reliably finds good solutions despite the extreme non-convexity of neural network loss landscapes, particularly in the moderately overparameterized regime where existing theoretical guarantees require polynomial width scaling far exceeding practical network sizes.
 We study the critical-point structure of the empirical risk landscape for two-layer
 neural networks with ReLU activations, trained on $n$ data points in $\R^d$ with $m$ hidden
 neurons. Our main result establishes a sharp phase transition in the Hessian spectrum

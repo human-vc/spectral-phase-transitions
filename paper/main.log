@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  16 FEB 2026 21:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  16 FEB 2026 21:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -914,7 +914,7 @@ al/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}])
 [2]
 
 [3]
-Overfull \hbox (2.74733pt too wide) in paragraph at lines 230--234
+Overfull \hbox (2.74733pt too wide) in paragraph at lines 231--235
 []\T1/cmr/m/n/10.95 Direct com-pu-ta-tion. For the second-layer weights, $\OML/
 cmm/m/it/10.95 @f[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 x[]\OT1/cmr/m/n/10.9
 5 )\OML/cmm/m/it/10.95 =@a[] \OT1/cmr/m/n/10.95 = []\OML/cmm/m/it/10.95 ^^[\OT1
@@ -923,7 +923,7 @@ m/it/10.95 =[]$\T1/cmr/m/n/10.95 ,
  []
 
 
-Overfull \hbox (12.99272pt too wide) in paragraph at lines 235--243
+Overfull \hbox (12.99272pt too wide) in paragraph at lines 236--244
 []\T1/cmr/m/n/10.95 For the first-layer weights, $\OML/cmm/m/it/10.95 @f[]\OT1/
 cmr/m/n/10.95 (\OML/cmm/m/it/10.95 x[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 =
 @w[] \OT1/cmr/m/n/10.95 = []\OT1/cmr/bx/n/10.95 1\OT1/cmr/m/n/10.95 [\OML/cmm/m
@@ -933,7 +933,7 @@ cmr/m/n/10.95 (\OML/cmm/m/it/10.95 x[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 =
  []
 
 
-Overfull \hbox (13.85963pt too wide) in paragraph at lines 255--257
+Overfull \hbox (13.85963pt too wide) in paragraph at lines 256--258
 []\T1/cmr/m/n/10.95 The \T1/cmr/m/it/10.95 gated co-vari-ance\T1/cmr/m/n/10.95 
 : For weight $\OML/cmm/m/it/10.95 w[]$\T1/cmr/m/n/10.95 , let $\OML/cmm/m/it/10
 .95 S[] \OT1/cmr/m/n/10.95 = \OMS/cmsy/m/n/10.95 f\OML/cmm/m/it/10.95 i \OT1/cm
@@ -948,12 +948,12 @@ m/it/10.95 x[]x[]$\T1/cmr/m/n/10.95 .
 }]
 
 [5]
-Package pgfplots info on input line 427: Using 'lua backend=false' for axis: ym
+Package pgfplots info on input line 428: Using 'lua backend=false' for axis: ym
 ode=log unsupported (yet).
 
 
 [6]
-Overfull \hbox (42.59334pt too wide) detected at line 532
+Overfull \hbox (42.59334pt too wide) detected at line 533
 [][][][]\OT1/cmr/m/n/10.95 ^^F[] = \U/msb/m/n/10.95 E\OT1/cmr/m/n/10.95 [\OML/c
 mm/m/it/10.95 xx[] \OMS/cmsy/m/n/10.95 j \OML/cmm/m/it/10.95 w[]x > \OT1/cmr/m/
 n/10.95 0] = [][\OML/cmm/m/it/10.95 x \OMS/cmsy/m/n/10.95 j \OML/cmm/m/it/10.95
@@ -969,7 +969,7 @@ m/it/10.95 x \OMS/cmsy/m/n/10.95 j \OML/cmm/m/it/10.95 w[]x > \OT1/cmr/m/n/10.9
 [7]
 
 [8]
-Overfull \hbox (100.41266pt too wide) detected at line 651
+Overfull \hbox (100.41266pt too wide) detected at line 652
 [][][][]\U/msb/m/n/10.95 E  [] \OT1/cmr/m/n/10.95 = [] \U/msb/m/n/10.95 E  [] \
 OMS/cmsy/m/n/10.95 ^^A \OML/cmm/m/it/10.95 p[]\OT1/cmr/m/n/10.95 (0; \OML/cmm/m
 /it/10.95 ^^R\OT1/cmr/m/n/10.95 ) \OML/cmm/m/it/10.95 d^^R;
@@ -978,7 +978,7 @@ OMS/cmsy/m/n/10.95 ^^A \OML/cmm/m/it/10.95 p[]\OT1/cmr/m/n/10.95 (0; \OML/cmm/m
 
 
 [9]
-Overfull \hbox (9.31253pt too wide) in paragraph at lines 690--695
+Overfull \hbox (9.31253pt too wide) in paragraph at lines 691--696
 []\T1/cmr/m/n/10.95 From the self-consistent equa-tion [], the edge $\OML/cmm/m
 /it/10.95 ^^U[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 ^^M\OT1/cmr/m/n/10.95 )$
  \T1/cmr/m/n/10.95 is de-ter-mined by the equa-tion $\OT1/cmr/m/n/10.95 ^^@(\OM
@@ -992,7 +992,7 @@ L/cmm/m/it/10.95 ^^M; ^^U[]\OT1/cmr/m/n/10.95 ) =
 [11]
 
 [12]
-Overfull \hbox (21.54034pt too wide) in paragraph at lines 916--917
+Overfull \hbox (21.54034pt too wide) in paragraph at lines 917--918
 []\T1/cmr/bx/n/10.95 Corollary 8.1 \T1/cmr/m/n/10.95 (Con-di-tion num-ber de-pe
 n-dence)\T1/cmr/bx/n/10.95 . []\T1/cmr/m/it/10.95 For $\OT1/cmr/m/n/10.95 ^^F$ 
 \T1/cmr/m/it/10.95 with con-di-tion num-ber $\OML/cmm/m/it/10.95 ^^T \OT1/cmr/m
@@ -1011,17 +1011,13 @@ n-dence)\T1/cmr/bx/n/10.95 . []\T1/cmr/m/it/10.95 For $\OT1/cmr/m/n/10.95 ^^F$
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 5AA50AB750920652427B0508E5981336;4428.
  ) 
 Here is how much of TeX's memory you used:
  34476 strings out of 473190
  800115 string characters out of 5715801
- 1389605 words of memory out of 5000000
+ 1390602 words of memory out of 5000000
  57098 multiletter control sequences out of 15000+600000
  582779 words of font info for 98 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1054,7 +1050,7 @@ st/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2025/texmf-dist
 /fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/f
 onts/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2025/texmf-dist/fon
 ts/type1/public/cm-super/sfti1095.pfb>
-Output written on main.pdf (15 pages, 498428 bytes).
+Output written on main.pdf (15 pages, 498107 bytes).
 PDF statistics:
  484 PDF objects out of 1000 (max. 8388607)
  405 compressed objects within 5 object streams

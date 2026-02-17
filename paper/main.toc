@@ -2,7 +2,7 @@
 \contentsline {subsection}{\numberline {1.1}Main contributions}{2}{subsection.1.1}%
 \contentsline {subsection}{\numberline {1.2}Related work}{2}{subsection.1.2}%
 \contentsline {paragraph}{Loss landscape of neural networks.}{2}{section*.2}%
-\contentsline {paragraph}{Overparameterization and global convergence.}{2}{section*.3}%
+\contentsline {paragraph}{Overparameterization and global convergence.}{3}{section*.3}%
 \contentsline {paragraph}{Random matrix theory in ML.}{3}{section*.4}%
 \contentsline {section}{\numberline {2}Problem Setup}{3}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Network architecture and loss}{3}{subsection.2.1}%
