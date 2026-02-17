@@ -454,8 +454,8 @@ of the Hessian.
   ymin=-1.1, ymax=1.5,
   grid=major,
   grid style={gray!20},
-  legend style={font=\scriptsize, draw=gray!50, fill=white, fill opacity=0.9,
-    at={(0.98,0.98)}, anchor=north east},
+  legend pos=north east,
+  legend style={font=\scriptsize, draw=gray!50, fill=white, fill opacity=0.9},
 ]
 \addplot[red, fill=red, fill opacity=0.1, draw=none, domain=0.01:0.8, samples=100]
   {-sqrt(max(0, 4/5 - x))} \closedcycle;
@@ -821,7 +821,6 @@ The formula $\gamma_\star = 4/(2 + 3\delta)$ is confirmed by numerical solution 
 self-consistent equation for all $\delta > 0$.
 \end{proof}
 
-% --- Figure 3: Critical width ratio for isotropic data ---
 \begin{figure}[htbp]
 \centering
 \resizebox{0.85\textwidth}{!}{%
@@ -829,35 +828,33 @@ self-consistent equation for all $\delta > 0$.
 \begin{axis}[
   width=12cm,
   height=8cm,
-  xlabel={Data dimension ratio $\delta = d/n$},
-  ylabel={Width-to-sample ratio $\gamma = m/n$},
-  xmin=0, xmax=3,
-  ymin=0, ymax=2,
+  xlabel={Dimension-to-sample ratio $\delta = d/n$},
+  ylabel={Critical width ratio $\gamma^\star(\delta)$},
+  xmin=0, xmax=2,
+  ymin=0, ymax=2.2,
+  axis x line=bottom,
+  axis y line=left,
   grid=major,
   grid style={gray!20},
-  legend style={font=\footnotesize, draw=gray!50, fill=white, fill opacity=0.9,
-    at={(0.98,0.98)}, anchor=north east},
+  tick style={thin},
 ]
-% Shaded subcritical region (below curve) - red
-\addplot[red, fill=red, fill opacity=0.08, draw=none, domain=0.01:3, samples=200]
-  {4/(2 + 3*x)} \closedcycle;
-% Shaded supercritical region (above curve) - blue
-\addplot[blue, fill=blue, fill opacity=0.08, draw=none, domain=0.01:3, samples=200]
-  {4/(2 + 3*x)} |- (axis cs:3,2) |- (axis cs:0.01,2) -- cycle;
-% The critical curve
-\addplot[black, very thick, smooth, domain=0.01:3, samples=200]
+\addplot[blue, thick, smooth, domain=0.01:2, samples=200]
   {4/(2 + 3*x)};
-\addlegendentry{$\gamma^\star(\delta) = \frac{4}{2 + 3\delta}$}
-% gamma = 1 interpolation line
-\addplot[dashed, gray!70, domain=0:3] {1};
-\addlegendentry{$\gamma = 1$ (interpolation threshold)}
-% Annotations centered in their regions
-\node[blue, font=\footnotesize] at (axis cs:1.5,1.4) {All minima global};
-\node[red, font=\footnotesize] at (axis cs:1.8,0.2) {Spurious minima exist};
+\node[circle, fill=black, inner sep=1.5pt] at (axis cs:1,0.8) {};
+\node[above right, font=\footnotesize] at (axis cs:1.02,0.82)
+  {$\delta = 1 \implies \gamma^\star = \tfrac{4}{5}$};
+\draw[dashed, gray!60, thin] (axis cs:1,0) -- (axis cs:1,0.8);
+\draw[dashed, gray!60, thin] (axis cs:0,0.8) -- (axis cs:1,0.8);
+\node[anchor=south west, font=\footnotesize] at (axis cs:0.05,1.92)
+  {$\gamma^\star \to 2$ as $\delta \to 0$};
+\draw[->, thin, gray!60] (axis cs:0.12,1.9) -- (axis cs:0.03,1.97);
+\node[anchor=north west, font=\footnotesize] at (axis cs:1.4,0.38)
+  {$\gamma^\star \to 0$ as $\delta \to \infty$};
+\draw[->, thin, gray!60] (axis cs:1.82,0.32) -- (axis cs:1.95,0.24);
 \end{axis}
 \end{tikzpicture}%
 }
-\caption{The critical width-to-sample ratio $\gamma^\star$ as a function of $\delta = d/n$ for isotropic data ($\Sigma = I_d$). For any $\gamma > \gamma^\star(\delta)$, all local minima are global w.h.p. Note $\gamma^\star < 1$ for all $\delta > 0$: moderate overparameterization suffices.}
+\caption{Critical width-to-sample ratio $\gamma^\star(\delta) = \frac{4}{2 + 3\delta}$ for isotropic data ($\Sigma = I_d$). At $\delta = 1$, $\gamma^\star = 4/5$; as $\delta \to 0$, $\gamma^\star \to 2$; as $\delta \to \infty$, $\gamma^\star \to 0$.}
 \label{fig:isotropic}
 \end{figure}
 
