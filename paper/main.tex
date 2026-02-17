@@ -68,11 +68,11 @@ that separates the data-dependent and weight-dependent contributions to the Hess
 
 \section{Introduction}
 
-A central question in the theory of deep learning is: why does gradient descent find good
-solutions despite the non-convexity of the loss landscape? The empirical risk of a neural
-network is a highly non-convex function of its parameters, and classical optimization theory
-predicts that gradient-based methods should become trapped in poor local minima. Yet in
-practice, this rarely occurs.
+Gradient descent reliably finds good solutions to neural network optimization problems
+despite the extreme non-convexity of the loss landscape. The empirical risk is a highly
+non-convex function of the network's parameters, and classical optimization theory predicts
+that gradient-based methods should become trapped in poor local minima. Yet in practice,
+this rarely occurs.
 
 A growing body of work \cite{choromanska2015,kawaguchi2016,safran2018,venturi2019} has provided partial explanations by studying
 the geometry of the loss surface. The overparameterized regime, where the number of
