@@ -13,6 +13,7 @@
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usepackage{booktabs}
+\usepackage{placeins}
 
 \geometry{margin=1in}
 
@@ -1150,7 +1151,7 @@ $n = 500$ training images, apply PCA to reduce to $d$ dimensions, and whiten the
 $0.2$ to $2.0$ for $\delta \in \{0.05, 0.10, 0.15\}$, training two-layer ReLU networks
 with gradient flow ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps, $m \le 600$, median over 3 seeds).
 
-\begin{figure}[htbp]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig7_mnist_phase_boundary.pdf}
 \caption[MNIST training dynamics]{Training dynamics on whitened MNIST data ($n = 500$).
@@ -1174,7 +1175,7 @@ landscape-level transition (Section~\ref{sec:landscape-dynamics}).
 \label{sec:cifar10}
 To further validate the universality of our results, we repeat the experiment on the CIFAR-10 dataset, which consists of natural images rather than handwritten digits. Using the same preprocessing pipeline (subsampling $n=200$, PCA to $d$ dimensions, whitening) and training protocol, we observe a similar phase transition structure (Figure~\ref{fig:cifar10}).
 
-\begin{figure}[htbp]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig8_cifar10_phase_boundary.pdf}
 \caption[CIFAR-10 training dynamics]{Training dynamics on whitened CIFAR-10 data ($n = 200$). The theoretical topological boundary $\gamma^\star(\delta)$ (dashed line) is overlaid on the training loss heatmap. The loss gradient is smooth rather than exhibiting a sharp transition, consistent with the observation that optimization dynamics transcend the static landscape barriers (Section~\ref{sec:landscape-dynamics}).}
@@ -1423,7 +1424,7 @@ for $\delta < 1/2$, well-approximated by $4/(2+3\delta)$ for small~$\delta$.
 \appendix
 \section{Additional Figures}
 
-\begin{figure}[htbp]
+\begin{figure}[!ht]
 \centering
 \resizebox{0.85\textwidth}{!}{%
 \begin{tikzpicture}
@@ -1454,6 +1455,8 @@ for $\delta < 1/2$, well-approximated by $4/(2+3\delta)$ for small~$\delta$.
 \caption[Spurious critical point count]{The expected number of spurious critical points as a function of $\gamma = m/n$ for $\Sigma = I_d$, $\delta = 1$ (Theorem~\ref{thm:phase-transition}). Below $\gamma_\star = 4/5$, the count grows exponentially in~$n$. Above it, the landscape is provably benign. As discussed in Section~\ref{sec:landscape-dynamics}, practical optimizers avoid these critical points even in the subcritical regime.}
 \label{fig:spurious-count}
 \end{figure}
+
+\FloatBarrier
 
 \begin{thebibliography}{11}
 
