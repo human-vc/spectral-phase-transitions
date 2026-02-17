@@ -168,6 +168,7 @@ All theorems in this paper apply under the following setting:
   \item \textbf{Asymptotic regime:} $d/n \to \delta \in (0,\infty)$, $m/n \to \gamma \in (0,\infty)$.
   \item \textbf{Critical points:} Throughout, ``critical point'' means $\nabla L(\theta) = 0$ with $L(\theta) \le C$ for some fixed constant $C > 0$ (bounded loss). Unbounded-loss critical points are excluded from all statements.
   \item \textbf{Labels:} Realizable teacher-generated, i.e., $y_i = f_{\theta^*}(x_i) + \varepsilon_i$ with $\varepsilon_i \sim \mathcal{N}(0,\sigma_\varepsilon^2)$ (Assumption~\ref{ass:labels}). Extension to non-realizable labels is discussed in Section~\ref{sec:mnist} but is \emph{not} covered by the theorems.
+  \item \textbf{Mean-field independence:} The spectral decoupling (Lemma~\ref{lem:decoupling}) relies on Assumption~\ref{ass:mean-field}, which posits that activation patterns at critical points behave as if the weights were independent of the data. This assumption is standard in random feature models at initialization but remains unproven at data-dependent critical points; see Remark~\ref{rem:mean-field} for discussion.
 \end{itemize}
 \end{tcolorbox}
 
@@ -359,7 +360,7 @@ the roles of the data geometry and the weight geometry.
 \end{remark}
 
 \begin{lemma}[Sharpened decoupling via leave-one-out]\label{lem:decoupling-sharp}
-  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, and specifically for $\gamma$ near $\gamma_\star$, the approximation error satisfies:
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels} and~\ref{ass:mean-field}, and specifically for $\gamma$ near $\gamma_\star$, the approximation error satisfies:
   \[
     \bigl\|\nabla^2 L(\theta_c) - H_{\mathrm{dec}}(\theta_c)\bigr\|_{\op} = O_P\!\left(n^{-2/3}\right).
   \]
@@ -427,7 +428,7 @@ to random matrix theory.
 \end{definition}
 
 \begin{lemma}[Decoupling approximation]\label{lem:decoupling}
-  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, at any critical point $\theta_c$ with
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels} and~\ref{ass:mean-field}, at any critical point $\theta_c$ with
   $L(\theta_c) \le C$ for some constant $C > 0$, we have:
   \[
     \bigl\|\nabla^2 L(\theta_c) - H_{\mathrm{dec}}(\theta_c)\bigr\|_{\op} = O_P\!\left(\frac{1}{\sqrt{n}}\right).
@@ -488,7 +489,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
 \end{definition}
 
 \begin{theorem}[Critical ratio]\label{thm:critical-ratio}
-  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, define:
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels} and~\ref{ass:mean-field}, define:
   \begin{equation}\label{eq:gamma-star}
     \gamma_\star = \inf\!\left\{\gamma > 0 : \Gamma(\gamma, 0^-) > 0\right\},
   \end{equation}
@@ -546,7 +547,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
 \subsection{The phase transition}
 
 \begin{theorem}[Sharp phase transition]\label{thm:phase-transition}
-  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, with $\gamma_\star$ as in
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels} and~\ref{ass:mean-field}, with $\gamma_\star$ as in
   Theorem~\ref{thm:critical-ratio}:
   \begin{enumerate}[label=(\alph*)]
     \item \textbf{Supercritical regime} ($\gamma > \gamma_\star$): With probability at least
@@ -615,27 +616,29 @@ of the Hessian.
 \end{definition}
 
 \begin{theorem}[Spectral gap scaling law]\label{thm:scaling}
-  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, consider critical points $\theta_c$
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels} and~\ref{ass:mean-field}, consider critical points $\theta_c$
   of~$L$ with $L(\theta_c) \le C$ for some fixed $C > 0$. As $n \to \infty$:
   \begin{enumerate}[label=(\alph*)]
     \item For $\gamma > \gamma_\star$:
     \[
-      \Delta(\theta_c) \ge c_1(\gamma - \gamma_\star) - O\!\left(\frac{1}{n^{2/3}}\right)
+      \Delta(\theta_c) \ge c_1(\gamma - \gamma_\star) - O_P\!\left(\frac{1}{\sqrt{n}}\right)
     \]
     with probability $1 - e^{-cn}$, for some $c_1 = c_1(\mu_\Sigma, \delta) > 0$.
 
     \item For $\gamma < \gamma_\star$, there exist critical points with
     \[
-      \Delta(\theta_c) = -c_2(\gamma_\star - \gamma) + O\!\left(\frac{1}{n^{2/3}}\right)
+      \Delta(\theta_c) = -c_2(\gamma_\star - \gamma) + O_P\!\left(\frac{1}{\sqrt{n}}\right)
     \]
     with probability $1 - e^{-cn}$, for some $c_2 = c_2(\mu_\Sigma, \delta) > 0$.
   \end{enumerate}
   In particular, $\Delta \sim |\gamma - \gamma_\star|$ with critical exponent $\beta = 1$.
 
   \begin{remark}[Finite-size crossover]\label{rem:crossover}
-    The linear scaling holds for fixed $\gamma \ne \gamma_\star$ as $n \to \infty$.
-    In a critical window of width $|\gamma - \gamma_\star| = O(n^{-2/3})$, the Tracy--Widom
-    fluctuations dominate the deterministic edge, producing an effective crossover to
+    The $O_P(n^{-1/2})$ error term is unconditional. If the $O_P(n^{-2/3})$ rate
+    from Lemma~\ref{lem:approx} holds for the gated block structure
+    (see Remark~\ref{rem:bai-yin-gap} for discussion), the error improves to
+    $O_P(n^{-2/3})$ and a Tracy--Widom critical window of width
+    $|\gamma - \gamma_\star| = O(n^{-2/3})$ emerges, producing an effective crossover to
     $\Delta \sim n^{-2/3}$ scaling. Numerical experiments at moderate~$n$ (Section~\ref{sec:main})
     may exhibit apparent exponents between $1/2$ and~$1$ due to this crossover effect.
   \end{remark}
