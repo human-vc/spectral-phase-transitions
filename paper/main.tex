@@ -476,11 +476,12 @@ of the Hessian.
 \addplot[red, thick, dashed] {0.7*x};
 \addlegendentry{Subcritical ($\gamma < \gamma_\star$)}
 
-\addplot[gray, thin, dotted] {x};
-\node[gray, anchor=south west, font=\footnotesize] at (axis cs:0.35, 0.5) {Slope $1$};
+\addplot[black, thin, dotted] {x};
+\node[black, font=\footnotesize] at (axis cs:0.15, 0.015) {Slope $1$};
+\draw[black, thin, ->] (axis cs:0.15, 0.02) -- (axis cs:0.08, 0.065);
 
-\draw[black!50, thick, <->] (axis cs:1e-3, 5e-3) -- (axis cs:5e-3, 5e-3);
-\node[black!50, anchor=south, font=\scriptsize] at (axis cs:2.2e-3, 5.5e-3) {TW window};
+\draw[black, thick, <->] (axis cs:1e-3, 5e-3) -- (axis cs:5e-3, 5e-3);
+\node[black, anchor=south, font=\scriptsize] at (axis cs:2.2e-3, 5.5e-3) {TW window};
 
 \end{loglogaxis}
 \end{tikzpicture}
