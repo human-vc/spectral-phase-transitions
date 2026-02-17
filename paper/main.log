@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 14:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 14:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -932,6 +932,8 @@ m/it/10.95 =[]$\T1/cmr/m/n/10.95 ,
  []
 
 
+
+[5]
 Overfull \hbox (12.99272pt too wide) in paragraph at lines 286--294
 []\T1/cmr/m/n/10.95 For the first-layer weights, $\OML/cmm/m/it/10.95 @f[]\OT1/
 cmr/m/n/10.95 (\OML/cmm/m/it/10.95 x[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 =
@@ -942,8 +944,6 @@ cmr/m/n/10.95 (\OML/cmm/m/it/10.95 x[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 =
  []
 
 
-
-[5]
 
 [6]
 Overfull \hbox (13.85963pt too wide) in paragraph at lines 351--353
@@ -959,29 +959,29 @@ m/it/10.95 x[]x[]$\T1/cmr/m/n/10.95 .
 
 [7{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }]
-<figures/fig5_spectral_density.pdf, id=347, 867.24pt x 505.89pt>
+<figures/fig5_spectral_density.pdf, id=348, 867.24pt x 505.89pt>
 File: figures/fig5_spectral_density.pdf Graphic file (type pdf)
 <use figures/fig5_spectral_density.pdf>
 Package pdftex.def Info: figures/fig5_spectral_density.pdf  used on input line 
-460.
+465.
 (pdftex.def)             Requested size: 339.72592pt x 198.17628pt.
 
 
 [8]
-Package pgfplots info on input line 552: Using 'lua backend=false' for axis: xm
-ode=log unsupported (yet).
-Package pgfplots info on input line 552: Using 'lua backend=false' for axis: ym
-ode=log unsupported (yet).
-
 
 [9 <./figures/fig5_spectral_density.pdf>]
+Package pgfplots info on input line 557: Using 'lua backend=false' for axis: xm
+ode=log unsupported (yet).
+Package pgfplots info on input line 557: Using 'lua backend=false' for axis: ym
+ode=log unsupported (yet).
+
 
 [10]
 
 [11]
 
 [12]
-Overfull \hbox (9.31253pt too wide) in paragraph at lines 814--819
+Overfull \hbox (9.31253pt too wide) in paragraph at lines 819--824
 []\T1/cmr/m/n/10.95 From the self-consistent equa-tion [], the edge $\OML/cmm/m
 /it/10.95 ^^U[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 ^^M\OT1/cmr/m/n/10.95 )$
  \T1/cmr/m/n/10.95 is de-ter-mined by the equa-tion $\OT1/cmr/m/n/10.95 ^^@(\OM
@@ -995,7 +995,7 @@ L/cmm/m/it/10.95 ^^M; ^^U[]\OT1/cmr/m/n/10.95 ) =
 [14]
 
 [15]
-Overfull \hbox (22.97247pt too wide) in paragraph at lines 1072--1073
+Overfull \hbox (22.97247pt too wide) in paragraph at lines 1077--1078
 []\T1/cmr/bx/n/10.95 Corollary 8.1 \T1/cmr/m/n/10.95 (Con-di-tion num-ber de-pe
 n-dence)\T1/cmr/bx/n/10.95 . []\T1/cmr/m/it/10.95 For $\OT1/cmr/m/n/10.95 ^^F$ 
 \T1/cmr/m/it/10.95 with con-di-tion num-ber $\U/msb/m/n/10.95 { \OT1/cmr/m/n/10
@@ -1006,14 +1006,14 @@ n-dence)\T1/cmr/bx/n/10.95 . []\T1/cmr/m/it/10.95 For $\OT1/cmr/m/n/10.95 ^^F$
 
 
 [16]
-<figures/fig7_mnist_phase_boundary.pdf, id=508, 419.57614pt x 316.3086pt>
+<figures/fig7_mnist_phase_boundary.pdf, id=509, 419.57614pt x 316.3086pt>
 File: figures/fig7_mnist_phase_boundary.pdf Graphic file (type pdf)
 <use figures/fig7_mnist_phase_boundary.pdf>
 Package pdftex.def Info: figures/fig7_mnist_phase_boundary.pdf  used on input l
-ine 1120.
+ine 1125.
 (pdftex.def)             Requested size: 339.72592pt x 256.11685pt.
 
-Underfull \hbox (badness 1147) in paragraph at lines 1126--1126
+Underfull \hbox (badness 1147) in paragraph at lines 1131--1131
 []\T1/cmr/m/n/10.95 Figure 5: []Training dy-nam-ics on whitened MNIST data ($\O
 ML/cmm/m/it/10.95 n \OT1/cmr/m/n/10.95 = 500$\T1/cmr/m/n/10.95 ). Color en-code
 s
@@ -1022,24 +1022,24 @@ s
 
 
 [17]
-<figures/fig8_cifar10_phase_boundary.pdf, id=524, 418.05609pt x 316.3086pt>
+<figures/fig8_cifar10_phase_boundary.pdf, id=525, 418.05609pt x 316.3086pt>
 File: figures/fig8_cifar10_phase_boundary.pdf Graphic file (type pdf)
 <use figures/fig8_cifar10_phase_boundary.pdf>
 Package pdftex.def Info: figures/fig8_cifar10_phase_boundary.pdf  used on input
- line 1144.
+ line 1149.
 (pdftex.def)             Requested size: 339.72592pt x 257.05318pt.
 
 
 [18 <./figures/fig7_mnist_phase_boundary.pdf>]
 
 [19 <./figures/fig8_cifar10_phase_boundary.pdf>]
-Overfull \hbox (3.56403pt too wide) in paragraph at lines 1251--1252
+Overfull \hbox (3.56403pt too wide) in paragraph at lines 1263--1264
 []\T1/cmr/m/n/10.95 The proof re-lies on es-tab-lish-ing that the key spec-tral
  prop-er-ties of the Hessian---specifically
  []
 
 
-Overfull \hbox (4.9839pt too wide) in paragraph at lines 1256--1258
+Overfull \hbox (4.9839pt too wide) in paragraph at lines 1268--1270
 []\T1/cmr/bx/n/10.95 2. Gat-ing con-cen-tra-tion via Hanson--Wright. \T1/cmr/m/
 n/10.95 For the de-cou-pling ar-gu-ment (Lemma []3.6[])
  []
@@ -1049,7 +1049,7 @@ n/10.95 For the de-cou-pling ar-gu-ment (Lemma []3.6[])
 [20]
 
 [21]
-Overfull \hbox (3.36018pt too wide) in paragraph at lines 1340--1345
+Overfull \hbox (3.36018pt too wide) in paragraph at lines 1352--1357
 \T1/cmr/m/n/10.95 along tra-jec-to-ries that are im-plic-itly regularized---SGD
  fol-lows the man-i-fold of near-minimal
  []
@@ -1057,7 +1057,7 @@ Overfull \hbox (3.36018pt too wide) in paragraph at lines 1340--1345
 
 
 [22]
-Package pgfplots info on input line 1411: Using 'lua backend=false' for axis: y
+Package pgfplots info on input line 1423: Using 'lua backend=false' for axis: y
 mode=log unsupported (yet).
 
 
@@ -1068,13 +1068,17 @@ mode=log unsupported (yet).
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: E4792C19CDE7428EB2389B267BADAB8E;5743.
  ) 
 Here is how much of TeX's memory you used:
  34635 strings out of 473190
  803748 string characters out of 5715801
- 1378098 words of memory out of 5000000
+ 1377098 words of memory out of 5000000
  57218 multiletter control sequences out of 15000+600000
  583465 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1109,10 +1113,10 @@ nts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/font
 s/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/
 type1/public/cm-super/sfti1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/ty
 pe1/public/cm-super/sfti1095.pfb>
-Output written on main.pdf (24 pages, 648651 bytes).
+Output written on main.pdf (24 pages, 649727 bytes).
 PDF statistics:
- 844 PDF objects out of 1000 (max. 8388607)
- 611 compressed objects within 7 object streams
+ 849 PDF objects out of 1000 (max. 8388607)
+ 615 compressed objects within 7 object streams
  148 named destinations out of 1000 (max. 500000)
  273 words of extra memory for PDF output out of 10000 (max. 10000000)
 

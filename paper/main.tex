@@ -152,7 +152,7 @@ precise answer for two-layer ReLU networks.
 
 \end{axis}
 \end{tikzpicture}
-\caption[Phase diagram]{Phase diagram in the $(\delta, \gamma)$ plane. The solid curve shows the exact critical ratio $\gamma_\star(\delta) = 2(1-2\delta)/(1-\delta-\delta^2)$; the dashed curve shows the first-order approximation $4/(2+3\delta)$. Above $\gamma_\star$, Theorem~\ref{thm:phase-transition}(a) guarantees that all local minima are global; below it, exponentially many spurious critical points exist (Theorem~\ref{thm:phase-transition}(b)).}
+\caption[Phase diagram]{Phase diagram in the $(\delta, \gamma)$ plane. The solid curve shows the exact critical ratio $\gamma_\star(\delta) = 2(1-2\delta)/(1-\delta-\delta^2)$ for $\delta < 1/2$; the dashed curve shows the first-order approximation $4/(2+3\delta)$, which extends to all $\delta > 0$ and serves as the continuation for $\delta \ge 1/2$. The shading uses the approximate formula. Above $\gamma_\star$, Theorem~\ref{thm:phase-transition}(a) guarantees that all local minima are global; below it, exponentially many spurious critical points exist (Theorem~\ref{thm:phase-transition}(b)).}
 \label{fig:phase-diagram}
 \end{figure}
 
@@ -434,9 +434,14 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
 \end{theorem}
 
 \begin{remark}\label{rem:delta1}
-  For $\Sigma = I_d$ and $\delta = 1$ (i.e., $d = n$), the critical ratio is
-  $\gamma_\star = 4/5$. This means that $m \ge \lceil 4n/5 \rceil$ hidden neurons suffice
-  to eliminate all spurious local minima. This is a dramatic improvement over prior
+  For $\Sigma = I_d$ and $\delta = 1$ (i.e., $d = n$), the first-order approximation
+  gives $\gamma_\star \approx 4/(2+3) = 4/5$. (The exact
+  formula~\eqref{eq:gamma-star-iso} is valid only for $\delta < 1/2$; at $\delta = 1$,
+  the gated sample covariance has aspect ratio $2\delta = 2 > 1$ and requires a
+  regularized continuation of the Marchenko--Pastur analysis; the approximation
+  $4/(2+3\delta)$ remains well-behaved and provides a useful guideline.)
+  This means that $m \ge \lceil 4n/5 \rceil$ hidden neurons approximately suffice
+  to eliminate all spurious local minima---a dramatic improvement over prior
   results requiring $m = \mathrm{poly}(n)$.
 \end{remark}
 
@@ -1166,30 +1171,37 @@ neuron to the Hessian spectrum. Tracing through the proof of
 Proposition~\ref{prop:isotropic} with a general activation $\sigma$ in place of ReLU,
 the $H_{aa}$ block contribution becomes $\gamma \cdot \kappa(\sigma)$ (replacing
 $\gamma/2$) and the $H_{WW}$ block contribution becomes
-$\frac{3}{2} \gamma \delta \cdot \kappa(\sigma)$ (replacing $3\gamma\delta/4$). The
-phase transition condition $C_{aa} + C_{WW} = 1$ then reads:
+$\alpha(\delta)\,\gamma\delta\cdot\kappa(\sigma)$ (replacing $\gamma\delta\alpha(\delta)/2$),
+where $\alpha(\delta) = (1-\delta)/(1-2\delta)$ is the anisotropy correction from
+Section~\ref{sec:isotropic}. The phase transition condition $C_{aa} + C_{WW} = 1$ gives:
 \[
-  \gamma \cdot \kappa(\sigma) + \frac{3}{2}\,\gamma\delta\cdot\kappa(\sigma) = 1
+  \gamma\,\kappa(\sigma) + \alpha(\delta)\,\gamma\delta\,\kappa(\sigma) = 1
   \quad\Longrightarrow\quad
-  \gamma\,\kappa(\sigma)\!\left(1 + \frac{3\delta}{2}\right) = 1,
+  \gamma\,\kappa(\sigma)\bigl(1 + \delta\,\alpha(\delta)\bigr) = 1,
 \]
-yielding the generalized critical ratio:
+yielding the exact generalized critical ratio (for $\delta < 1/2$):
 \begin{equation}\label{eq:gamma-star-general}
-  \gamma_\star(\delta, \sigma) = \frac{2}{\kappa(\sigma)(2 + 3\delta)}.
+  \gamma_\star(\delta, \sigma) = \frac{1}{\kappa(\sigma)\!\left(\frac{1}{2} + \frac{\delta\,\alpha(\delta)}{2}\right)}
+  = \frac{2(1-2\delta)}{\kappa(\sigma)(1 - \delta - \delta^2)}.
 \end{equation}
-For ReLU, $\kappa(\mathrm{ReLU}) = 1/2$, and this recovers
-$\gamma_\star = 4/(2 + 3\delta)$. Table~\ref{tab:kappa} lists $\kappa(\sigma)$ and
+For ReLU, $\kappa(\mathrm{ReLU}) = 1/2$, recovering the isotropic formula from
+Proposition~\ref{prop:isotropic}. The first-order approximation
+$\gamma_\star \approx 2/(\kappa(\sigma)(2 + 3\delta))$ is accurate for small~$\delta$.
+Table~\ref{tab:kappa} lists $\kappa(\sigma)$ and
 the resulting $\gamma_\star$ for several standard activations.
 
 \begin{table}[htbp]
   \centering
-  \caption{Activation complexity $\kappa(\sigma)$ and isotropic critical ratio
-    $\gamma_\star$ at $\delta = 1$ for standard activation functions. Values computed
-    by numerical integration against $\mathcal{N}(0,1)$.}
+  \caption{Activation complexity $\kappa(\sigma)$ and approximate isotropic critical ratio
+    $\gamma_\star \approx 2/(\kappa(\sigma)(2+3\delta))$ at $\delta = 1$ for standard
+    activation functions. Since $\delta = 1 > 1/2$, these values use the first-order
+    approximation; the exact formula~\eqref{eq:gamma-star-general} applies only for
+    $\delta < 1/2$. Values of $\kappa$ computed by numerical integration against
+    $\mathcal{N}(0,1)$.}
   \label{tab:kappa}
   \begin{tabular}{@{}llcc@{}}
     \toprule
-    Activation $\sigma$ & Derivative $\sigma'(z)$ & $\kappa(\sigma)$ & $\gamma_\star(\delta=1)$ \\
+    Activation $\sigma$ & Derivative $\sigma'(z)$ & $\kappa(\sigma)$ & $\gamma_\star^{\mathrm{approx}}(\delta\!=\!1)$ \\
     \midrule
     ReLU & $\mathbf{1}[z > 0]$ & $0.500$ & $0.800$ \\
     Tanh & $\operatorname{sech}^2(z)$ & $0.464$ & $0.862$ \\
