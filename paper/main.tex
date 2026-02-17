@@ -63,7 +63,7 @@ which admits the first-order approximation $\gamma_\star \approx 4/(2 + 3\delta)
 At the transition, the Hessian at near-critical points exhibits a
 spectral gap collapse: the smallest non-zero eigenvalue vanishes linearly as $|\gamma - \gamma_\star|$, yielding
 a universal scaling law with critical exponent $\beta = 1$.
-Strikingly, gradient-based optimizers navigate the subcritical ($\gamma < \gamma_\star$) regime
+Yet gradient-based optimizers navigate the subcritical ($\gamma < \gamma_\star$) regime
 with apparent ease, achieving near-zero training loss well below the theoretical threshold.
 This reveals a fundamental gap between the static geometry of the loss landscape and the
 dynamics of optimization, suggesting that SGD benefits from implicit biases that
@@ -611,7 +611,7 @@ by computing its limiting spectral distribution.
 The key observation is that $H_{\mathrm{dec}}$ is a sum of $m$ rank-one (in the neuron
 index) contributions, each involving a ``gated'' sample covariance. For neuron~$j$, the
 gating set $S_j = \{i : w_j^\top x_i > 0\}$ has $|S_j| \approx n/2$ (since for Gaussian
-$x_i$ and any fixed $w_j$, $\Prob(w_j^\top x_i > 0) = 1/2$). Moreover, the gated samples
+$x_i$ and any fixed $w_j$, $\Prob(w_j^\top x_i > 0) = 1/2$). The gated samples
 $\{x_i\}_{i \in S_j}$ are i.i.d.\ draws from the half-space truncation of $\mathcal{N}(0,\Sigma)$.
 
 Define $\Sigma_j^+ = \E[xx^\top \mid w_j^\top x > 0]$.
@@ -1056,7 +1056,7 @@ high-probability lower bound, we employ the second moment method.
   \[
     \frac{\E[N_{\mathrm{sp}}^2]}{(\E[N_{\mathrm{sp}}])^2} \le 1 + O(e^{-cn})
   \]
-  for some $c > 0$. Consequently, $\Prob(N_{\mathrm{sp}} > 0) \ge 1 - O(e^{-cn})$.
+  for some $c > 0$, so $\Prob(N_{\mathrm{sp}} > 0) \ge 1 - O(e^{-cn})$.
 \end{lemma}
 
 \begin{proof}[Proof sketch]
@@ -1244,7 +1244,7 @@ $\varsigma(z) = 1/(1 + e^{-z})$ is the logistic sigmoid. The table reveals a cle
 ordering: ReLU has the largest $\kappa$ among standard activations and therefore the
 smallest $\gamma_\star$, requiring the fewest neurons to eliminate spurious local minima.
 Activations with smaller $\kappa$ (such as Sigmoid, whose derivative is uniformly
-small) require proportionally more neurons. Intuitively, a larger $\kappa$ means each
+small) require proportionally more neurons. A larger $\kappa$ means each
 neuron's gradient carries more information about the loss curvature, so fewer neurons
 suffice to ``fill in'' all directions of the Hessian.
 
@@ -1290,7 +1290,7 @@ this quantity is identical for all sub-Gaussian entry distributions, we have the
 The proof relies on establishing that the key spectral properties of the Hessian (specifically the Stieltjes transform of the decoupled Hessian $H_{\mathrm{dec}}$ and its edge behavior) are universal for the class of sub-Gaussian distributions. We proceed in four steps.
 
 \textbf{1. Marchenko--Pastur universality for the data Gram matrix.}
-The critical ratio $\gamma_\star$ is determined by the fixed-point equation involving the spectral distribution $\nu$ of the data Gram matrix $G_X = \frac{1}{n} X^\top X$. For $x_i = \Sigma^{1/2} z_i$ with i.i.d.\ sub-Gaussian $z_{ij}$ having unit variance, the Marchenko--Pastur law is universal. Specifically, the limiting spectral distribution of $G_X$ is given by the free multiplicative convolution $\nu = \mu_{\mathrm{MP}}(\delta) \boxtimes \mu_\Sigma$, identical to the Gaussian case \cite{tao2012}. Consequently, the equation for $\gamma_\star$ (Theorem~\ref{thm:critical-ratio}) remains unchanged.
+The critical ratio $\gamma_\star$ is determined by the fixed-point equation involving the spectral distribution $\nu$ of the data Gram matrix $G_X = \frac{1}{n} X^\top X$. For $x_i = \Sigma^{1/2} z_i$ with i.i.d.\ sub-Gaussian $z_{ij}$ having unit variance, the Marchenko--Pastur law is universal. Specifically, the limiting spectral distribution of $G_X$ is given by the free multiplicative convolution $\nu = \mu_{\mathrm{MP}}(\delta) \boxtimes \mu_\Sigma$, identical to the Gaussian case \cite{tao2012}. The equation for $\gamma_\star$ (Theorem~\ref{thm:critical-ratio}) remains unchanged.
 
 \textbf{2. Gating concentration via Hanson--Wright.}
 For the decoupling argument (Lemma~\ref{lem:decoupling}) to hold, we require the activation patterns $S_j = \{i : w_j^\top x_i > 0\}$ to behave like their Gaussian counterparts. For a fixed weight $w_j$, the condition $w_j^\top x_i > 0$ is equivalent to $w_j^\top \Sigma^{1/2} z_i > 0$. The random variable $\xi_{ij} = w_j^\top \Sigma^{1/2} z_i$ is a sum of independent sub-Gaussian random variables, hence is itself sub-Gaussian. By the Hanson--Wright inequality, the quadratic forms and inner products involving $x_i$ and $x_k$ concentrate around their means with exponential probability, ensuring that the off-diagonal terms in the Hessian (correlations between different neurons' gates) remain $O(n^{-1/2})$. Thus, the spectral decoupling $H \approx H_{\mathrm{dec}}$ is valid for sub-Gaussian data.
@@ -1319,7 +1319,7 @@ many spurious critical points exist below $\gamma_\star$, while
 Theorem~\ref{thm:phase-transition}(a) shows that none exist above it. A natural
 expectation is that gradient-based optimization should fail in the subcritical regime
 and succeed in the supercritical regime, producing a sharp empirical phase boundary at
-$\gamma_\star$. Our experiments reveal a more nuanced picture.
+$\gamma_\star$. Our experiments complicate this prediction.
 
 \subsection{Empirical observations}
 
@@ -1403,7 +1403,7 @@ decoupling technique, decomposing the Hessian at critical points into data and w
 contributions, may find broader applications in the analysis of non-convex optimization
 landscapes.
 
-Perhaps the most striking finding is the disconnect between landscape geometry and
+The widest gap between theory and practice is the disconnect between landscape geometry and
 optimization dynamics: gradient-based methods succeed well below $\gamma_\star$,
 suggesting that the topological complexity of the loss surface is a poor predictor
 of optimization difficulty. This reinforces an emerging picture: optimizers succeed because their inductive
