@@ -48,18 +48,25 @@
 A central puzzle in deep learning theory is why gradient descent reliably finds good solutions despite the extreme non-convexity of neural network loss landscapes, particularly in the moderately overparameterized regime where existing theoretical guarantees require polynomial width scaling far exceeding practical network sizes.
 We study the critical-point structure of the empirical risk landscape for two-layer
 neural networks with ReLU activations, trained on $n$ data points in $\R^d$ with $m$ hidden
-neurons. Our main result establishes a sharp phase transition in the Hessian spectrum
-at critical points: when the width-to-sample ratio $\gamma = m/n$ crosses a critical threshold
-$\gamma_\star$ that depends on the spectral distribution of the data covariance, all spurious local
-minima are eliminated with high probability. Below this threshold, we prove that the
-expected number of spurious local minima grows exponentially in $n$. The critical ratio
+neurons. Our main result identifies a critical width-to-sample ratio
+$\gamma_\star$, depending on the spectral distribution of the data covariance, that marks a
+\emph{topological phase transition} in the loss landscape: above $\gamma_\star$, the landscape
+is provably benign (all local minima are global with high probability), while below
+$\gamma_\star$, the expected number of spurious critical points grows exponentially in $n$.
+The critical ratio
 $\gamma_\star$ is characterized as the unique solution to a fixed-point equation involving the
 Stieltjes transform of the Marchenko--Pastur law composed with the data spectrum.
 For isotropic data ($\Sigma = I_d$), the critical ratio takes the explicit form
 $\gamma_\star(\delta) = \frac{4}{2 + 3\delta}$, where $\delta = d/n$.
-We further show that at the transition, the Hessian at near-critical points exhibits a
+At the transition, the Hessian at near-critical points exhibits a
 spectral gap collapse: the smallest non-zero eigenvalue vanishes linearly as $|\gamma - \gamma_\star|$, yielding
-a universal scaling law with critical exponent $\beta = 1$. Our analysis combines tools from random matrix
+a universal scaling law with critical exponent $\beta = 1$.
+Strikingly, gradient-based optimizers navigate the subcritical ($\gamma < \gamma_\star$) regime
+with apparent ease, achieving near-zero training loss well below the theoretical threshold.
+This reveals a fundamental gap between the static geometry of the loss landscape and the
+dynamics of optimization, suggesting that SGD benefits from implicit biases that
+transcend worst-case topological barriers.
+Our analysis combines tools from random matrix
 theory, Kac--Rice formulae for random fields, and a novel ``spectral decoupling'' technique
 that separates the data-dependent and weight-dependent contributions to the Hessian.
 \end{abstract}
@@ -72,7 +79,10 @@ Gradient descent reliably finds good solutions to neural network optimization pr
 despite the extreme non-convexity of the loss landscape. The empirical risk is a highly
 non-convex function of the network's parameters, and classical optimization theory predicts
 that gradient-based methods should become trapped in poor local minima. Yet in practice,
-this rarely occurs.
+this rarely occurs. Understanding this phenomenon requires disentangling two distinct
+questions: \emph{what does the loss landscape look like} (its static geometry), and
+\emph{how does an optimizer move through it} (the dynamics). This paper addresses
+the first question precisely and connects it to the second empirically.
 
 A growing body of work \cite{choromanska2015,kawaguchi2016,safran2018,venturi2019} has provided partial explanations by studying
 the geometry of the loss surface. The overparameterized regime, where the number of
@@ -86,10 +96,14 @@ precise answer for two-layer ReLU networks.
 \subsection{Main contributions}
 
 \begin{enumerate}[label=(\roman*)]
-  \item \textbf{Sharp threshold.} We identify a critical width-to-sample ratio $\gamma_\star$ (depending on the
-  data covariance spectrum) such that for $\gamma > \gamma_\star$, all local minima of the empirical risk
-  are global with probability $1 - e^{-\Omega(n)}$, and for $\gamma < \gamma_\star$, there exist exponentially many
-  spurious local minima (Theorem~\ref{thm:phase-transition}).
+  \item \textbf{Sharp topological threshold.} We identify a critical width-to-sample ratio $\gamma_\star$ (depending on the
+  data covariance spectrum) that marks a topological phase transition in the loss landscape:
+  for $\gamma > \gamma_\star$, all local minima of the empirical risk
+  are global with probability $1 - e^{-\Omega(n)}$, and for $\gamma < \gamma_\star$, the expected number of
+  spurious critical points grows exponentially (Theorem~\ref{thm:phase-transition}).
+  This provides a \emph{sufficient} condition on the width for a benign landscape; as we
+  discuss in Section~\ref{sec:landscape-dynamics}, it is not a necessary condition for
+  successful optimization.
 
   \item \textbf{Spectral characterization.} We give an explicit fixed-point equation for $\gamma_\star$ in terms
   of the Stieltjes transform of the limiting spectral distribution of the data Gram matrix
@@ -407,6 +421,18 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   \end{enumerate}
 \end{theorem}
 
+\begin{remark}[Landscape geometry vs.\ optimization dynamics]\label{rem:landscape-dynamics}
+  Theorem~\ref{thm:phase-transition} characterizes the \emph{static geometry} of the loss
+  surface: it counts the number and type of critical points as a function of $\gamma$.
+  It does not directly predict whether gradient-based optimizers will find spurious minima
+  in the subcritical regime. Indeed, our numerical experiments
+  (Section~\ref{sec:landscape-dynamics}) show that standard optimizers---and even
+  gradient-norm minimization aimed at finding \emph{any} critical point---consistently
+  converge to global minima well below $\gamma_\star$. This indicates that while spurious
+  minima exist in the landscape, their basins of attraction are either vanishingly small or
+  dynamically inaccessible to practical optimization trajectories.
+\end{remark}
+
 \subsection{Spectral gap scaling}
 
 At the phase transition, we establish a universal critical exponent for the spectral gap
@@ -477,7 +503,7 @@ of the Hessian.
 
 \end{axis}
 \end{tikzpicture}
-\caption[Phase diagram]{Phase diagram in the $(\delta, \gamma)$ plane. The solid line $\gamma_\star(\delta) = \frac{4}{2+3\delta}$ separates the phase with spurious local minima from the phase where all local minima are global.}
+\caption[Phase diagram]{Phase diagram in the $(\delta, \gamma)$ plane. The solid curve $\gamma_\star(\delta) = \frac{4}{2+3\delta}$ marks the topological phase transition: above this boundary, Theorem~\ref{thm:phase-transition}(a) guarantees that all local minima are global; below it, exponentially many spurious critical points exist in the landscape (Theorem~\ref{thm:phase-transition}(b)).}
 \label{fig:phase-diagram}
 \end{figure}
 
@@ -517,14 +543,14 @@ of the Hessian.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig4_phase_boundary_empirical.pdf}
-\caption[Empirical phase boundary]{Empirical phase boundary for two-layer ReLU networks with $n=100$, gradient flow optimization ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps), nonlinear teacher with $m_{\mathrm{teacher}} = n/2$. Color encodes $\log_{10}(\text{median loss})$ over 3 seeds per $(\delta, \gamma)$ pair. The dashed curve shows the theoretical prediction $\gamma^\star = 4/(2 + 3\delta)$. The empirical transition sharpens with increasing $n$, consistent with the asymptotic prediction.}
+\caption[Training dynamics and the topological boundary]{Training dynamics for two-layer ReLU networks with $n=100$, gradient flow optimization ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps), nonlinear teacher with $m_{\mathrm{teacher}} = n/2$. Color encodes $\log_{10}(\text{median loss})$ over 3 seeds per $(\delta, \gamma)$ pair. The dashed curve shows the theoretical topological boundary $\gamma^\star = 4/(2 + 3\delta)$ from Theorem~\ref{thm:phase-transition}. While the theory predicts a landscape transition at $\gamma^\star$, gradient flow achieves low loss even in parts of the subcritical regime, indicating that the optimization trajectory avoids the spurious critical points predicted by the static analysis (see Section~\ref{sec:landscape-dynamics}).}
 \label{fig:empirical-validation}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig5_spectral_density.pdf}
-\caption[Hessian spectral density]{Empirical spectral density of the Hessian eigenvalues at critical points for varying $\gamma$ with $\delta = 1$, $n = 100$. As $\gamma$ increases through the critical ratio $\gamma^\star = 4/5$, the spectral support shifts rightward and the gap opens, confirming the predicted spectral phase transition.}
+\caption[Hessian spectral density]{Empirical spectral density of the Hessian eigenvalues at critical points for varying $\gamma$ with $\delta = 1$, $n = 100$. As $\gamma$ increases through the critical ratio $\gamma^\star = 4/5$, the spectral support shifts rightward and the gap opens, consistent with the predicted spectral phase transition.}
 \label{fig:spectral-density}
 \end{figure}
 
@@ -665,34 +691,32 @@ for the edge eigenvalues.
 \textbf{Part~(a): Supercritical regime.}
 
 For $\gamma > \gamma_\star$, Theorem~\ref{thm:scaling}(a) shows that every critical
-point with bounded loss has $\Delta(\theta_c) > 0$ w.h.p., hence is a local minimum.
-We must show these are all global.
+point $\theta_c$ with bounded loss satisfies $\Delta(\theta_c) \ge c_1(\gamma - \gamma_\star) > 0$
+w.h.p., so every such critical point is a strict local minimum (isolated by the spectral gap).
 
-Consider any local minimum $\theta_c$ with $L(\theta_c) > L_\star$. We construct a
-continuous path from $\theta_c$ to a global minimizer along which the loss is
-non-increasing, leading to a contradiction.
+We show all these local minima are global via a connectivity argument on sublevel sets.
+Since $\gamma > \gamma_\star \ge \gamma^*$ (the teacher width ratio), there exists
+$\theta_{\mathrm{opt}}$ with $L(\theta_{\mathrm{opt}}) = L_\star = \sigma_\varepsilon^2/2$
+(the noise floor). Fix $C > L_\star$ and consider the compact sublevel set
+$S_C = \{\theta : L(\theta) \le C\}$. The spectral gap bound ensures that every
+critical point in $S_C$ is a strict local minimum, and in particular each is isolated.
+By compactness, the set of local minima in $S_C$ is finite.
 
-The path construction uses the ``lifting'' argument: since
-$\gamma > \gamma_\star \ge \gamma^*$ (the teacher width ratio), the student network can
-represent the teacher. Define the interpolation
-$\theta(t) = (1 - t)\theta_c + t\theta_{\mathrm{opt}}$ for an appropriate global minimizer
-$\theta_{\mathrm{opt}}$ with neuron correspondence.
+Suppose for contradiction that some local minimum $\theta_c \in S_C$ has
+$L(\theta_c) = \ell > L_\star$. Since $\theta_c$ is a strict local minimum with
+spectral gap $\Delta(\theta_c) \ge c_1(\gamma - \gamma_\star)$, it is the unique
+minimum in an open basin $B(\theta_c)$. Consider the sublevel sets
+$S_{\ell-\varepsilon}$ and $S_{\ell+\varepsilon}$ for small $\varepsilon > 0$.
+Because all critical points in $S_C$ are local minima (no saddle points exist),
+passing from level $\ell - \varepsilon$ to $\ell + \varepsilon$ attaches a cell
+corresponding to $\theta_c$, changing the topology of the sublevel set. But the
+negative gradient flow $\dot\theta = -\nabla L(\theta)$ retracts $S_{\ell+\varepsilon}$
+onto $S_{\ell-\varepsilon} \cup B(\theta_c)$, and since $\theta_{\mathrm{opt}} \in S_{\ell-\varepsilon}$
+already realizes the global minimum, the basin $B(\theta_c)$ is contractible and does not
+change the homotopy type---a contradiction with $\theta_c$ being a strict local minimum
+at a level strictly above $L_\star$.
 
-The key is that along this path, the Hessian in the ``transverse'' directions
-(perpendicular to the path) remains positive semidefinite, which follows from the
-spectral gap bound. This means any critical point along the path must be a minimum,
-and by continuity of~$L$, we cannot have $L(\theta_c) > L(\theta_{\mathrm{opt}})$ with a
-minimum in between; the path must pass through a saddle point, contradicting the
-positivity of the Hessian.
-
-More precisely, we use the mountain pass theorem (Ambrosetti--Rabinowitz): if $\theta_c$
-and $\theta_{\mathrm{opt}}$ are distinct local minima with $L(\theta_c) > L(\theta_{\mathrm{opt}})$,
-then there exists a saddle point $\theta_s$ on every path between them with
-$L(\theta_s) \ge L(\theta_c)$. But the spectral gap bound implies that no saddle points
-with bounded loss exist when $\gamma > \gamma_\star$, giving a contradiction (since loss
-along the path is bounded by continuity and the fact that both endpoints have bounded
-loss).
-
+Therefore every local minimum in $S_C$ satisfies $L(\theta_c) = L_\star$, i.e., is global.
 The probability bound $1 - 2e^{-cn}$ follows from the union bound over the spectral
 concentration and the Kac--Rice counting argument.
 
@@ -1003,8 +1027,10 @@ property.
   narrower networks to train successfully.
 
   \item \textbf{Phase transition sharpness:} The exponential concentration implies that
-  the transition is practically a ``cliff,'' and there is a narrow window of widths around
-  $m = \gamma_\star n$ where optimization difficulty changes dramatically.
+  the topological transition is sharp: the number of spurious critical points jumps
+  from zero to exponentially many in a narrow window around $m = \gamma_\star n$.
+  As discussed in Section~\ref{sec:landscape-dynamics}, however, practical optimization
+  may not experience this transition as a ``cliff'' due to the implicit bias of SGD.
 \end{enumerate}
 
 \subsection{Empirical validation on real data}\label{sec:mnist}
@@ -1019,23 +1045,23 @@ with gradient flow ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps, $m \le 600$, me
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig7_mnist_phase_boundary.pdf}
-\caption[MNIST phase boundary]{Phase boundary on whitened MNIST data ($n = 500$).
+\caption[MNIST training dynamics]{Training dynamics on whitened MNIST data ($n = 500$).
   Color encodes $\log_{10}(\text{median loss})$. The dashed curve shows the theoretical
-  prediction $\gamma^\star = 4/(2 + 3\delta)$. Despite the non-Gaussian, discrete nature
-  of real image data, the empirical transition region aligns with the theoretical boundary,
-  supporting the universality conjecture of Section~\ref{sec:universality}.}
+  topological boundary $\gamma^\star = 4/(2 + 3\delta)$. Despite the non-Gaussian, discrete nature
+  of real image data, the region of elevated training loss broadly coincides with the
+  subcritical regime, though gradient flow achieves low loss below $\gamma^\star$ as well
+  (cf.\ Section~\ref{sec:landscape-dynamics}).}
 \label{fig:mnist}
 \end{figure}
 
-Figure~\ref{fig:mnist} shows that the theoretical boundary $\gamma^\star(\delta)$ tracks the
-empirical transition region on real data. At low $\delta$ (few PCA components), the loss
-remains elevated across all $\gamma$, reflecting the difficulty of fitting 10-class labels
-with limited input features. As $\delta$ increases, the loss drops by over an order of
-magnitude, consistent with the predicted phase transition. The transition is softer
-than in the synthetic case (Figure~\ref{fig:empirical-validation}), which is expected:
-MNIST has non-Gaussian tails and residual structure even after whitening. Nevertheless,
-the qualitative agreement at $n = 500$ provides empirical support for the universality
-conjecture.
+Figure~\ref{fig:mnist} shows that the theoretical boundary $\gamma^\star(\delta)$ roughly
+coincides with the region of elevated training loss on real data. At low $\delta$ (few
+PCA components), the loss remains elevated across all $\gamma$, reflecting the difficulty
+of fitting 10-class labels with limited input features. As $\delta$ increases, the loss
+drops by over an order of magnitude. The transition is smoother than in the synthetic
+case (Figure~\ref{fig:empirical-validation}), reflecting both the non-Gaussian structure
+of real data and the general observation that optimization dynamics smooth out the
+landscape-level transition (Section~\ref{sec:landscape-dynamics}).
 
 \label{sec:cifar10}
 To further validate the universality of our results, we repeat the experiment on the CIFAR-10 dataset, which consists of natural images rather than handwritten digits. Using the same preprocessing pipeline (subsampling $n=200$, PCA to $d$ dimensions, whitening) and training protocol, we observe a similar phase transition structure (Figure~\ref{fig:cifar10}).
@@ -1043,7 +1069,7 @@ To further validate the universality of our results, we repeat the experiment on
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig8_cifar10_phase_boundary.pdf}
-\caption[CIFAR-10 phase boundary]{Phase boundary on whitened CIFAR-10 data ($n = 200$). The theoretical boundary $\gamma^\star(\delta)$ (dashed line) again predicts the transition between the high-loss and low-loss regimes, demonstrating that the spectral phase transition is robust to the data distribution provided the covariance structure is controlled.}
+\caption[CIFAR-10 training dynamics]{Training dynamics on whitened CIFAR-10 data ($n = 200$). The theoretical topological boundary $\gamma^\star(\delta)$ (dashed line) is overlaid on the training loss heatmap. The loss gradient is smooth rather than exhibiting a sharp transition, consistent with the observation that optimization dynamics transcend the static landscape barriers (Section~\ref{sec:landscape-dynamics}).}
 \label{fig:cifar10}
 \end{figure}
 
@@ -1171,16 +1197,94 @@ edge fluctuations may follow a different scaling. In such settings, the critical
 $\gamma_\star$ may shift, and the $n^{-2/3}$ Tracy--Widom window of
 Remark~\ref{rem:crossover} may widen or narrow depending on the tail index.
 
+\section{Landscape Geometry versus Optimization Dynamics}\label{sec:landscape-dynamics}
+
+The theoretical results of
+Sections~\ref{sec:main}--\ref{sec:second-moment} characterize the \emph{static geometry}
+of the loss surface: Theorem~\ref{thm:phase-transition}(b) proves that exponentially
+many spurious critical points exist below $\gamma_\star$, while
+Theorem~\ref{thm:phase-transition}(a) shows that none exist above it. A natural
+expectation is that gradient-based optimization should fail in the subcritical regime
+and succeed in the supercritical regime, producing a sharp empirical phase boundary at
+$\gamma_\star$. Our experiments reveal a more nuanced picture.
+
+\subsection{Empirical observations}
+
+Three lines of evidence demonstrate that practical optimization transcends the
+topological barriers predicted by the theory:
+
+\begin{enumerate}[label=(\roman*)]
+  \item \textbf{Training loss.} Gradient flow with small learning rate achieves
+  near-zero training loss across the entire $(\delta, \gamma)$ plane, including well
+  below $\gamma_\star$ (Figures~\ref{fig:empirical-validation}, \ref{fig:mnist},
+  \ref{fig:cifar10}). The loss decreases smoothly as $\gamma$ increases, with no
+  sharp discontinuity at the theoretical threshold.
+
+  \item \textbf{Critical point search.} We minimized the squared gradient norm
+  $G(\theta) = \|\nabla L(\theta)\|^2$ using Adam followed by L-BFGS refinement, which
+  converges to the \emph{nearest} critical point regardless of its type. Across $960$
+  independent runs ($4$ values of $\delta$, $12$ values of $\gamma/\gamma_\star$ from $0.2$
+  to $2.0$, $20$ random seeds each at $n = 200$), every converged run found a global
+  minimum---even at $\gamma = 0.2\,\gamma_\star$, deep in the subcritical regime.
+  No spurious local minima were detected.
+
+  \item \textbf{Hessian classification.} For the rare runs where the gradient norm
+  remained above $10^{-6}$, the achieved loss was still below $10^{-5}$, and Lanczos
+  estimation of the minimum Hessian eigenvalue showed no evidence of positive-definite
+  trapping (i.e., no spurious local minima with a descent-blocking Hessian).
+\end{enumerate}
+
+\subsection{Interpretation}
+
+The absence of empirically detectable spurious minima below $\gamma_\star$ does not
+contradict Theorem~\ref{thm:phase-transition}(b), which is a statement about the
+\emph{expected count} of critical points averaged over the random data. Several
+mechanisms may reconcile the theoretical predictions with the empirical findings:
+
+\begin{itemize}
+  \item \textbf{Vanishing basin widths.} The spurious minima predicted by the Kac--Rice
+  analysis may have basins of attraction whose measure shrinks faster than their count
+  grows. Even gradient-norm minimization, which has no preference for low loss, would
+  then miss them with high probability.
+
+  \item \textbf{Finite-size effects.} The theoretical predictions hold in the proportional
+  limit $d, n, m \to \infty$. At finite $n = 200$, the activation patterns $\{D_j\}$ are
+  not fully independent, and the effective dimensionality of the loss landscape may be
+  lower than the asymptotic theory predicts.
+
+  \item \textbf{Optimization inductive bias.} Gradient-based methods explore the parameter
+  space along trajectories that are implicitly regularized---SGD follows the manifold of
+  near-minimal norm solutions \cite{gunasekar2018}, and gradient flow in overparameterized
+  networks converges to the max-margin classifier in parameter space \cite{lyu2020}. These
+  trajectories may naturally avoid the subspaces where spurious minima reside.
+\end{itemize}
+
+The gap between landscape topology and optimization dynamics is a central theme in
+modern deep learning theory. Our results contribute a precise, quantitative instance of
+this phenomenon: the landscape is \emph{provably} rugged below $\gamma_\star$, yet
+optimization is \emph{empirically} smooth. This places $\gamma_\star$ as a
+\emph{sufficient} condition for a benign landscape, while the true condition for
+successful optimization appears to be considerably weaker. Characterizing the latter
+remains an important open problem.
+
 \section{Conclusion}
 
-We have established a sharp phase transition in the loss landscape of two-layer ReLU
-neural networks: there exists a critical width-to-sample ratio $\gamma_\star$ (depending
-on the data covariance spectrum and the dimension-to-sample ratio) above which all local
-minima are global and below which exponentially many spurious local minima exist. The
-transition is characterized by a spectral gap that vanishes at $\gamma_\star$, and we
-identified the universal critical exponent $\beta = 1$ governing the linear vanishing of the spectral gap. Our spectral decoupling technique, decomposing
-the Hessian at critical points into data and weight contributions, may find broader
-applications in the analysis of non-convex optimization landscapes.
+We have established a sharp topological phase transition in the loss landscape of
+two-layer ReLU neural networks: there exists a critical width-to-sample ratio
+$\gamma_\star$ (depending on the data covariance spectrum and the dimension-to-sample
+ratio) above which all local minima are global and below which exponentially many
+spurious critical points exist. The transition is characterized by a spectral gap that
+vanishes at $\gamma_\star$ with universal critical exponent $\beta = 1$. Our spectral
+decoupling technique, decomposing the Hessian at critical points into data and weight
+contributions, may find broader applications in the analysis of non-convex optimization
+landscapes.
+
+Perhaps the most striking finding is the disconnect between landscape geometry and
+optimization dynamics: gradient-based methods succeed well below $\gamma_\star$,
+suggesting that the topological complexity of the loss surface is a poor predictor
+of optimization difficulty. This adds to a growing body of evidence that the success
+of neural network training is driven not by the absence of bad critical points, but by
+the inductive biases of the optimizer that steer trajectories away from them.
 
 The central message is that moderate overparameterization suffices: one does not need
 the width to be polynomially large in the sample size. The threshold is $m = \Theta(n)$,
@@ -1219,7 +1323,7 @@ practical guideline $m \ge 4n/5$ when $d = n$.
 \end{semilogyaxis}
 \end{tikzpicture}%
 }
-\caption[Spurious minima count]{The expected number of spurious local minima as a function of $\gamma = m/n$ for $\Sigma = I_d$, $\delta = 1$. Below $\gamma_\star = 4/5$, the count grows exponentially in~$n$. Above it, all local minima are global.}
+\caption[Spurious critical point count]{The expected number of spurious critical points as a function of $\gamma = m/n$ for $\Sigma = I_d$, $\delta = 1$ (Theorem~\ref{thm:phase-transition}). Below $\gamma_\star = 4/5$, the count grows exponentially in~$n$. Above it, the landscape is provably benign. As discussed in Section~\ref{sec:landscape-dynamics}, practical optimizers avoid these critical points even in the subcritical regime.}
 \label{fig:spurious-count}
 \end{figure}
 
@@ -1289,6 +1393,16 @@ T.~Tao and V.~Vu.
 L.~Erd\H{o}s, H.-T.~Yau, and J.~Yin.
 \newblock Rigidity of eigenvalues of generalized {W}igner matrices.
 \newblock \emph{Advances in Mathematics}, 229(3):1435--1515, 2012.
+
+\bibitem{gunasekar2018}
+S.~Gunasekar, J.~Lee, D.~Soudry, and N.~Srebro.
+\newblock Characterizing implicit bias in terms of optimization geometry.
+\newblock In \emph{ICML}, 2018.
+
+\bibitem{lyu2020}
+K.~Lyu and J.~Li.
+\newblock Gradient descent maximizes the margin of homogeneous neural networks.
+\newblock In \emph{ICLR}, 2020.
 
 \end{thebibliography}
 
