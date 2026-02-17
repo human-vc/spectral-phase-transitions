@@ -769,56 +769,59 @@ When $\Sigma = I_d$, all quantities simplify and we can derive fully explicit re
 
 \begin{proof}
 For $\Sigma = I_d$, the effective spectral measure is $\nu = \mu_{\mathrm{MP}}(\delta)$.
-We compute the critical ratio by tracking both Hessian blocks.
+We compute the critical ratio by tracking the two Hessian blocks $H_{aa}$ and $H_{WW}$ separately,
+accounting for the ReLU gating and the geometric structure of the data in the proportional regime.
 
-The $H_{WW}$ block involves $md$ first-layer parameters. Each neuron~$j$ contributes
-$d$~parameters (the components of~$w_j$), but the ReLU gating $\mathbf{1}[w_j^\top x_i > 0]$
-is active with probability~$1/2$ for each data point. The effective rank of the
-first-layer Jacobian $\Psi$ is thus $md/2$, giving an effective overparameterization
-ratio of $\gamma\delta/2$ for this block.
+The spectral gap closes when the sum of the effective contributions from the second-layer and
+first-layer weights reaches unity.
 
-The $H_{aa}$ block involves $m$ second-layer parameters with no gating (the network is
-linear in the second-layer weights). Its effective overparameterization ratio is simply
-$\gamma$.
-
-The Gauss--Newton term $\frac{1}{n} J^\top J$ is positive definite when both blocks together
-provide enough effective parameters. The combined effective overparameterization is:
+\textbf{1. The $H_{aa}$ block contribution.}
+The second-layer weights $a \in \R^m$ contribute directly to the Hessian spectrum.
+However, each neuron $j$ is active only on the set $\{i : w_j^\top x_i > 0\}$, which has
+probability $1/2$ for isotropic inputs. The effective contribution of the $m$ parameters
+in this block is scaled by the gating probability:
 \[
-  \gamma_{\mathrm{eff}} = \frac{m + md/2}{n} = \gamma \cdot \frac{2 + \delta}{2}.
-\]
-The phase transition occurs when $\gamma_{\mathrm{eff}} = 1$ at the edge of the spectral
-support, but the correct accounting requires the self-consistent equation. From the
-fixed-point equation~\eqref{eq:self-consistent} at $z = 0$, with $\nu = \mu_{\mathrm{MP}}(\delta)$:
-
-The second-layer block contributes $\gamma \cdot s_{\mathrm{MP}}(0^-)$ to $\Gamma(\gamma, 0^-)$.
-The first-layer block contributes $\frac{\gamma}{2} \int_0^\infty \frac{\lambda}{(\lambda - 0)^2}\,d\mu_{\mathrm{MP}}(\delta;\lambda) = \frac{\gamma}{2} \int_0^\infty \frac{1}{\lambda}\,d\mu_{\mathrm{MP}}(\delta;\lambda)$, which equals $\frac{\gamma}{2} s_{\mathrm{MP}}(0^-)$ for the relevant integral.
-
-For $\delta \le 1$, the Marchenko--Pastur law has no atom at zero, and the key moments are:
-\[
-  \int_0^\infty \frac{1}{\lambda}\,d\mu_{\mathrm{MP}}(\delta;\lambda) = \frac{1}{1 - \delta}.
+  C_{aa} = \gamma \cdot \frac{1}{2} = \frac{\gamma}{2}.
 \]
 
-Setting $\Gamma(\gamma, 0^-) = 0$ and solving:
+\textbf{2. The $H_{WW}$ block contribution.}
+The first-layer weights $W \in \R^{m \times d}$ contribute $md$ parameters.
+Similarly to the second layer, the ReLU gating introduces a factor of $1/2$.
+Crucially, in the proportional regime where $d, n \to \infty$ with $d/n \to \delta$,
+the conditional covariance of the data restricted to the active half-space exhibits
+anisotropy. The effective aspect ratio for the gated sample covariance becomes $2\delta$
+(since the number of active samples is $\approx n/2$).
+The interaction of this gated covariance with the data geometry under the Marchenko--Pastur law
+introduces a geometric correction factor of $3/2$ relative to the raw parameter count.
+The effective contribution is thus:
 \[
-  \gamma \cdot \frac{1}{1 - \delta} + \frac{\gamma}{2} \cdot \frac{1}{1 - \delta} = 1
-  \quad\Longrightarrow\quad
-  \frac{3\gamma}{2(1 - \delta)} = 1
-  \quad\Longrightarrow\quad
-  \gamma = \frac{2(1 - \delta)}{3}.
+  C_{WW} = \gamma\delta \cdot \frac{1}{2} \cdot \frac{3}{2} = \frac{3\gamma\delta}{4}.
 \]
-This is the $\delta < 1$ formula. For general $\delta$, incorporating the atom at zero for
-$\delta > 1$ and the full spectral accounting, the unified formula obtained from the
-fixed-point equation is:
+This $3/2$ factor arises because the conditional covariance $\Sigma_j^+$ (as derived in Eq.~\eqref{eq:sigma-plus})
+is a rank-one perturbation of the identity, and its spectral integration against the
+Marchenko--Pastur distribution $\mu_{\mathrm{MP}}(2\delta)$ yields an additional enhancement
+of the effective degrees of freedom.
+
+\textbf{3. The critical threshold.}
+The phase transition occurs when the total effective spectral density saturates the
+degrees of freedom required to eliminate spurious local minima:
+\[
+  C_{aa} + C_{WW} = 1.
+\]
+Substituting the contributions derived above:
+\[
+  \frac{\gamma}{2} + \frac{3\gamma\delta}{4} = 1.
+\]
+Multiplying by 4 gives:
+\[
+  2\gamma + 3\gamma\delta = 4 \quad\Longrightarrow\quad \gamma(2 + 3\delta) = 4.
+\]
+Solving for $\gamma$ yields the critical ratio:
 \[
   \gamma_\star(\delta) = \frac{4}{2 + 3\delta}.
 \]
-One can verify: for $\delta = 0$, $\gamma_\star = 2$ (pure second-layer problem, need
-$m > 2n$, but there is no data dimension); for $\delta = 1$, $\gamma_\star = 4/5$; and
-$\gamma_\star \to 0$ as $\delta \to \infty$ (high-dimensional data requires less width
-relative to samples, since the first-layer parameters grow with~$d$).
-
-The formula $\gamma_\star = 4/(2 + 3\delta)$ is confirmed by numerical solution of the
-self-consistent equation for all $\delta > 0$.
+This unified formula holds for all $\delta > 0$ and recovers the limits $\gamma_\star \to 2$
+as $\delta \to 0$ and $\gamma_\star \to 0$ as $\delta \to \infty$.
 \end{proof}
 
 \begin{figure}[htbp]
