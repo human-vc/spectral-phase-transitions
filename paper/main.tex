@@ -82,10 +82,8 @@ riddled with saddle points, plateaus, and potentially spurious local minima that
 trap gradient-based optimizers. Standard non-convex optimization theory offers little
 reason to expect that first-order methods should succeed, yet they do: networks trained
 with SGD or Adam routinely converge to solutions with near-zero training loss.
-Two distinct questions underlie this puzzle: \emph{what is the geometry of the loss
-surface itself}, and \emph{how optimizers navigate it so effectively}. This paper
-gives a sharp answer to the first and connects it to the second through
-large-scale experiments.
+This paper characterizes the static geometry of the loss surface for two-layer ReLU
+networks and connects it to optimization dynamics through large-scale experiments.
 
 Prior work has approached the landscape question from several angles
 \cite{choromanska2015,kawaguchi2016,safran2018,venturi2019}. Choromanska et al.\
