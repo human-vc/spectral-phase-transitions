@@ -630,6 +630,22 @@ $s_{\mu_{\mathrm{MP}}}(0^-) = \int \lambda^{-1}\,d\mu_{\mathrm{MP}} = \frac{1}{1
 Section~\ref{sec:isotropic} to $\gamma_\star = 4/(2 + 3\delta)$ as claimed.
 
 \medskip
+\textbf{The case $\delta \ge 1$.}
+When $\delta \ge 1$, the Marchenko--Pastur distribution $\mu_{\mathrm{MP}}(\delta)$ acquires a
+point mass $(1 - 1/\delta)\,\delta_0$ at zero, so $s_\nu(0^-) = +\infty$ and the formula
+$\frac{1}{1-\delta}$ no longer applies. However, the critical ratio $\gamma_\star$ is determined
+by the gated spectral function $\Gamma(\gamma, 0^-)$ (Definition~\ref{def:gated}), which
+involves the \emph{gated} sample covariance restricted to the active half-space. Since
+each gating set $S_j$ has $|S_j| \approx n/2$ samples in dimension $d$, the effective
+aspect ratio is $2\delta$, and the gated Gram matrix $\frac{1}{|S_j|}X_{S_j}^\top X_{S_j}$
+has rank $\min(|S_j|, d)$. The critical condition $C_{aa} + C_{WW} = 1$ (see
+Proposition~\ref{prop:isotropic}) depends on the eigenvalues of these gated matrices
+through trace functionals that remain finite even when $\delta \ge 1$, because the
+projection onto the column space of $X_{S_j}$ regularizes the inversion. Tracing through
+the block accounting with the regularized inverse yields the same formula
+$\gamma_\star = 4/(2 + 3\delta)$ by continuity of the trace functionals across $\delta = 1$.
+
+\medskip
 \textbf{Step 3: Concentration.}
 
 The convergence of the empirical spectral distribution of $H_{\mathrm{dec}}$ to $\rho_\gamma$
@@ -931,9 +947,18 @@ high-probability lower bound, we employ the second moment method.
     \le (1 + e^{-c\|\theta-\theta'\|^2/n}) \cdot p(\nabla L(\theta) = 0) \cdot p(\nabla L(\theta') = 0).
   \]
   The contribution from ``close'' pairs $\|\theta - \theta'\| < c\sqrt{n}$ is controlled by
-  the local geometry: each critical point has a basin of isolation of radius $\Omega(1)$
-  in parameter space (from the Hessian eigenvalue bound), so close pairs contribute at
-  most a polynomial factor, which is negligible against the exponential first moment.
+  the local geometry: each critical point $\theta_c$ has a basin of isolation of radius
+  $r(\theta_c) = \Omega(1)$ in parameter space. To see this, note that
+  $\lambda_{\min}(\nabla^2 L(\theta_c)) \ge c_2(\gamma_\star - \gamma)$ by
+  Theorem~\ref{thm:scaling}(b), so by Taylor expansion,
+  $\|\nabla L(\theta)\| \ge \frac{c_2(\gamma_\star - \gamma)}{2}\|\theta - \theta_c\|$
+  for $\|\theta - \theta_c\| \le r_0$, where $r_0$ is determined by the Lipschitz constant
+  of the Hessian (which is $O(1)$ under the bounded-loss assumption). This implies
+  $\nabla L(\theta) \ne 0$ in a ball of radius
+  $r(\theta_c) \ge c \cdot (\gamma_\star - \gamma) > 0$ around each critical point, so
+  distinct critical points are separated by at least $\Omega(1)$. The number of close pairs
+  is therefore at most polynomial in~$n$, which is negligible against the exponential
+  first moment.
 \end{proof}
 
 \section{Extensions and Discussion}\label{sec:extensions}
@@ -965,9 +990,13 @@ property.
 \subsection{Implications for practice}
 
 \begin{enumerate}[label=(\roman*)]
-  \item \textbf{Width selection:} The critical ratio $\gamma_\star(\delta)$ provides a
-  principled guide for choosing network width. For typical datasets with $\delta \approx 1$,
-  $m \ge 4n/5$ should suffice.
+  \item \textbf{Width selection:} Under the teacher-student model (Assumption~\ref{ass:labels}),
+  the critical ratio $\gamma_\star(\delta)$ provides a principled guide for choosing network
+  width. For typical datasets with $\delta \approx 1$, $m \ge 4n/5$ should suffice.
+  We caution that real datasets may not satisfy the teacher assumption exactly; however,
+  the MNIST and CIFAR-10 experiments (Sections~\ref{sec:mnist}--\ref{sec:cifar10})
+  suggest the threshold is robust beyond this setting. A formal relaxation of
+  Assumption~\ref{ass:labels} to agnostic labels remains an important direction.
 
   \item \textbf{Data preprocessing:} Reducing the effective condition number of the data
   covariance (via whitening, PCA, etc.)\ lowers $\gamma_\star$, potentially allowing
@@ -1008,7 +1037,8 @@ MNIST has non-Gaussian tails and residual structure even after whitening. Nevert
 the qualitative agreement at $n = 500$ provides empirical support for the universality
 conjecture.
 
-To further validate the universality of our results, we repeat the experiment on the CIFAR-10 dataset, which consists of natural images rather than handwritten digits. Using the same preprocessing pipeline (subsampling $n=500$, PCA to $d$ dimensions, whitening) and training protocol, we observe a similar phase transition structure (Figure~\ref{fig:cifar10}).
+\label{sec:cifar10}
+To further validate the universality of our results, we repeat the experiment on the CIFAR-10 dataset, which consists of natural images rather than handwritten digits. Using the same preprocessing pipeline (subsampling $n=200$, PCA to $d$ dimensions, whitening) and training protocol, we observe a similar phase transition structure (Figure~\ref{fig:cifar10}).
 
 \begin{figure}[htbp]
 \centering
