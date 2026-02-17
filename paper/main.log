@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 12:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 12:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1005,37 +1005,37 @@ n-dence)\T1/cmr/bx/n/10.95 . []\T1/cmr/m/it/10.95 For $\OT1/cmr/m/n/10.95 ^^F$
 
 
 [16]
-<figures/fig7_mnist_phase_boundary.pdf, id=495, 419.57614pt x 316.3086pt>
+<figures/fig7_mnist_phase_boundary.pdf, id=493, 419.57614pt x 316.3086pt>
 File: figures/fig7_mnist_phase_boundary.pdf Graphic file (type pdf)
 <use figures/fig7_mnist_phase_boundary.pdf>
 Package pdftex.def Info: figures/fig7_mnist_phase_boundary.pdf  used on input l
-ine 1047.
+ine 1044.
 (pdftex.def)             Requested size: 339.72592pt x 256.11685pt.
 
-Underfull \hbox (badness 1147) in paragraph at lines 1053--1053
+Underfull \hbox (badness 1147) in paragraph at lines 1050--1050
 []\T1/cmr/m/n/10.95 Figure 5: []Training dy-nam-ics on whitened MNIST data ($\O
 ML/cmm/m/it/10.95 n \OT1/cmr/m/n/10.95 = 500$\T1/cmr/m/n/10.95 ). Color en-code
 s
  []
 
-<figures/fig8_cifar10_phase_boundary.pdf, id=502, 418.05609pt x 316.3086pt>
+<figures/fig8_cifar10_phase_boundary.pdf, id=500, 418.05609pt x 316.3086pt>
 File: figures/fig8_cifar10_phase_boundary.pdf Graphic file (type pdf)
 <use figures/fig8_cifar10_phase_boundary.pdf>
 Package pdftex.def Info: figures/fig8_cifar10_phase_boundary.pdf  used on input
- line 1071.
+ line 1068.
 (pdftex.def)             Requested size: 339.72592pt x 257.05318pt.
 
 
 [17 <./figures/fig7_mnist_phase_boundary.pdf>]
 
 [18 <./figures/fig8_cifar10_phase_boundary.pdf>]
-Overfull \hbox (3.56403pt too wide) in paragraph at lines 1177--1178
+Overfull \hbox (3.56403pt too wide) in paragraph at lines 1174--1175
 []\T1/cmr/m/n/10.95 The proof re-lies on es-tab-lish-ing that the key spec-tral
  prop-er-ties of the Hessian---specifically
  []
 
 
-Overfull \hbox (4.9839pt too wide) in paragraph at lines 1182--1184
+Overfull \hbox (4.9839pt too wide) in paragraph at lines 1179--1181
 []\T1/cmr/bx/n/10.95 2. Gat-ing con-cen-tra-tion via Hanson--Wright. \T1/cmr/m/
 n/10.95 For the de-cou-pling ar-gu-ment (Lemma []3.6[])
  []
@@ -1045,7 +1045,7 @@ n/10.95 For the de-cou-pling ar-gu-ment (Lemma []3.6[])
 [19]
 
 [20]
-Overfull \hbox (3.36018pt too wide) in paragraph at lines 1255--1260
+Overfull \hbox (3.36018pt too wide) in paragraph at lines 1252--1257
 \T1/cmr/m/n/10.95 along tra-jec-to-ries that are im-plic-itly regularized---SGD
  fol-lows the man-i-fold of near-minimal
  []
@@ -1053,7 +1053,7 @@ Overfull \hbox (3.36018pt too wide) in paragraph at lines 1255--1260
 
 
 [21]
-Package pgfplots info on input line 1325: Using 'lua backend=false' for axis: y
+Package pgfplots info on input line 1322: Using 'lua backend=false' for axis: y
 mode=log unsupported (yet).
 
 
@@ -1068,23 +1068,17 @@ L3 programming layer <2025-01-18>
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: 70F8EA4A4D8229A0AF6033A21DFFFBF0;5743
-(rerunfilecheck)             After:  E4792C19CDE7428EB2389B267BADAB8E;5743.
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: E4792C19CDE7428EB2389B267BADAB8E;5743.
  ) 
 Here is how much of TeX's memory you used:
  34605 strings out of 473190
  803188 string characters out of 5715801
- 1366870 words of memory out of 5000000
+ 1366865 words of memory out of 5000000
  57194 multiletter control sequences out of 15000+600000
  583465 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,21n,91p,833b,2216s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,21n,91p,1287b,2216s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -1115,10 +1109,10 @@ nts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/font
 s/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/
 type1/public/cm-super/sfti1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/ty
 pe1/public/cm-super/sfti1095.pfb>
-Output written on main.pdf (23 pages, 645209 bytes).
+Output written on main.pdf (23 pages, 645877 bytes).
 PDF statistics:
- 817 PDF objects out of 1000 (max. 8388607)
- 586 compressed objects within 6 object streams
+ 816 PDF objects out of 1000 (max. 8388607)
+ 585 compressed objects within 6 object streams
  142 named destinations out of 1000 (max. 500000)
  273 words of extra memory for PDF output out of 10000 (max. 10000000)
 

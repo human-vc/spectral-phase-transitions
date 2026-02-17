@@ -27,7 +27,7 @@
 \contentsline {subsection}{\numberline {8.5}General activation functions}{18}{subsection.8.5}%
 \contentsline {subsection}{\numberline {8.6}Universality beyond Gaussian data}{19}{subsection.8.6}%
 \contentsline {section}{\numberline {9}Landscape Geometry versus Optimization Dynamics}{20}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Empirical observations}{20}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.1}Empirical observations}{21}{subsection.9.1}%
 \contentsline {subsection}{\numberline {9.2}Interpretation}{21}{subsection.9.2}%
-\contentsline {section}{\numberline {10}Conclusion}{21}{section.10}%
+\contentsline {section}{\numberline {10}Conclusion}{22}{section.10}%
 \contentsline {section}{\numberline {A}Additional Figures}{22}{appendix.A}%
