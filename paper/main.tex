@@ -168,26 +168,41 @@ an open problem. We resolve it for two-layer ReLU networks.
 
 \subsection{Related work}
 
-\paragraph{Loss landscape geometry.}
-The spin-glass analogy of Choromanska et al.\ \cite{choromanska2015} and Kawaguchi's
-\cite{kawaguchi2016} proof that linear networks have no spurious minima launched a line of
-work on loss surface topology. Safran and Shamir \cite{safran2018} constructed explicit
-spurious minima for underparameterized ReLU networks; Venturi et al.\ \cite{venturi2019}
-gave conditions for their absence. Our contribution is to locate the exact transition
-point between these regimes as a function of the width-to-sample ratio.
+\paragraph{From spin glasses to sharp thresholds.}
+Early theoretical work drew on statistical physics to argue that neural loss surfaces
+resemble spin-glass energy landscapes, where most local minima cluster near the global
+minimum \cite{choromanska2015}. This qualitative picture was sharpened in two directions.
+On one hand, Kawaguchi \cite{kawaguchi2016} proved that \emph{linear} networks have no
+spurious minima at all---a clean structural result, but one that does not survive the
+introduction of nonlinear activations. On the other hand, Safran and Shamir
+\cite{safran2018} showed that two-layer ReLU networks \emph{do} harbor spurious minima
+when underparameterized, while Venturi et al.\ \cite{venturi2019} gave sufficient
+conditions for their absence. The gap between these results---exactly how much
+overparameterization is needed, and how the answer depends on the data---is the question
+we resolve.
 
-\paragraph{Overparameterization thresholds.}
-The convergence guarantees of Du et al.\ \cite{du2019}, Allen-Zhu et al.\
-\cite{allenzhu2019}, and Zou et al.\ \cite{zou2020} require $m = \mathrm{poly}(n)$
-and operate through NTK linearization \cite{jacot2018}. Our results are qualitatively
-different: the transition occurs at $m = \Theta(n)$, determined by the spectral
-interaction between the data covariance and the gated Hessian blocks.
+\paragraph{The polynomial-width barrier.}
+A separate line of work established convergence guarantees for gradient descent in
+overparameterized networks, but at the cost of requiring the width to grow
+polynomially in the sample size: $m = \Omega(n^2)$ \cite{du2019},
+$\Omega(n^4)$ \cite{allenzhu2019}, or worse \cite{zou2020}. These analyses typically
+proceed through the Neural Tangent Kernel (NTK) regime \cite{jacot2018}, where the
+network is effectively linearized around initialization. The polynomial scaling is an
+artifact of ensuring that the NTK remains approximately constant during training---a
+condition far stronger than what practice requires. Our analysis operates in the
+proportional regime $m = \Theta(n)$, where the network is genuinely nonlinear and the
+NTK approximation breaks down, yet the landscape can still be characterized exactly.
 
-\paragraph{Random matrix theory in learning.}
-Pennington and Worah \cite{pennington2017} and Louart et al.\ \cite{louart2018}
-brought Marchenko--Pastur and free probability tools to the analysis of neural Jacobians
-and kernel matrices. Our spectral decoupling applies these tools directly to the Hessian
-of the empirical risk at critical points, rather than to the network's feature map.
+\paragraph{Random matrix tools for neural networks.}
+The technical machinery we build on---Marchenko--Pastur theory, Stieltjes transforms,
+free probability---has been applied to neural networks primarily through the lens of
+the Jacobian and kernel matrices \cite{pennington2017,louart2018}. These works
+characterize the \emph{conditioning} of the optimization problem (eigenvalues of the
+Gram matrix or the NTK) rather than the \emph{topology} of the loss surface (existence
+and type of critical points). Our spectral decoupling bridges this gap by applying
+random matrix theory directly to the Hessian at critical points, decomposing it into
+blocks whose spectra are governed by the data covariance interacting with the
+activation-gated sample covariance.
 
 \section{Problem Setup}
 
