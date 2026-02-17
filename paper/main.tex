@@ -581,6 +581,20 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   eigenvalues), the bounded-loss condition is an assumption, not a conclusion.
 \end{remark}
 
+\begin{remark}[Bounded-loss circularity in part~(a)]\label{rem:bounded-loss-morse}
+  A related circularity affects the Morse-theoretic argument in part~(a).
+  The spectral gap (Theorem~\ref{thm:scaling}) guarantees that all bounded-loss critical
+  points in the supercritical regime are strict local minima, and the connectivity argument
+  then forces them to be global. But applying the spectral gap to every critical point in
+  the sublevel set $\{L \le C\}$ requires that each such point has bounded loss, which is
+  the conclusion we are trying to establish. In practice, the argument is bootstrapped: we
+  first restrict to critical points reachable by gradient flow from bounded initialization
+  (which have $L(\theta_c) \le L(0) = O(1)$ w.h.p.), apply the spectral gap to this
+  restricted set, and then extend via the connectivity of sublevel sets. The extension step
+  assumes no ``wild'' critical points with unbounded loss exist inside the sublevel set, a
+  condition that holds generically but is not proved from first principles here.
+\end{remark}
+
 \begin{remark}[Landscape geometry vs.\ optimization dynamics]\label{rem:landscape-dynamics}
   Theorem~\ref{thm:phase-transition} characterizes the \emph{static geometry} of the loss
   surface: it counts the number and type of critical points as a function of $\gamma$.

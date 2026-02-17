@@ -13,15 +13,15 @@
 \contentsline {section}{\numberline {4}Main Results}{9}{section.4}%
 \contentsline {subsection}{\numberline {4.1}The critical ratio}{9}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}The phase transition}{10}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Spectral gap scaling}{10}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.3}Spectral gap scaling}{11}{subsection.4.3}%
 \contentsline {section}{\numberline {5}Proofs}{12}{section.5}%
 \contentsline {subsection}{\numberline {5.1}Proof of Theorem~\ref {thm:critical-ratio}: Identifying the critical ratio}{12}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}Proof of Theorem~\ref {thm:phase-transition}: The phase transition}{14}{subsection.5.2}%
 \contentsline {subsection}{\numberline {5.3}Proof of Theorem~\ref {thm:scaling}: Linear spectral gap scaling}{16}{subsection.5.3}%
-\contentsline {section}{\numberline {6}The Isotropic Case: Explicit Computations}{16}{section.6}%
+\contentsline {section}{\numberline {6}The Isotropic Case: Explicit Computations}{17}{section.6}%
 \contentsline {section}{\numberline {7}The Second Moment Method and Concentration}{19}{section.7}%
-\contentsline {section}{\numberline {8}Extensions and Discussion}{19}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Non-isotropic data: the role of the condition number}{19}{subsection.8.1}%
+\contentsline {section}{\numberline {8}Extensions and Discussion}{20}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Non-isotropic data: the role of the condition number}{20}{subsection.8.1}%
 \contentsline {subsection}{\numberline {8.2}Connection to the neural tangent kernel}{20}{subsection.8.2}%
 \contentsline {subsection}{\numberline {8.3}Implications for practice}{20}{subsection.8.3}%
 \contentsline {subsection}{\numberline {8.4}Empirical validation on real data}{20}{subsection.8.4}%
@@ -30,7 +30,7 @@
 \contentsline {section}{\numberline {9}Landscape Geometry versus Optimization Dynamics}{24}{section.9}%
 \contentsline {subsection}{\numberline {9.1}Empirical observations}{24}{subsection.9.1}%
 \contentsline {subsection}{\numberline {9.2}Interpretation}{26}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}Ablation: alternative activations}{26}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.3}Ablation: alternative activations}{27}{subsection.9.3}%
 \contentsline {subsection}{\numberline {9.4}Ablation: non-Gaussian data}{27}{subsection.9.4}%
 \contentsline {section}{\numberline {10}Conclusion}{27}{section.10}%
-\contentsline {section}{\numberline {A}Additional Figures}{27}{appendix.A}%
+\contentsline {section}{\numberline {A}Additional Figures}{28}{appendix.A}%
