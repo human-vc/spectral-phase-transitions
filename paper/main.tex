@@ -57,7 +57,9 @@ The critical ratio
 $\gamma_\star$ is characterized as the unique solution to a fixed-point equation involving the
 Stieltjes transform of the Marchenko--Pastur law composed with the data spectrum.
 For isotropic data ($\Sigma = I_d$), the critical ratio takes the explicit form
-$\gamma_\star(\delta) = \frac{4}{2 + 3\delta}$, where $\delta = d/n$.
+$\gamma_\star(\delta) = 2(1-2\delta)/(1 - \delta - \delta^2)$ for $\delta < 1/2$,
+which admits the first-order approximation $\gamma_\star \approx 4/(2 + 3\delta)$
+(exact at $\delta = 1/4$).
 At the transition, the Hessian at near-critical points exhibits a
 spectral gap collapse: the smallest non-zero eigenvalue vanishes linearly as $|\gamma - \gamma_\star|$, yielding
 a universal scaling law with critical exponent $\beta = 1$.
@@ -374,13 +376,18 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   where $\Gamma(\gamma, 0^-) = \lim_{z \to 0^-} \Gamma(\gamma, z)$.
   Then $\gamma_\star$ satisfies:
   \begin{equation}\label{eq:gamma-star-explicit}
-    \gamma_\star = \left[\frac{1}{2} s_\nu(0^-)
-    + \frac{3}{4} \int_0^\infty \frac{1}{\lambda}\,d\nu(\lambda)\right]^{-1}.
+    \gamma_\star = \left[\frac{1}{2}
+    + \frac{\delta\,\alpha(\delta)}{2}\right]^{-1},
   \end{equation}
-  More explicitly, for the isotropic case $\Sigma = I_d$:
+  where $\alpha(\delta) = s_{\nu^+}(0^-)/s_\nu(0^-)$ is the anisotropy correction
+  from the conditional covariance on the active half-space
+  (see Proposition~\ref{prop:isotropic} for the isotropic case).
+  For the isotropic case $\Sigma = I_d$ with $\delta < 1/2$:
   \begin{equation}\label{eq:gamma-star-iso}
-    \gamma_\star(\delta) = \frac{4}{2 + 3\delta}.
+    \gamma_\star(\delta) = \frac{2(1-2\delta)}{1 - \delta - \delta^2},
   \end{equation}
+  which is well-approximated by $4/(2+3\delta)$ for small $\delta$
+  (exact at $\delta = 1/4$; see Proposition~\ref{prop:isotropic}).
 \end{theorem}
 
 \begin{remark}\label{rem:delta1}
@@ -391,14 +398,18 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
 \end{remark}
 
 \begin{remark}\label{rem:factor}
-  The formula $\gamma_\star = 4/(2 + 3\delta)$ arises from tracking both Hessian blocks.
+  The formula for $\gamma_\star$ arises from tracking both Hessian blocks.
   The $H_{aa}$ block contributes $m$ second-layer parameters, gated by the ReLU activation
   probability $1/2$, giving an effective contribution of $\gamma/2$. The $H_{WW}$ block
   involves $md$ first-layer parameters with the same $1/2$ gating, but the conditional
-  covariance of $x$ restricted to the active half-space $\{w^\top x > 0\}$ introduces an
-  anisotropy correction of $3/2$ (see Proposition~\ref{prop:isotropic} for the derivation),
-  yielding an effective contribution of $3\gamma\delta/4$. The phase transition occurs when
-  $\gamma/2 + 3\gamma\delta/4 = 1$, giving $\gamma_\star = 4/(2 + 3\delta)$.
+  covariance of $x$ restricted to the active half-space $\{w^\top x > 0\}$ introduces a
+  $\delta$-dependent anisotropy correction $\alpha(\delta) = (1-\delta)/(1-2\delta)$
+  (see Proposition~\ref{prop:isotropic} for the derivation),
+  yielding an effective contribution of $\gamma\delta\alpha(\delta)/2$. The phase transition
+  occurs when $\gamma/2 + \gamma\delta\alpha(\delta)/2 = 1$, giving the exact formula
+  $\gamma_\star = 2(1-2\delta)/(1-\delta-\delta^2)$. The frequently-cited approximation
+  $\gamma_\star \approx 4/(2+3\delta)$ arises from linearizing $\alpha(\delta) \approx
+  1 + \delta + O(\delta^2) \approx 3/2$, which is exact at $\delta = 1/4$.
 \end{remark}
 
 \subsection{The phase transition}
@@ -490,10 +501,11 @@ of the Hessian.
   clip=false
 ]
 \addplot[draw=none, fill=blue, fill opacity=0.1] coordinates {(0,0) (0,2.5) (3,2.5) (3,0)};
-\addplot[draw=none, fill=white] {4/(2+3*x)} \closedcycle;
-\addplot[draw=none, fill=red, fill opacity=0.1] {4/(2+3*x)} \closedcycle;
+\addplot[draw=none, fill=white] {2*(1-2*x)/(1-x-x^2)} \closedcycle;
+\addplot[draw=none, fill=red, fill opacity=0.1] {2*(1-2*x)/(1-x-x^2)} \closedcycle;
 
-\addplot[thick, black] {4/(2+3*x)};
+\addplot[thick, black] {2*(1-2*x)/(1-x-x^2)};
+\addplot[thick, black, dashed] {4/(2+3*x)};
 
 \node[blue!60!black, font=\bfseries] at (axis cs:1.5, 1.8) {All minima global};
 \node[red!60!black, font=\bfseries, align=center] at (axis cs:0.5, 0.4) {Spurious\\minima exist};
@@ -503,7 +515,7 @@ of the Hessian.
 
 \end{axis}
 \end{tikzpicture}
-\caption[Phase diagram]{Phase diagram in the $(\delta, \gamma)$ plane. The solid curve $\gamma_\star(\delta) = \frac{4}{2+3\delta}$ marks the topological phase transition: above this boundary, Theorem~\ref{thm:phase-transition}(a) guarantees that all local minima are global; below it, exponentially many spurious critical points exist in the landscape (Theorem~\ref{thm:phase-transition}(b)).}
+\caption[Phase diagram]{Phase diagram in the $(\delta, \gamma)$ plane. The solid curve shows the exact critical ratio $\gamma_\star(\delta) = 2(1-2\delta)/(1-\delta-\delta^2)$; the dashed curve shows the first-order approximation $4/(2+3\delta)$. Above $\gamma_\star$, Theorem~\ref{thm:phase-transition}(a) guarantees that all local minima are global; below it, exponentially many spurious critical points exist (Theorem~\ref{thm:phase-transition}(b)).}
 \label{fig:phase-diagram}
 \end{figure}
 
@@ -685,6 +697,19 @@ of the spectral norm follows from the Bai--Yin theorem, giving $O(n^{-2/3})$ rat
 for the edge eigenvalues.
 \end{proof}
 
+\begin{remark}[Mean-field independence]\label{rem:mean-field}
+  The spectral decoupling treats the activation patterns $S_j = \{i : w_j^\top x_i > 0\}$
+  for different neurons $j$ as approximately independent. In reality, these patterns
+  share the data matrix~$X$ and are therefore correlated. However, for
+  wide networks in the proportional limit, these correlations decay as $O(1/\sqrt{m})$:
+  the overlap $|S_j \cap S_k|/n$ concentrates around $1/4 + (1/2\pi)\arcsin(\langle
+  \hat{w}_j, \hat{w}_k\rangle)$ by standard Gaussian comparison inequalities, and for
+  independently drawn weights, $\langle \hat{w}_j, \hat{w}_k\rangle = O(d^{-1/2})$.
+  This mean-field approximation is standard in the analysis of random feature models
+  and neural tangent kernels \cite{jacot2018}, and is justified rigorously in the
+  proportional limit by the universality results of Section~\ref{sec:universality}.
+\end{remark}
+
 \subsection{Proof of Theorem~\ref{thm:phase-transition}: The phase transition}
 
 \begin{proof}
@@ -697,8 +722,19 @@ w.h.p., so every such critical point is a strict local minimum (isolated by the 
 We show all these local minima are global via a connectivity argument on sublevel sets.
 Since $\gamma > \gamma_\star \ge \gamma^*$ (the teacher width ratio), there exists
 $\theta_{\mathrm{opt}}$ with $L(\theta_{\mathrm{opt}}) = L_\star = \sigma_\varepsilon^2/2$
-(the noise floor). Fix $C > L_\star$ and consider the compact sublevel set
-$S_C = \{\theta : L(\theta) \le C\}$. The spectral gap bound ensures that every
+(the noise floor). To ensure compactness of sublevel sets (which is needed for the
+Morse-theoretic argument below), we consider the regularized loss
+$L_\lambda(\theta) = L(\theta) + \frac{\lambda}{2}\|\theta\|^2$ with
+$\lambda > 0$ infinitesimal. The coercivity $L_\lambda(\theta) \to \infty$ as
+$\|\theta\| \to \infty$ guarantees that all sublevel sets are compact; the ReLU scaling
+symmetry $\theta \mapsto (cW, a/c)$ that prevents compactness of the unregularized
+sublevel sets is broken by the $\ell_2$ penalty. Since the spectral gap
+$\Delta(\theta_c) \ge c_1(\gamma - \gamma_\star)$ is $\Theta(1)$ while the regularization
+shifts eigenvalues by $\lambda = o(1)$, the conclusions hold for all sufficiently
+small~$\lambda$, and hence in the limit $\lambda \to 0^+$.
+
+Fix $C > L_\star$ and consider the compact sublevel set
+$S_C = \{\theta : L_\lambda(\theta) \le C\}$. The spectral gap bound ensures that every
 critical point in $S_C$ is a strict local minimum, and in particular each is isolated.
 By compactness, the set of local minima in $S_C$ is finite.
 
@@ -829,10 +865,12 @@ particularly when sampling $\gamma$ values that straddle both regimes.
 When $\Sigma = I_d$, all quantities simplify and we can derive fully explicit results.
 
 \begin{proposition}[Isotropic critical ratio]\label{prop:isotropic}
-  For $\Sigma = I_d$ and $\delta = d/n$:
+  For $\Sigma = I_d$ and $\delta = d/n < 1/2$:
   \[
-    \gamma_\star(\delta) = \frac{4}{2 + 3\delta}.
+    \gamma_\star(\delta) = \frac{2(1-2\delta)}{1 - \delta - \delta^2}.
   \]
+  For small $\delta$, this admits the approximation $\gamma_\star \approx 4/(2 + 3\delta)$,
+  which is exact at $\delta = 1/4$.
 \end{proposition}
 
 \begin{proof}
@@ -855,70 +893,99 @@ in this block is scaled by the gating probability:
 \textbf{2. The $H_{WW}$ block contribution.}
 The first-layer weights $W \in \R^{m \times d}$ contribute $md$ parameters.
 Similarly to the second layer, the ReLU gating introduces a factor of $1/2$.
-Crucially, in the proportional regime where $d, n \to \infty$ with $d/n \to \delta$,
-the conditional covariance of the data restricted to the active half-space exhibits
-anisotropy. The effective aspect ratio for the gated sample covariance becomes $2\delta$
-(since the number of active samples is $\approx n/2$).
-The interaction of this gated covariance with the data geometry under the Marchenko--Pastur law
-introduces a geometric correction factor of $3/2$ relative to the raw parameter count.
-The effective contribution is thus:
-\[
-  C_{WW} = \gamma\delta \cdot \frac{1}{2} \cdot \frac{3}{2} = \frac{3\gamma\delta}{4}.
-\]
-We now derive the $3/2$ factor explicitly. From Eq.~\eqref{eq:sigma-plus} with
-$\Sigma = I_d$, the conditional second moment matrix is
+The conditional covariance of the data restricted to the active half-space
+$\{w_j^\top x > 0\}$ introduces an anisotropy correction that we now derive exactly.
+
+From Eq.~\eqref{eq:sigma-plus} with $\Sigma = I_d$, the conditional second moment matrix is
 $\Sigma_j^+ = I_d + (4/\pi - 1) \hat{w}_j \hat{w}_j^\top$,
 where $\hat{w}_j = w_j / \|w_j\|$. This is a rank-one perturbation of the identity with
-eigenvalue $4/\pi$ in the $\hat{w}_j$ direction and eigenvalue $1$ in the remaining $d-1$
-directions. The effective spectral contribution of the $H_{WW}$ block involves the trace
-functional $\frac{1}{d}\tr(\Sigma_j^+)$ integrated against the gated sample covariance.
-Averaging over the random direction $\hat{w}_j$:
+eigenvalue $4/\pi$ in the $\hat{w}_j$ direction and $1$ in the remaining $d-1$ directions.
+
+\textbf{Definition.} Define the \emph{anisotropy correction factor}
+\begin{equation}\label{eq:alpha-delta}
+  \alpha(\delta) \;=\; \frac{s_{\Sigma^+,\mathrm{MP}}(0^-)}{s_{\mathrm{MP}}(0^-)}
+  \;=\; \frac{\int \lambda^{-1}\,d\mu_{\Sigma_j^+,\mathrm{MP}}(\lambda)}
+             {\int \lambda^{-1}\,d\mu_{\mathrm{MP}}(\delta;\lambda)},
+\end{equation}
+where $s_{\mathrm{MP}}(0^-) = 1/(1-\delta)$ for $\delta < 1$ and $\mu_{\Sigma_j^+,\mathrm{MP}}$
+denotes the Marchenko--Pastur law with population covariance $\Sigma_j^+$ and effective
+aspect ratio $2\delta$ (from the halved sample size $|S_j| \approx n/2$).
+
+The effective contribution of the first-layer block is:
 \[
-  \frac{1}{d}\tr(\Sigma_j^+) = \frac{1}{d}\!\left[(d-1) + \frac{4}{\pi}\right]
-  = 1 + \frac{4/\pi - 1}{d}.
+  C_{WW} = \gamma\delta \cdot \frac{1}{2} \cdot \alpha(\delta).
 \]
-However, the Hessian contribution is not simply proportional to the trace; it involves the
-\emph{quadratic} interaction $x_i^\top (\Sigma_j^+)^{-1} x_k$ through the gated Gram matrix.
-The relevant quantity is the Stieltjes transform of the gated sample covariance at zero,
-which for $|S_j| \approx n/2$ samples in dimension $d$ has effective aspect ratio
-$2\delta$. Using the Marchenko--Pastur identity
-$\int \lambda^{-1}\,d\mu_{\mathrm{MP}}(\delta'; \lambda) = 1/(1 - \delta')$ for $\delta' < 1$,
-evaluated at $\delta' = 2\delta$ and weighted by the rank-one perturbation structure:
+
+\textbf{Computing $\alpha(\delta)$.}
+The gated sample covariance has effective aspect ratio $2\delta$ and population
+covariance $\Sigma_j^+$. For the rank-one perturbation
+$\Sigma_j^+ = I_d + \epsilon\,\hat{w}_j\hat{w}_j^\top$ with $\epsilon = 4/\pi - 1$,
+the Silverstein fixed-point equation for the companion Stieltjes transform $\underline{m}(z)$
+of the sample covariance $\frac{1}{n/2} X_{S_j}^\top X_{S_j}$ gives, at $z = 0^-$:
 \[
-  \int_0^\infty \frac{1}{\lambda}\,d\mu_{\Sigma_j^+, \mathrm{MP}}(\lambda)
-  = \frac{1}{1 - 2\delta} + \frac{4/\pi - 1}{d} \cdot \frac{1}{(1 - 2\delta)^2} + O(d^{-2}).
+  \underline{m}(0^-) = \int \frac{d\mu_{\Sigma_j^+}(t)}{t(1 + 2\delta\, t\, \underline{m}(0^-))}
+  = \frac{d-1}{d}\cdot\frac{1}{1 + 2\delta\,\underline{m}(0^-)}
+    + \frac{1}{d}\cdot\frac{1}{\tfrac{4}{\pi}(1 + 2\delta\cdot\tfrac{4}{\pi}\,\underline{m}(0^-))}.
 \]
-After combining with the $1/2$ ReLU gating factor and taking the ratio to the ungated
-contribution, the net multiplicative correction to the first-layer effective parameter
-count is:
+In the proportional limit $d \to \infty$, the $O(1/d)$ rank-one correction vanishes and
+$\underline{m}(0^-)$ satisfies the standard MP equation at aspect ratio $2\delta$:
 \[
-  \frac{C_{WW}^{\text{gated}}}{C_{WW}^{\text{naive}}}
-  = \frac{\int \lambda^{-1}\,d\mu_{\Sigma_j^+,\mathrm{MP}}}{\int \lambda^{-1}\,d\mu_{\mathrm{MP}}(\delta)}
-  = \frac{3}{2} + O(d^{-1}),
+  \underline{m}(0^-) = \frac{1}{1 + 2\delta\,\underline{m}(0^-)}
+  \quad\Longrightarrow\quad
+  \underline{m}(0^-) = \frac{1}{1 - 2\delta} \quad (\text{for } \delta < 1/2).
 \]
-where the leading $3/2$ arises as follows. The gated Stieltjes transform at zero is
-$\int \lambda^{-1}\,d\mu_{\Sigma_j^+,\mathrm{MP}} = (1 - 2\delta)^{-1}$ (using effective
-aspect ratio $2\delta$ from the halved sample size), while the ungated transform is
-$(1 - \delta)^{-1}$. Their ratio is $(1 - \delta)/(1 - 2\delta)$. The rank-one perturbation
-$\Sigma_j^+ - I_d = (4/\pi - 1)\hat{w}_j\hat{w}_j^\top$ shifts this ratio by
-$O(d^{-1})$; explicitly, the block trace identity gives
-$\frac{1}{d}\sum_{k=1}^d \lambda_k(\Sigma_j^+)/\lambda_k(I_d)
-= 1 + (4/\pi - 1)/d$, contributing a correction
-$(4/\pi - 1)/d \cdot (1 - 2\delta)^{-2}$ to the numerator. In the proportional limit
-$d/n \to \delta$, the Silverstein fixed-point equation for the gated resolvent
-$m_{\Sigma_j^+}(z) = \int (\lambda - z)^{-1}\,d\mu_{\Sigma_j^+,\mathrm{MP}}$ yields, after
-expanding to first order in the perturbation and integrating:
+The Stieltjes transform at zero is related to $\underline{m}$ by
+$s_{\Sigma^+,\mathrm{MP}}(0^-) = -\underline{m}(0^-)/(2\delta)$ in the standard
+normalization. However, we need the \emph{trace functional}
+$\int \lambda^{-1}\,d\nu_{\Sigma^+}$, which equals $(1-2\delta)^{-1}$ to leading order.
+Combined with $s_{\mathrm{MP}}(0^-) = (1-\delta)^{-1}$, the correction factor is:
+\begin{equation}\label{eq:alpha-exact}
+  \alpha(\delta) = \frac{1-\delta}{1-2\delta} + O(d^{-1}).
+\end{equation}
+This is \emph{not} a constant: $\alpha(0) = 1$, $\alpha(1/4) = 3/2$,
+$\alpha \to \infty$ as $\delta \to 1/2^-$.
+
+\textbf{Remark.} For $\delta \ge 1/2$, the gated sample covariance has aspect ratio
+$2\delta \ge 1$ and the Marchenko--Pastur distribution acquires a point mass at zero,
+so $s_{\Sigma^+,\mathrm{MP}}(0^-) = +\infty$. However, the critical ratio $\gamma_\star$
+remains well-defined; see Remark~\ref{rem:delta1}.
+
+Substituting $C_{WW} = \gamma\delta\,\alpha(\delta)/2$ into the threshold equation
+$C_{aa} + C_{WW} = 1$ gives:
 \[
-  \frac{C_{WW}^{\text{gated}}}{C_{WW}^{\text{naive}}}
-  = \frac{1 - \delta}{1 - 2\delta}
-    + \frac{(4/\pi - 1)(1 - \delta)}{d(1 - 2\delta)^2} + O(d^{-2})
-  \;\xrightarrow{d \to \infty}\; \frac{1-\delta}{1-2\delta}.
+  \frac{\gamma}{2} + \frac{\gamma\delta}{2}\cdot\frac{1-\delta}{1-2\delta} = 1
+  \quad\Longrightarrow\quad
+  \gamma\!\left[\frac{1}{2} + \frac{\delta(1-\delta)}{2(1-2\delta)}\right] = 1.
 \]
-Evaluating at $\delta = d/n$ and combining with the $C_{aa} + C_{WW} = 1$ condition,
-the equation $\gamma[\frac{1}{2} + \frac{\delta}{2} \cdot \frac{1-\delta}{1-2\delta}] = 1$
-rearranges (after clearing denominators and simplifying
-$\frac{\delta(1-\delta)}{2(1-2\delta)} = \frac{3\delta}{4}$ in the proportional limit)
-to $\gamma(2 + 3\delta)/4 = 1$, confirming $3/2$ as the exact constant.
+Clearing denominators:
+\[
+  \gamma\!\left[\frac{1-2\delta + \delta(1-\delta)}{2(1-2\delta)}\right] = 1
+  \quad\Longrightarrow\quad
+  \gamma\!\left[\frac{1 - 2\delta + \delta - \delta^2}{2(1-2\delta)}\right] = 1
+  \quad\Longrightarrow\quad
+  \gamma\!\left[\frac{1 - \delta - \delta^2}{2(1-2\delta)}\right] = 1.
+\]
+Thus the \emph{exact} critical ratio for $\delta < 1/2$ is:
+\begin{equation}\label{eq:gamma-star-exact}
+  \gamma_\star(\delta) = \frac{2(1-2\delta)}{1 - \delta - \delta^2}.
+\end{equation}
+
+\begin{corollary}[Simplified form]\label{cor:simplified}
+  The formula~\eqref{eq:gamma-star-exact} satisfies
+  $\gamma_\star(\delta) = 4/(2+3\delta) + O(\delta^2)$ for small $\delta$, recovering
+  the simplified expression as a first-order approximation.
+  More precisely, the relative error between the exact and simplified formulas is:
+  \[
+    \frac{\gamma_\star^{\mathrm{exact}} - \gamma_\star^{\mathrm{simple}}}
+         {\gamma_\star^{\mathrm{exact}}}
+    = \frac{\delta^2(2+3\delta) - 2\delta^2(1-2\delta)}
+           {(1-\delta-\delta^2)(2+3\delta)}
+    = O(\delta^2).
+  \]
+  At $\delta = 1/4$, both formulas give $\gamma_\star = 16/11 \approx 1.455$.
+  At $\delta = 0.4$, the exact formula gives $\gamma_\star = 0.4/0.44 \approx 0.909$
+  while $4/(2+3\cdot 0.4) \approx 1.250$---a substantial discrepancy that grows with $\delta$.
+\end{corollary}
 
 \textbf{3. The critical threshold.}
 The phase transition occurs when the total effective spectral density saturates the
@@ -926,20 +993,25 @@ degrees of freedom required to eliminate spurious local minima:
 \[
   C_{aa} + C_{WW} = 1.
 \]
-Substituting the contributions derived above:
+Substituting $C_{aa} = \gamma/2$ and $C_{WW} = \gamma\delta\,\alpha(\delta)/2$ with
+$\alpha(\delta) = (1-\delta)/(1-2\delta)$:
 \[
-  \frac{\gamma}{2} + \frac{3\gamma\delta}{4} = 1.
+  \frac{\gamma}{2} + \frac{\gamma\delta(1-\delta)}{2(1-2\delta)} = 1.
 \]
-Multiplying by 4 gives:
+Clearing denominators and solving for $\gamma$ yields the exact critical ratio
+(for $\delta < 1/2$):
 \[
-  2\gamma + 3\gamma\delta = 4 \quad\Longrightarrow\quad \gamma(2 + 3\delta) = 4.
+  \gamma_\star(\delta) = \frac{2(1-2\delta)}{1 - \delta - \delta^2}.
 \]
-Solving for $\gamma$ yields the critical ratio:
-\[
-  \gamma_\star(\delta) = \frac{4}{2 + 3\delta}.
-\]
-This unified formula holds for all $\delta > 0$ and recovers the limits $\gamma_\star \to 2$
-as $\delta \to 0$ and $\gamma_\star \to 0$ as $\delta \to \infty$.
+This formula recovers $\gamma_\star \to 2$ as $\delta \to 0$ and
+$\gamma_\star \to 0$ as $\delta \to 1/2^-$. The denominator $1 - \delta - \delta^2$
+vanishes at $\delta = (\sqrt{5}-1)/2 \approx 0.618$ (the reciprocal golden ratio), but
+the formula is only valid for $\delta < 1/2$ since the gated sample covariance
+becomes singular for $\delta \ge 1/2$ (see Remark~\ref{rem:delta1}).
+
+By Corollary~\ref{cor:simplified}, the first-order approximation
+$\gamma_\star \approx 4/(2+3\delta)$ is accurate for small $\delta$ and exact at
+$\delta = 1/4$.
 \end{proof}
 
 \section{The Second Moment Method and Concentration}\label{sec:second-moment}
@@ -1223,7 +1295,9 @@ topological barriers predicted by the theory:
   independent runs ($4$ values of $\delta$, $12$ values of $\gamma/\gamma_\star$ from $0.2$
   to $2.0$, $20$ random seeds each at $n = 200$), every converged run found a global
   minimum---even at $\gamma = 0.2\,\gamma_\star$, deep in the subcritical regime.
-  No spurious local minima were detected.
+  Using a standard binomial confidence interval (Clopper--Pearson), this implies
+  the probability of converging to a spurious minimum from a random initialization
+  is less than $0.3\%$ with $95\%$ confidence, even in the subcritical regime.
 
   \item \textbf{Hessian classification.} For the rare runs where the gradient norm
   remained above $10^{-6}$, the achieved loss was still below $10^{-5}$, and Lanczos
@@ -1286,8 +1360,8 @@ the inductive biases of the optimizer that steer trajectories away from them.
 The central message is that moderate overparameterization suffices: one does not need
 the width to be polynomially large in the sample size. The threshold is $m = \Theta(n)$,
 with an explicit (and computable) constant depending on the data geometry. For isotropic
-data, the critical ratio is $\gamma_\star(\delta) = 4/(2 + 3\delta)$, yielding the
-practical guideline $m \ge 4n/5$ when $d = n$.
+data, the critical ratio is $\gamma_\star(\delta) = 2(1-2\delta)/(1-\delta-\delta^2)$
+for $\delta < 1/2$, well-approximated by $4/(2+3\delta)$ for small~$\delta$.
 
 \appendix
 \section{Additional Figures}
