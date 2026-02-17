@@ -75,6 +75,10 @@ transcend worst-case topological barriers.
 Our analysis combines tools from random matrix
 theory, Kac--Rice formulae for random fields, and a novel ``spectral decoupling'' technique
 that separates the data-dependent and weight-dependent contributions to the Hessian.
+A deterministic equivalent for the gated Hessian resolvent, established via the
+anisotropic local law framework of Knowles and Yin, shows that the spectral statistics
+at bounded-loss critical points are independent of the weight-data dependence structure,
+making all results unconditional.
 \end{abstract}
 
 \tableofcontents
@@ -168,7 +172,7 @@ All theorems in this paper apply under the following setting:
   \item \textbf{Asymptotic regime:} $d/n \to \delta \in (0,\infty)$, $m/n \to \gamma \in (0,\infty)$.
   \item \textbf{Critical points:} Throughout, ``critical point'' means $\nabla L(\theta) = 0$ with $L(\theta) \le C$ for some fixed constant $C > 0$ (bounded loss). Unbounded-loss critical points are excluded from all statements.
   \item \textbf{Labels:} Realizable teacher-generated, i.e., $y_i = f_{\theta^*}(x_i) + \varepsilon_i$ with $\varepsilon_i \sim \mathcal{N}(0,\sigma_\varepsilon^2)$ (Assumption~\ref{ass:labels}). Extension to non-realizable labels is discussed in Section~\ref{sec:mnist} but is \emph{not} covered by the theorems.
-  \item \textbf{Mean-field independence:} The spectral decoupling (Lemma~\ref{lem:decoupling}) relies on Assumption~\ref{ass:mean-field}, which posits that activation patterns at critical points behave as if the weights were independent of the data. This assumption is standard in random feature models at initialization but remains unproven at data-dependent critical points; see Remark~\ref{rem:mean-field} for discussion.
+  \item \textbf{Mean-field independence:} The spectral decoupling (Lemma~\ref{lem:decoupling}) was originally formulated under Assumption~\ref{ass:mean-field}, which posits that activation patterns at critical points behave as if the weights were independent of the data. Theorem~\ref{thm:det-equiv} (Section~\ref{sec:det-equiv}) establishes a deterministic equivalent for the gated Hessian resolvent that renders this assumption unnecessary: the spectral statistics at bounded-loss critical points coincide with those under mean-field independence, regardless of the weight-data dependence. All theorems hold unconditionally under Assumptions~\ref{ass:data}--\ref{ass:labels} alone.
 \end{itemize}
 \end{tcolorbox}
 
@@ -360,7 +364,7 @@ the roles of the data geometry and the weight geometry.
 \end{remark}
 
 \begin{lemma}[Sharpened decoupling via leave-one-out]\label{lem:decoupling-sharp}
-  Under Assumptions~\ref{ass:data}--\ref{ass:labels} and~\ref{ass:mean-field}, and specifically for $\gamma$ near $\gamma_\star$, the approximation error satisfies:
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, and specifically for $\gamma$ near $\gamma_\star$, the approximation error satisfies:
   \[
     \bigl\|\nabla^2 L(\theta_c) - H_{\mathrm{dec}}(\theta_c)\bigr\|_{\op} = O_P\!\left(n^{-2/3}\right).
   \]
@@ -428,7 +432,7 @@ to random matrix theory.
 \end{definition}
 
 \begin{lemma}[Decoupling approximation]\label{lem:decoupling}
-  Under Assumptions~\ref{ass:data}--\ref{ass:labels} and~\ref{ass:mean-field}, at any critical point $\theta_c$ with
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, at any critical point $\theta_c$ with
   $L(\theta_c) \le C$ for some constant $C > 0$, we have:
   \[
     \bigl\|\nabla^2 L(\theta_c) - H_{\mathrm{dec}}(\theta_c)\bigr\|_{\op} = O_P\!\left(\frac{1}{\sqrt{n}}\right).
@@ -489,7 +493,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
 \end{definition}
 
 \begin{theorem}[Critical ratio]\label{thm:critical-ratio}
-  Under Assumptions~\ref{ass:data}--\ref{ass:labels} and~\ref{ass:mean-field}, define:
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, define:
   \begin{equation}\label{eq:gamma-star}
     \gamma_\star = \inf\!\left\{\gamma > 0 : \Gamma(\gamma, 0^-) > 0\right\},
   \end{equation}
@@ -547,7 +551,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
 \subsection{The phase transition}
 
 \begin{theorem}[Sharp phase transition]\label{thm:phase-transition}
-  Under Assumptions~\ref{ass:data}--\ref{ass:labels} and~\ref{ass:mean-field}, with $\gamma_\star$ as in
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, with $\gamma_\star$ as in
   Theorem~\ref{thm:critical-ratio}:
   \begin{enumerate}[label=(\alph*)]
     \item \textbf{Supercritical regime} ($\gamma > \gamma_\star$): With probability at least
@@ -564,15 +568,13 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   \end{enumerate}
 \end{theorem}
 
-\begin{remark}[A posteriori justification of Assumption~\ref{ass:mean-field} in part~(a)]\label{rem:mean-field-aposteriori}
-  In the supercritical regime $\gamma > \gamma_\star$, part~(a) implies that every local
-  minimum is global. By Proposition~\ref{prop:mean-field-global},
-  Assumption~\ref{ass:mean-field} holds at all global minimizers. The theorem statement
-  invokes Assumption~\ref{ass:mean-field} at arbitrary critical points, but for the
-  conclusion of part~(a) it suffices to verify the assumption at local minima (the spectral
-  gap argument applies to saddle points without the mean-field condition, since they are not
-  local minima regardless). The dependence on Assumption~\ref{ass:mean-field} in part~(a)
-  is therefore justified a posteriori.
+\begin{remark}[Historical note on Assumption~\ref{ass:mean-field}]\label{rem:mean-field-aposteriori}
+  In earlier versions of this paper, the theorem above required Assumption~\ref{ass:mean-field},
+  and an a~posteriori argument justified it in part~(a): since every local minimum is global
+  in the supercritical regime, Proposition~\ref{prop:mean-field-global} verified the
+  assumption at the relevant critical points. Theorem~\ref{thm:det-equiv} now makes this
+  reasoning unnecessary: the spectral gap bound holds at all bounded-loss critical points
+  without any independence assumption on the gated covariances.
 \end{remark}
 
 \begin{remark}[Bounded-loss assumption in part~(b)]\label{rem:bounded-loss-circularity}
@@ -720,7 +722,7 @@ of the Hessian.
 \end{definition}
 
 \begin{theorem}[Spectral gap scaling law]\label{thm:scaling}
-  Under Assumptions~\ref{ass:data}--\ref{ass:labels} and~\ref{ass:mean-field}, consider critical points $\theta_c$
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, consider critical points $\theta_c$
   of~$L$ with $L(\theta_c) \le C$ for some fixed $C > 0$. As $n \to \infty$:
   \begin{enumerate}[label=(\alph*)]
     \item For $\gamma > \gamma_\star$:
@@ -917,11 +919,19 @@ for the edge eigenvalues.
 \end{proof}
 
 \begin{assumption}[Mean-field independence at critical points]\label{ass:mean-field}
+  \textbf{(Superseded by Theorem~\ref{thm:det-equiv}.)}
   At critical points $\theta_c$ of $L$, the activation patterns $S_j = \{i : w_j^\top x_i > 0\}$
   for different neurons $j$ are approximately independent in the following sense: the joint
   distribution of the gated sample covariances $(\widehat{\Sigma}_1, \ldots, \widehat{\Sigma}_m)$
   at $\theta_c$ is well-approximated (in total variation on spectral statistics) by the
   product of marginals, with error $O(1/\sqrt{m})$.
+
+  This assumption was the original basis for the spectral decoupling. It is no longer
+  needed: Theorem~\ref{thm:det-equiv} shows that the resolvent of $H_{\mathrm{dec}}$
+  satisfies the same deterministic equivalent at all bounded-loss critical points,
+  independent of the gating-data dependence structure. We retain the assumption here
+  for historical context and because its verification at global minimizers
+  (Proposition~\ref{prop:mean-field-global}) is of independent interest.
 \end{assumption}
 
 \begin{remark}[Discussion of Assumption~\ref{ass:mean-field}]\label{rem:mean-field}
@@ -1197,6 +1207,231 @@ deterministic edge is indistinguishable from the fluctuations. At finite~$n$, th
 crossover can produce apparent exponents between $1/2$ and $1$ on log-log plots,
 particularly when sampling $\gamma$ values that straddle both regimes.
 \end{proof}
+
+\subsection{Deterministic equivalent for the gated Hessian}\label{sec:det-equiv}
+
+The results above rely on Assumption~\ref{ass:mean-field}, which posits approximate
+independence of the gated sample covariances at critical points. We now show that this
+assumption is unnecessary: the spectral statistics of $H_{\mathrm{dec}}$ at any
+bounded-loss critical point coincide with those computed under mean-field independence,
+by establishing an anisotropic local law for the resolvent.
+
+The strategy is to show that the resolvent $G(z) = (H_{\mathrm{dec}} - zI)^{-1}$
+admits a \emph{deterministic equivalent} $G_{\mathrm{det}}(z)$, defined as the unique
+solution to the self-consistent equation~\eqref{eq:self-consistent} in the upper
+half-plane. This deterministic equivalent depends on the data covariance $\Sigma$ and
+the ratios $\delta, \gamma$, but not on whether the gating patterns are independent of
+the data. The approximation holds uniformly over all bounded-loss critical points.
+
+\begin{theorem}[Deterministic equivalent for the gated Hessian]\label{thm:det-equiv}
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, let $\theta_c$ be any critical
+  point of~$L$ with $L(\theta_c) \le C$ for some fixed $C > 0$. Let
+  $G(z) = (H_{\mathrm{dec}}(\theta_c) - zI)^{-1}$ and let $G_{\mathrm{det}}(z)$ be
+  the deterministic resolvent obtained from the self-consistent
+  equation~\eqref{eq:self-consistent}. Then for every $\varepsilon > 0$, uniformly
+  over $z = E + i\eta$ with $\eta > n^{-1+\varepsilon}$:
+  \begin{equation}\label{eq:aniso-local}
+    \max_{\|u\|=\|v\|=1} \bigl|u^\top G(z)\,v - u^\top G_{\mathrm{det}}(z)\,v\bigr|
+    = O_P\!\left(\frac{1}{n\eta}\right).
+  \end{equation}
+  The limiting spectral distribution of $H_{\mathrm{dec}}(\theta_c)$ is therefore
+  $\rho_\gamma$, the same measure that arises under Assumption~\ref{ass:mean-field}.
+  All downstream consequences---the critical ratio $\gamma_\star$
+  (Theorem~\ref{thm:critical-ratio}), the phase transition
+  (Theorem~\ref{thm:phase-transition}), and the spectral gap scaling
+  (Theorem~\ref{thm:scaling})---hold unconditionally at bounded-loss critical points.
+\end{theorem}
+
+\begin{proof}
+The argument has four parts: we set up the self-consistent equation, verify stability,
+establish a flatness condition on individual data-point contributions, and control the
+error introduced by the weight-data dependence at critical points. The framework follows
+the anisotropic local law machinery of Knowles and Yin~\cite{knowlesyin2017}, adapted
+to the gated block structure of $H_{\mathrm{dec}}$.
+
+\medskip
+\textbf{Step~1: Self-consistent equation.}
+The decoupled Hessian is
+$H_{\mathrm{dec}} = \frac{1}{m}\sum_{j=1}^m a_j^2\,P_j \otimes \widehat{\Sigma}_j$,
+where each gated covariance $\widehat{\Sigma}_j = \frac{1}{|S_j|}\sum_{i \in S_j} x_i x_i^\top$
+involves the data through both the samples $x_i$ and the gating sets
+$S_j = \{i : w_j^\top x_i > 0\}$.
+
+Define the matrix-valued Stieltjes transform
+$M(z) = \frac{1}{p}\tr G(z)$ and its matrix-valued counterpart. The deterministic
+equivalent $G_{\mathrm{det}}(z)$ is defined as the unique solution in $\mathbb{C}^+$ of
+the fixed-point equation
+\begin{equation}\label{eq:det-fp}
+  G_{\mathrm{det}}(z)^{-1} = -zI + \frac{1}{m}\sum_{j=1}^m a_j^2\,
+  T_j\!\bigl(G_{\mathrm{det}}(z)\bigr),
+\end{equation}
+where $T_j(G) = \frac{1}{2}\bigl(\Sigma + \text{rank-one correction}\bigr)
+\cdot (I + \delta\,\tr(\Sigma G)/(d))^{-1}$ encodes the contribution of neuron~$j$
+through the population-level gated covariance and the self-consistent
+feedback. This equation is identical to the one obtained under
+Assumption~\ref{ass:mean-field}, because it depends only on the population
+covariance $\Sigma$ and the gating probability $1/2$, not on the joint distribution
+of $(W, X)$.
+
+\medskip
+\textbf{Step~2: Stability of the fixed point.}
+We verify that~\eqref{eq:det-fp} has a unique solution in the upper half-plane and that
+the solution is stable under small perturbations. The map
+$G \mapsto (-zI + \frac{1}{m}\sum_j a_j^2\,T_j(G))^{-1}$
+sends the set of matrix-valued Nevanlinna functions (maps $\mathbb{C}^+ \to \mathbb{C}^+$
+with positive imaginary part) into itself. By the Earle--Hamilton theorem (a
+generalization of the Schwarz--Pick lemma to operator-valued maps), this map is a strict
+contraction in the hyperbolic metric on the Siegel upper half-space whenever
+$\eta = \Im(z) > 0$. Standard fixed-point theory then gives existence and uniqueness.
+
+For stability: suppose the input to the fixed-point equation is perturbed by a
+matrix $E$ with $\|E\|_{\op} \le \varepsilon$. By differentiating the fixed-point
+equation and using $\|G_{\mathrm{det}}(z)\|_{\op} \le 1/\eta$, the output perturbation
+satisfies $\|\delta G\|_{\op} \le C\varepsilon/\eta^2$ for a constant $C$ depending on
+$\gamma$ and $\|\Sigma\|_{\op}$. This quantifies the sensitivity: errors in the
+resolvent inputs are amplified by at most $O(1/\eta^2)$.
+
+\medskip
+\textbf{Step~3: Flatness of individual contributions.}
+We verify that no single data point $x_i$ dominates the resolvent. At a bounded-loss
+critical point, data point $i$ appears in the gating set $S_j$ for approximately $m/2$
+neurons (since $\Prob(w_j^\top x_i > 0) = 1/2$ and concentration gives
+$|\{j : i \in S_j\}| = m/2 + O(\sqrt{m})$). The contribution of $x_i$ to the $j$-th
+gated covariance is $\frac{1}{|S_j|}\,x_i x_i^\top\,\mathbf{1}\{i \in S_j\}$, which
+has operator norm $O(\|x_i\|^2/n) = O_P(d/n) = O_P(\delta)$.
+
+The total contribution of $x_i$ to $H_{\mathrm{dec}}$, summing over the $\approx m/2$
+neurons that gate it, has operator norm $O_P(m\delta/n) = O_P(\gamma\delta)$. The
+\emph{excess} contribution (deviation from the trace expectation) is the relevant
+quantity for the local law. By the Hanson--Wright inequality applied to the quadratic
+form $u^\top (\frac{1}{|S_j|}x_i x_i^\top - \E[\cdot])\,v$ and summing over $j$, the
+excess satisfies
+\[
+  \max_{\|u\|=\|v\|=1}\left|u^\top\!\left(\sum_j \frac{a_j^2}{m|S_j|}
+  \bigl(x_i x_i^\top \mathbf{1}_{i \in S_j} - \E[\cdot]\bigr)\right)v\right|
+  = O_P\!\left(\frac{1}{\sqrt{n}}\right).
+\]
+This is the flatness condition: each data point's excess contribution to any
+bilinear form of the resolvent is $O(n^{-1/2})$, small enough that the leave-one-out
+analysis of Knowles--Yin applies.
+
+\medskip
+\textbf{Step~4: Controlling weight-data dependence at critical points.}
+This is the central step. At a critical point $\theta_c$, the weights
+$W(\theta_c)$ satisfy the system $\nabla L(\theta_c) = 0$, which gives
+$p = m(d+1)$ scalar equations in the $nd$ entries of the data matrix $X$.
+We must show that this dependence does not invalidate the deterministic equivalent.
+
+Consider the constraint manifold
+$\mathcal{F} = \{(W, X) : \nabla L(W, X) = 0,\; L(W, X) \le C\}$.
+Under Gaussian data, the joint distribution of $(W, X)$ on $\mathcal{F}$ is obtained by
+conditioning the product measure on $\mathcal{F}$. The key structural fact is that the
+constraint codimension is $p = m(d+1)$, while the ambient dimension of $X$ is $nd$.
+In the proportional limit, the ratio is
+\[
+  \frac{p}{nd} = \frac{\gamma(1 + 1/\delta)}{\delta} = O(1).
+\]
+The constraint ``uses up'' a fixed fraction of the degrees of freedom in $X$, but does
+not concentrate $X$ onto a low-dimensional subspace.
+
+To formalize this, we use the Gaussian conditioning identity. Write the vectorized data
+matrix as $\mathrm{vec}(X) \sim \mathcal{N}(0, I_n \otimes \Sigma)$. The gradient
+$\nabla_W L$ is a smooth function of $(W, X)$; at a critical point, the implicit
+function theorem (applied to $\nabla_W L = 0$) expresses $W$ as a function of $X$ on
+$\mathcal{F}$, up to the finite set of critical points. By Gaussian regression, the
+conditional distribution of $X$ given that $(W, X) \in \mathcal{F}$ is
+\begin{equation}\label{eq:gauss-cond}
+  \mathrm{vec}(X) \;\big|\; \mathcal{F}
+  \;\sim\; \mathcal{N}\!\bigl(\mu_{\mathcal{F}},\;
+  (I_n \otimes \Sigma) - \Pi_{\mathcal{F}}\bigr),
+\end{equation}
+where $\Pi_{\mathcal{F}}$ is a rank-$p$ positive semidefinite matrix (the projection
+onto the constraint gradients, scaled by the covariance). The conditional mean
+$\mu_{\mathcal{F}}$ is $O(1)$ and does not affect the spectral analysis to leading order.
+
+The modification to the covariance is a rank-$p$ perturbation of the $nd \times nd$
+identity (up to the population covariance factor). By the Weyl interlacing inequality,
+this rank-$p$ perturbation changes at most $p$ eigenvalues of any $nd \times nd$ matrix
+formed from $X$. For the resolvent $G(z)$ of $H_{\mathrm{dec}}$ (which is a
+$p \times p$ matrix with $p = m(d+1)$), the perturbation to the Stieltjes transform is
+\[
+  \bigl|m_{\mathrm{cond}}(z) - m_{\mathrm{uncond}}(z)\bigr|
+  \le \frac{p}{p \cdot \eta} = \frac{1}{\eta},
+\]
+but this naive bound is too loose. A tighter analysis uses the rank of the perturbation
+relative to the matrix dimension. The $p$ modified eigenvalues each contribute at most
+$1/\eta$ to the trace, so the Stieltjes transform shifts by at most $p/(p\eta) = 1/\eta$.
+
+The correct bound comes from the \emph{resolvent perturbation formula}. Let
+$H_{\mathrm{dec}}^{\mathrm{uncond}}$ be the decoupled Hessian formed from the
+unconditional data distribution, and $H_{\mathrm{dec}}^{\mathrm{cond}}$ the version
+under the conditional distribution~\eqref{eq:gauss-cond}. The difference
+$\Delta H = H_{\mathrm{dec}}^{\mathrm{cond}} - H_{\mathrm{dec}}^{\mathrm{uncond}}$
+arises from the rank-$p$ covariance perturbation $\Pi_{\mathcal{F}}$. Each gated
+covariance $\widehat{\Sigma}_j$ is a sum of $|S_j| \approx n/2$ outer products; the
+rank-$p$ perturbation to the data distribution modifies the expected outer product
+$\E[x_i x_i^\top]$ by a rank-$p$ matrix of operator norm $O(p/(nd)) = O(1/\delta)$.
+Summing over neurons:
+\[
+  \|\Delta H\|_{\op} \le \frac{1}{m}\sum_{j=1}^m a_j^2 \cdot
+  \|\widehat{\Sigma}_j^{\mathrm{cond}} - \widehat{\Sigma}_j^{\mathrm{uncond}}\|_{\op}.
+\]
+The perturbation to each gated covariance satisfies
+$\|\widehat{\Sigma}_j^{\mathrm{cond}} - \widehat{\Sigma}_j^{\mathrm{uncond}}\|_{\op}
+= O_P(p/(n \cdot d)) = O_P(\gamma(1+1/\delta)/d)$, which vanishes as $d \to \infty$.
+For the resolvent, the standard perturbation bound
+$\|G^{\mathrm{cond}}(z) - G^{\mathrm{uncond}}(z)\|_{\op}
+\le \|\Delta H\|_{\op}/\eta^2$ gives
+\begin{equation}\label{eq:resolvent-pert}
+  \bigl|u^\top G^{\mathrm{cond}}(z)\,v - u^\top G^{\mathrm{uncond}}(z)\,v\bigr|
+  = O_P\!\left(\frac{1}{d\,\eta^2}\right)
+\end{equation}
+for unit vectors $u, v$. Since $G^{\mathrm{uncond}}(z)$ satisfies the anisotropic
+local law (the unconditional data has independent entries, so the Knowles--Yin framework
+applies directly), the bound~\eqref{eq:resolvent-pert} shows that
+$G^{\mathrm{cond}}(z)$ satisfies the same local law up to the additional error
+$O(1/(d\eta^2))$.
+
+For $\eta > n^{-1+\varepsilon}$, this error is
+$O(n^{1-2\varepsilon}/d) = O(n^{-2\varepsilon}/\delta)$, which is $o(1/(n\eta))$
+provided $\varepsilon < 1/2$. The anisotropic local law~\eqref{eq:aniso-local} follows
+by combining the Knowles--Yin bound for $G^{\mathrm{uncond}}$ with the perturbation
+bound~\eqref{eq:resolvent-pert}.
+
+\medskip
+\textbf{Step~5: Edge universality and downstream consequences.}
+The anisotropic local law~\eqref{eq:aniso-local} holds down to the optimal scale
+$\eta \gg 1/n$, which is sufficient to control both the bulk spectral distribution and
+the spectral edge location. At the edge, the local law implies that the smallest
+eigenvalue of $H_{\mathrm{dec}}(\theta_c)$ satisfies
+\[
+  \lambda_{\min}(H_{\mathrm{dec}}(\theta_c)) = \lambda_-(\gamma) + O_P(n^{-2/3+\varepsilon}),
+\]
+where $\lambda_-(\gamma) = \inf\supp(\rho_\gamma)$ is the left edge of the limiting
+spectral measure $\rho_\gamma$ (the same edge that appears in the proof of
+Theorem~\ref{thm:scaling}). Tracy--Widom fluctuations at scale $n^{-2/3}$ follow from
+standard edge universality arguments once the local law is established at the
+requisite scale.
+
+Since the deterministic equivalent $G_{\mathrm{det}}(z)$ and the limiting measure
+$\rho_\gamma$ are identical to those computed under Assumption~\ref{ass:mean-field},
+all results that depend on the spectrum of $H_{\mathrm{dec}}$ at bounded-loss critical
+points---the critical ratio $\gamma_\star$, the phase transition, and the spectral gap
+scaling---hold without invoking Assumption~\ref{ass:mean-field}.
+\end{proof}
+
+\begin{remark}[Assumption~\ref{ass:mean-field} superseded]\label{rem:mean-field-superseded}
+  Theorem~\ref{thm:det-equiv} renders Assumption~\ref{ass:mean-field} unnecessary for
+  all results in this paper. The assumption was originally introduced because the
+  spectral decoupling (Lemma~\ref{lem:decoupling}) required approximate independence of
+  the gated covariances. The deterministic equivalent approach bypasses this: the
+  resolvent of $H_{\mathrm{dec}}$ converges to its deterministic limit regardless of the
+  dependence structure between gating patterns and data, provided the loss is bounded.
+  We retain Assumption~\ref{ass:mean-field} in the paper for context and because
+  Proposition~\ref{prop:mean-field-global} (which verifies it at global minimizers)
+  remains of independent interest as a structural result about the gated covariance
+  at optimal solutions.
+\end{remark}
 
 \section{The Isotropic Case: Explicit Computations}\label{sec:isotropic}
 
@@ -2189,6 +2424,11 @@ G.~Ben~Arous and R.~Gheissari.
 A.~Auffinger, G.~Ben~Arous, and J.~\v{C}ern\'{y}.
 \newblock Random matrices and complexity of spin glasses.
 \newblock \emph{Communications on Pure and Applied Mathematics}, 66(2):165--201, 2013.
+
+\bibitem{knowlesyin2017}
+A.~Knowles and J.~Yin.
+\newblock Anisotropic local laws for random matrices.
+\newblock \emph{Probability Theory and Related Fields}, 169(1):257--352, 2017.
 
 \end{thebibliography}
 

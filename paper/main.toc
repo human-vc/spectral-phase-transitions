@@ -1,5 +1,5 @@
 \contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Main contributions}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.1}Main contributions}{3}{subsection.1.1}%
 \contentsline {subsection}{\numberline {1.2}Related work}{4}{subsection.1.2}%
 \contentsline {paragraph}{From spin glasses to sharp thresholds.}{4}{section*.2}%
 \contentsline {paragraph}{The polynomial-width barrier.}{4}{section*.3}%
@@ -9,7 +9,7 @@
 \contentsline {subsection}{\numberline {2.2}Data model}{5}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}The Hessian structure}{5}{subsection.2.3}%
 \contentsline {subsection}{\numberline {2.4}Notation}{5}{subsection.2.4}%
-\contentsline {section}{\numberline {3}The Spectral Decoupling}{5}{section.3}%
+\contentsline {section}{\numberline {3}The Spectral Decoupling}{6}{section.3}%
 \contentsline {section}{\numberline {4}Main Results}{9}{section.4}%
 \contentsline {subsection}{\numberline {4.1}The critical ratio}{9}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}The phase transition}{10}{subsection.4.2}%
@@ -18,19 +18,20 @@
 \contentsline {subsection}{\numberline {5.1}Proof of Theorem~\ref {thm:critical-ratio}: Identifying the critical ratio}{13}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}Proof of Theorem~\ref {thm:phase-transition}: The phase transition}{17}{subsection.5.2}%
 \contentsline {subsection}{\numberline {5.3}Proof of Theorem~\ref {thm:scaling}: Linear spectral gap scaling}{18}{subsection.5.3}%
-\contentsline {section}{\numberline {6}The Isotropic Case: Explicit Computations}{19}{section.6}%
-\contentsline {section}{\numberline {7}The Second Moment Method and Concentration}{21}{section.7}%
-\contentsline {section}{\numberline {8}Extensions and Discussion}{24}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Non-isotropic data: the role of the condition number}{24}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Connection to the neural tangent kernel}{24}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Implications for practice}{25}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}Empirical validation on real data}{25}{subsection.8.4}%
-\contentsline {subsection}{\numberline {8.5}General activation functions}{27}{subsection.8.5}%
-\contentsline {subsection}{\numberline {8.6}Universality beyond Gaussian data}{27}{subsection.8.6}%
-\contentsline {section}{\numberline {9}Landscape Geometry versus Optimization Dynamics}{29}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Empirical observations}{30}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Interpretation}{30}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}Ablation: alternative activations}{31}{subsection.9.3}%
-\contentsline {subsection}{\numberline {9.4}Ablation: non-Gaussian data}{31}{subsection.9.4}%
-\contentsline {section}{\numberline {10}Conclusion}{32}{section.10}%
-\contentsline {section}{\numberline {A}Additional Figures}{32}{appendix.A}%
+\contentsline {subsection}{\numberline {5.4}Deterministic equivalent for the gated Hessian}{19}{subsection.5.4}%
+\contentsline {section}{\numberline {6}The Isotropic Case: Explicit Computations}{22}{section.6}%
+\contentsline {section}{\numberline {7}The Second Moment Method and Concentration}{24}{section.7}%
+\contentsline {section}{\numberline {8}Extensions and Discussion}{27}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Non-isotropic data: the role of the condition number}{27}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Connection to the neural tangent kernel}{27}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Implications for practice}{28}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Empirical validation on real data}{28}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}General activation functions}{30}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}Universality beyond Gaussian data}{30}{subsection.8.6}%
+\contentsline {section}{\numberline {9}Landscape Geometry versus Optimization Dynamics}{32}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Empirical observations}{33}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Interpretation}{33}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Ablation: alternative activations}{34}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.4}Ablation: non-Gaussian data}{34}{subsection.9.4}%
+\contentsline {section}{\numberline {10}Conclusion}{35}{section.10}%
+\contentsline {section}{\numberline {A}Additional Figures}{35}{appendix.A}%
