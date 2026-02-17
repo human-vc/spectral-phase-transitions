@@ -1010,13 +1010,12 @@ conjecture.
 
 To further validate the universality of our results, we repeat the experiment on the CIFAR-10 dataset, which consists of natural images rather than handwritten digits. Using the same preprocessing pipeline (subsampling $n=500$, PCA to $d$ dimensions, whitening) and training protocol, we observe a similar phase transition structure (Figure~\ref{fig:cifar10}).
 
-% CIFAR-10 figure -- uncomment when experiment completes
-%\begin{figure}[htbp]
-%\centering
-%\includegraphics[width=0.75\textwidth]{figures/fig8_cifar10_phase_boundary.pdf}
-%\caption[CIFAR-10 phase boundary]{Phase boundary on whitened CIFAR-10 data ($n = 200$). The theoretical boundary $\gamma^\star(\delta)$ (dashed line) again predicts the transition between the high-loss and low-loss regimes, demonstrating that the spectral phase transition is robust to the data distribution provided the covariance structure is controlled.}
-%\label{fig:cifar10}
-%\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/fig8_cifar10_phase_boundary.pdf}
+\caption[CIFAR-10 phase boundary]{Phase boundary on whitened CIFAR-10 data ($n = 200$). The theoretical boundary $\gamma^\star(\delta)$ (dashed line) again predicts the transition between the high-loss and low-loss regimes, demonstrating that the spectral phase transition is robust to the data distribution provided the covariance structure is controlled.}
+\label{fig:cifar10}
+\end{figure}
 
 \subsection{General activation functions}\label{sec:general-activations}
 
