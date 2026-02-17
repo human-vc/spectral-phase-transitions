@@ -1,0 +1,27 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Main contributions}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Related work}{2}{subsection.1.2}%
+\contentsline {paragraph}{Loss landscape of neural networks.}{2}{section*.2}%
+\contentsline {paragraph}{Overparameterization and global convergence.}{2}{section*.3}%
+\contentsline {paragraph}{Random matrix theory in ML.}{3}{section*.4}%
+\contentsline {section}{\numberline {2}Problem Setup}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Network architecture and loss}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Data model}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}The Hessian structure}{3}{subsection.2.3}%
+\contentsline {section}{\numberline {3}The Spectral Decoupling}{4}{section.3}%
+\contentsline {section}{\numberline {4}Main Results}{5}{section.4}%
+\contentsline {subsection}{\numberline {4.1}The critical ratio}{5}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}The phase transition}{6}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Spectral gap scaling}{6}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Proofs}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Proof of Theorem~\ref {thm:critical-ratio}: Identifying the critical ratio}{7}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Proof of Theorem~\ref {thm:phase-transition}: The phase transition}{8}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Proof of Theorem~\ref {thm:scaling}: Square-root scaling}{9}{subsection.5.3}%
+\contentsline {section}{\numberline {6}The Isotropic Case: Explicit Computations}{10}{section.6}%
+\contentsline {section}{\numberline {7}The Second Moment Method and Concentration}{11}{section.7}%
+\contentsline {section}{\numberline {8}Extensions and Discussion}{12}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Non-isotropic data: the role of the condition number}{12}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Connection to the neural tangent kernel}{12}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Implications for practice}{12}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Open questions}{12}{subsection.8.4}%
+\contentsline {section}{\numberline {9}Conclusion}{13}{section.9}%
