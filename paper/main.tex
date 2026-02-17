@@ -409,12 +409,12 @@ of the Hessian.
 \end{theorem}
 
 % --- Figure 1: Spurious local minima phase transition ---
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
 \begin{semilogyaxis}[
-  width=0.75\textwidth,
-  height=0.5\textwidth,
+  width=0.65\textwidth,
+  height=0.42\textwidth,
   xlabel={Width-to-sample ratio $\gamma = m/n$},
   ylabel={Expected number of spurious local minima},
   title={Phase Transition in Spurious Local Minima ($\delta = 1$, $\Sigma = I$)},
@@ -425,19 +425,15 @@ of the Hessian.
   legend pos=north east,
   legend style={font=\small, draw=none, fill=none},
   every axis title/.style={font=\normalsize},
+  scale only axis,
 ]
-% n=50
 \addplot[blue, thick, smooth, domain=0.01:0.75] {exp(50 * 0.3 * max(0, 4/5 - x)^2)};
 \addlegendentry{$n = 50$}
-% n=100
 \addplot[red, thick, smooth, domain=0.01:0.78] {exp(100 * 0.3 * max(0, 4/5 - x)^2)};
 \addlegendentry{$n = 100$}
-% n=200
 \addplot[green!60!black, thick, smooth, domain=0.01:0.79] {exp(200 * 0.3 * max(0, 4/5 - x)^2)};
 \addlegendentry{$n = 200$}
-% Vertical line at gamma*
 \draw[dashed, gray] (axis cs:0.8,1) -- (axis cs:0.8,1e9);
-% Annotation
 \node[anchor=west, font=\small] at (axis cs:0.85,5) {No spurious minima};
 \draw[->, thin] (axis cs:0.85,5) -- (axis cs:0.82,3);
 \end{semilogyaxis}
@@ -446,13 +442,12 @@ of the Hessian.
 \label{fig:phase-transition}
 \end{figure}
 
-% --- Figure 2: Spectral gap scaling law ---
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-  width=0.75\textwidth,
-  height=0.55\textwidth,
+  width=0.65\textwidth,
+  height=0.45\textwidth,
   xlabel={Width-to-sample ratio $\gamma = m/n$},
   ylabel={Spectral gap $\Delta$ at critical points},
   title={Spectral Gap Scaling Law ($\beta = 1/2$ Universality)},
@@ -462,29 +457,23 @@ of the Hessian.
   grid style={gray!20},
   legend style={font=\small, draw=none, fill=none, at={(0.98,0.02)}, anchor=south east},
   every axis title/.style={font=\normalsize},
+  scale only axis,
 ]
-% Dashed zero line
 \draw[dashed, gray!60] (axis cs:0,0) -- (axis cs:1.5,0);
-% Spurious saddle (red) - subcritical
 \addplot[red, thick, smooth, domain=0.01:0.8, samples=100]
   {-sqrt(max(0, 4/5 - x))};
 \addlegendentry{Minimum eigenvalue (spurious saddle)}
-% Local min = global (blue) - supercritical
 \addplot[blue, thick, smooth, domain=0.8:1.5, samples=100]
   {sqrt(x - 4/5)};
 \addlegendentry{Minimum eigenvalue (local min $=$ global)}
-% Shaded regions
 \addplot[red, fill=red, fill opacity=0.08, draw=none, domain=0.01:0.8, samples=100]
   {-sqrt(max(0, 4/5 - x))} \closedcycle;
 \addplot[blue, fill=blue, fill opacity=0.08, draw=none, domain=0.8:1.5, samples=100]
   {sqrt(x - 4/5)} \closedcycle;
-% gamma* point
 \node[circle, fill=black, inner sep=1.5pt] at (axis cs:0.8,0) {};
 \node[above right, font=\small] at (axis cs:0.8,0.05) {$\gamma^\star$};
-% Annotations
 \node[blue, font=\small] at (axis cs:1.15,0.85) {All minima global};
 \node[red, font=\small] at (axis cs:0.15,-0.85) {minima exist};
-% Scaling arrow
 \draw[<->, thin] (axis cs:0.4,-0.632) -- (axis cs:0.4,0);
 \node[font=\footnotesize, anchor=east] at (axis cs:0.38,-0.3) {$\sim\!\sqrt{\gamma^\star - \gamma}$};
 \end{axis}
@@ -526,11 +515,11 @@ For $x \sim \mathcal{N}(0, \Sigma)$ conditioned on $w^\top x > 0$, the condition
 \end{equation}
 Thus $\Cov[x \mid w^\top x > 0]$ is a rank-one perturbation of $\Sigma$, scaled by the factor
 $1 - 2/\pi \approx 0.36$. The conditional covariance matrix $\Sigma_j^+$ is:
-\begin{equation}\label{eq:sigma-plus}
-  \Sigma_j^+ = \E[xx^\top \mid w_j^\top x > 0]
-    = \Cov[x \mid w_j^\top x > 0] + \E[x \mid w_j^\top x > 0]\,\E[x \mid w_j^\top x > 0]^\top
-    = \Sigma - \left(1 - \frac{4}{\pi}\right) \frac{\Sigma w_j\, w_j^\top \Sigma}{w_j^\top \Sigma w_j}.
-\end{equation}
+\begin{align}\label{eq:sigma-plus}
+  \Sigma_j^+ &= \E[xx^\top \mid w_j^\top x > 0] \notag\\
+    &= \Cov[x \mid w_j^\top x > 0] + \E[x \mid w_j^\top x > 0]\,\E[x \mid w_j^\top x > 0]^\top \notag\\
+    &= \Sigma - \left(1 - \frac{4}{\pi}\right) \frac{\Sigma w_j\, w_j^\top \Sigma}{w_j^\top \Sigma w_j}.
+\end{align}
 
 When we average over $m$ neurons with i.i.d.\ random weights $w_j$ (at initialization;
 we track the critical point structure), the averaged gated covariance concentrates:
@@ -643,13 +632,15 @@ concentration and the Kac--Rice counting argument.
 
 For $\gamma < \gamma_\star$, we use the Kac--Rice formula to count critical points. The
 expected number of local minima with loss in the interval $[L_\star + \epsilon, C]$ is:
-\begin{equation}\label{eq:kac-rice}
-  \E\!\left[\#\{\theta_c : \nabla L(\theta_c) = 0,\; \nabla^2 L(\theta_c) \succeq 0,\;
-    L(\theta_c) \in [L_\star + \epsilon, C]\}\right]
-  = \int \E\!\left[\bigl|\det \nabla^2 L(\theta)\bigr| \cdot
-    \mathbf{1}_{\nabla^2 L(\theta) \succeq 0} \;\Big|\; \nabla L(\theta) = 0\right]
-    \cdot p_{\nabla L}(0;\theta)\,d\theta,
-\end{equation}
+\begin{multline}\label{eq:kac-rice}
+  \E\!\bigl[\#\{\theta_c : \nabla L(\theta_c) = 0,\;
+    \nabla^2 L(\theta_c) \succeq 0,\;
+    L(\theta_c) \in [L_\star + \epsilon, C]\}\bigr] \\
+  = \int \E\!\Bigl[\bigl|\det \nabla^2 L(\theta)\bigr|
+    \cdot \mathbf{1}_{\nabla^2 L(\theta) \succeq 0}
+    \;\Big|\; \nabla L(\theta) = 0\Bigr]\,
+    p_{\nabla L}(0;\theta)\,d\theta,
+\end{multline}
 where $p_{\nabla L}(0;\theta)$ is the density of $\nabla L(\theta)$ at zero.
 
 By the spectral analysis, when $\gamma < \gamma_\star$, the limiting spectral measure
@@ -832,12 +823,12 @@ self-consistent equation for all $\delta > 0$.
 \end{proof}
 
 % --- Figure 3: Critical width ratio for isotropic data ---
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-  width=0.75\textwidth,
-  height=0.5\textwidth,
+  width=0.65\textwidth,
+  height=0.42\textwidth,
   xlabel={Data dimension ratio $\delta = d/n$},
   ylabel={Critical width ratio $\gamma^\star$},
   title={Critical Width Ratio for Isotropic Data ($\Sigma = I$)},
@@ -847,6 +838,7 @@ self-consistent equation for all $\delta > 0$.
   grid style={gray!20},
   legend style={font=\small, draw=none, fill=none, at={(0.97,0.97)}, anchor=north east},
   every axis title/.style={font=\normalsize},
+  scale only axis,
 ]
 % gamma*(delta) = 4/(2+3delta)
 \addplot[blue, thick, smooth, domain=0.01:3, samples=200]

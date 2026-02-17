@@ -13,8 +13,8 @@
 \contentsline {subsection}{\numberline {4.1}The critical ratio}{5}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}The phase transition}{6}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}Spectral gap scaling}{6}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Proofs}{7}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Proof of Theorem~\ref {thm:critical-ratio}: Identifying the critical ratio}{7}{subsection.5.1}%
+\contentsline {section}{\numberline {5}Proofs}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Proof of Theorem~\ref {thm:critical-ratio}: Identifying the critical ratio}{8}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}Proof of Theorem~\ref {thm:phase-transition}: The phase transition}{9}{subsection.5.2}%
 \contentsline {subsection}{\numberline {5.3}Proof of Theorem~\ref {thm:scaling}: Square-root scaling}{10}{subsection.5.3}%
 \contentsline {section}{\numberline {6}The Isotropic Case: Explicit Computations}{11}{section.6}%
