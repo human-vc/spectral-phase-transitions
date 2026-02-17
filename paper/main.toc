@@ -18,14 +18,14 @@
 \contentsline {subsection}{\numberline {5.2}Proof of Theorem~\ref {thm:phase-transition}: The phase transition}{11}{subsection.5.2}%
 \contentsline {subsection}{\numberline {5.3}Proof of Theorem~\ref {thm:scaling}: Square-root scaling}{11}{subsection.5.3}%
 \contentsline {section}{\numberline {6}The Isotropic Case: Explicit Computations}{12}{section.6}%
-\contentsline {section}{\numberline {7}The Second Moment Method and Concentration}{13}{section.7}%
+\contentsline {section}{\numberline {7}The Second Moment Method and Concentration}{14}{section.7}%
 \contentsline {section}{\numberline {8}Extensions and Discussion}{14}{section.8}%
 \contentsline {subsection}{\numberline {8.1}Non-isotropic data: the role of the condition number}{14}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Connection to the neural tangent kernel}{14}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Implications for practice}{14}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.2}Connection to the neural tangent kernel}{15}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Implications for practice}{15}{subsection.8.3}%
 \contentsline {subsection}{\numberline {8.4}Empirical validation on real data}{15}{subsection.8.4}%
-\contentsline {subsection}{\numberline {8.5}General activation functions}{15}{subsection.8.5}%
-\contentsline {subsection}{\numberline {8.6}Universality beyond Gaussian data}{16}{subsection.8.6}%
+\contentsline {subsection}{\numberline {8.5}General activation functions}{16}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}Universality beyond Gaussian data}{17}{subsection.8.6}%
 \contentsline {subsection}{\numberline {8.7}Open questions}{17}{subsection.8.7}%
 \contentsline {section}{\numberline {9}Conclusion}{17}{section.9}%
-\contentsline {section}{\numberline {A}Additional Figures}{17}{appendix.A}%
+\contentsline {section}{\numberline {A}Additional Figures}{18}{appendix.A}%
