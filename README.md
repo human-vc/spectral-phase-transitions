@@ -1,6 +1,6 @@
 # Spectral Phase Transitions in the Loss Landscape of Finite-Width Neural Networks
 
-**Research Note - December-February 2026**
+**December-February 2026**
 
 ## Summary
 
