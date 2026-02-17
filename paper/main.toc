@@ -2,7 +2,7 @@
 \contentsline {subsection}{\numberline {1.1}Main contributions}{2}{subsection.1.1}%
 \contentsline {subsection}{\numberline {1.2}Related work}{3}{subsection.1.2}%
 \contentsline {paragraph}{From spin glasses to sharp thresholds.}{3}{section*.2}%
-\contentsline {paragraph}{The polynomial-width barrier.}{4}{section*.3}%
+\contentsline {paragraph}{The polynomial-width barrier.}{3}{section*.3}%
 \contentsline {paragraph}{Random matrix tools for neural networks.}{4}{section*.4}%
 \contentsline {section}{\numberline {2}Problem Setup}{5}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Network architecture and loss}{5}{subsection.2.1}%

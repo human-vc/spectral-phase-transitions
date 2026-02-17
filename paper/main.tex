@@ -78,13 +78,13 @@ that separates the data-dependent and weight-dependent contributions to the Hess
 \section{Introduction}
 
 The loss landscape of a neural network is a high-dimensional, non-convex surface
-riddled with saddle points, plateaus, and---potentially---spurious local minima that
+riddled with saddle points, plateaus, and potentially spurious local minima that
 trap gradient-based optimizers. Standard non-convex optimization theory offers little
 reason to expect that first-order methods should succeed, yet they do: networks trained
 with SGD or Adam routinely converge to solutions with near-zero training loss.
 Two distinct questions underlie this puzzle: \emph{what is the geometry of the loss
-surface itself}, and \emph{why do optimizers navigate it so effectively}? This paper
-gives a sharp answer to the first question and connects it to the second through
+surface itself}, and \emph{how optimizers navigate it so effectively}. This paper
+gives a sharp answer to the first and connects it to the second through
 large-scale experiments.
 
 Prior work has approached the landscape question from several angles
@@ -93,7 +93,7 @@ connected neural loss surfaces to spin-glass Hamiltonians; Kawaguchi showed that
 networks have no spurious minima; Safran and Shamir exhibited spurious minima in
 underparameterized ReLU networks. In the overparameterized regime, Du et al.\
 \cite{du2019}, Allen-Zhu et al.\ \cite{allenzhu2019}, and the NTK framework
-\cite{jacot2018} established global convergence guarantees---but only when the width $m$
+\cite{jacot2018} established global convergence guarantees, but only when the width $m$
 scales polynomially in~$n$ (often $m = \Omega(n^6)$), far exceeding practical network
 sizes. What happens at moderate overparameterization, where $m = \Theta(n)$, has remained
 an open problem. We resolve it for two-layer ReLU networks.
@@ -173,12 +173,12 @@ Early theoretical work drew on statistical physics to argue that neural loss sur
 resemble spin-glass energy landscapes, where most local minima cluster near the global
 minimum \cite{choromanska2015}. This qualitative picture was sharpened in two directions.
 On one hand, Kawaguchi \cite{kawaguchi2016} proved that \emph{linear} networks have no
-spurious minima at all---a clean structural result, but one that does not survive the
+spurious minima at all, a clean structural result that does not survive the
 introduction of nonlinear activations. On the other hand, Safran and Shamir
 \cite{safran2018} showed that two-layer ReLU networks \emph{do} harbor spurious minima
 when underparameterized, while Venturi et al.\ \cite{venturi2019} gave sufficient
-conditions for their absence. The gap between these results---exactly how much
-overparameterization is needed, and how the answer depends on the data---is the question
+conditions for their absence. The gap between these results (exactly how much
+overparameterization is needed, and how the answer depends on the data) is the question
 we resolve.
 
 \paragraph{The polynomial-width barrier.}
@@ -188,17 +188,17 @@ polynomially in the sample size: $m = \Omega(n^2)$ \cite{du2019},
 $\Omega(n^4)$ \cite{allenzhu2019}, or worse \cite{zou2020}. These analyses typically
 proceed through the Neural Tangent Kernel (NTK) regime \cite{jacot2018}, where the
 network is effectively linearized around initialization. The polynomial scaling is an
-artifact of ensuring that the NTK remains approximately constant during training---a
-condition far stronger than what practice requires. Our analysis operates in the
+artifact of ensuring that the NTK remains approximately constant during training,
+a condition far stronger than what practice requires. Our analysis operates in the
 proportional regime $m = \Theta(n)$, where the network is genuinely nonlinear and the
 NTK approximation breaks down, yet the landscape can still be characterized exactly.
 
 \paragraph{Random matrix tools for neural networks.}
-The technical machinery we build on---Marchenko--Pastur theory, Stieltjes transforms,
-free probability---has been applied to neural networks primarily through the lens of
+The technical machinery we build on (Marchenko--Pastur theory, Stieltjes transforms,
+free probability) has been applied to neural networks primarily through the lens of
 the Jacobian and kernel matrices \cite{pennington2017,louart2018}. These works
 characterize the \emph{conditioning} of the optimization problem (eigenvalues of the
-Gram matrix or the NTK) rather than the \emph{topology} of the loss surface (existence
+Gram matrix or the NTK), not the \emph{topology} of the loss surface (existence
 and type of critical points). Our spectral decoupling bridges this gap by applying
 random matrix theory directly to the Hessian at critical points, decomposing it into
 blocks whose spectra are governed by the data covariance interacting with the
@@ -460,7 +460,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   regularized continuation of the Marchenko--Pastur analysis; the approximation
   $4/(2+3\delta)$ remains well-behaved and provides a useful guideline.)
   This means that $m \ge \lceil 4n/5 \rceil$ hidden neurons approximately suffice
-  to eliminate all spurious local minima---a dramatic improvement over prior
+  to eliminate all spurious local minima, a dramatic improvement over prior
   results requiring $m = \mathrm{poly}(n)$.
 \end{remark}
 
@@ -511,8 +511,8 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   surface: it counts the number and type of critical points as a function of $\gamma$.
   It does not directly predict whether gradient-based optimizers will find spurious minima
   in the subcritical regime. Indeed, our numerical experiments
-  (Section~\ref{sec:landscape-dynamics}) show that standard optimizers---and even
-  gradient-norm minimization aimed at finding \emph{any} critical point---consistently
+  (Section~\ref{sec:landscape-dynamics}) show that standard optimizers, and even
+  gradient-norm minimization aimed at finding \emph{any} critical point, consistently
   converge to global minima well below $\gamma_\star$. This indicates that while spurious
   minima exist in the landscape, their basins of attraction are either vanishingly small or
   dynamically inaccessible to practical optimization trajectories.
@@ -780,7 +780,7 @@ corresponding to $\theta_c$, changing the topology of the sublevel set. But the
 negative gradient flow $\dot\theta = -\nabla L(\theta)$ retracts $S_{\ell+\varepsilon}$
 onto $S_{\ell-\varepsilon} \cup B(\theta_c)$, and since $\theta_{\mathrm{opt}} \in S_{\ell-\varepsilon}$
 already realizes the global minimum, the basin $B(\theta_c)$ is contractible and does not
-change the homotopy type---a contradiction with $\theta_c$ being a strict local minimum
+change the homotopy type, contradicting $\theta_c$ being a strict local minimum
 at a level strictly above $L_\star$.
 
 Therefore every local minimum in $S_C$ satisfies $L(\theta_c) = L_\star$, i.e., is global.
@@ -1015,7 +1015,7 @@ Thus the \emph{exact} critical ratio for $\delta < 1/2$ is:
   \]
   At $\delta = 1/4$, both formulas give $\gamma_\star = 16/11 \approx 1.455$.
   At $\delta = 0.4$, the exact formula gives $\gamma_\star = 0.4/0.44 \approx 0.909$
-  while $4/(2+3\cdot 0.4) \approx 1.250$---a substantial discrepancy that grows with $\delta$.
+  while $4/(2+3\cdot 0.4) \approx 1.250$, a substantial discrepancy that grows with $\delta$.
 \end{corollary}
 
 \textbf{3. The critical threshold.}
@@ -1287,7 +1287,7 @@ this quantity is identical for all sub-Gaussian entry distributions, we have the
 \end{proposition}
 
 \begin{proof}
-The proof relies on establishing that the key spectral properties of the Hessian---specifically the Stieltjes transform of the decoupled Hessian $H_{\mathrm{dec}}$ and its edge behavior---are universal for the class of sub-Gaussian distributions. We proceed in four steps.
+The proof relies on establishing that the key spectral properties of the Hessian (specifically the Stieltjes transform of the decoupled Hessian $H_{\mathrm{dec}}$ and its edge behavior) are universal for the class of sub-Gaussian distributions. We proceed in four steps.
 
 \textbf{1. Marchenko--Pastur universality for the data Gram matrix.}
 The critical ratio $\gamma_\star$ is determined by the fixed-point equation involving the spectral distribution $\nu$ of the data Gram matrix $G_X = \frac{1}{n} X^\top X$. For $x_i = \Sigma^{1/2} z_i$ with i.i.d.\ sub-Gaussian $z_{ij}$ having unit variance, the Marchenko--Pastur law is universal. Specifically, the limiting spectral distribution of $G_X$ is given by the free multiplicative convolution $\nu = \mu_{\mathrm{MP}}(\delta) \boxtimes \mu_\Sigma$, identical to the Gaussian case \cite{tao2012}. Consequently, the equation for $\gamma_\star$ (Theorem~\ref{thm:critical-ratio}) remains unchanged.
@@ -1338,7 +1338,7 @@ topological barriers predicted by the theory:
   converges to the \emph{nearest} critical point regardless of its type. Across $960$
   independent runs ($4$ values of $\delta$, $12$ values of $\gamma/\gamma_\star$ from $0.2$
   to $2.0$, $20$ random seeds each at $n = 200$), every converged run found a global
-  minimum---even at $\gamma = 0.2\,\gamma_\star$, deep in the subcritical regime.
+  minimum, even at $\gamma = 0.2\,\gamma_\star$, deep in the subcritical regime.
   Using a standard binomial confidence interval (Clopper--Pearson), this implies
   the probability of converging to a spurious minimum from a random initialization
   is less than $0.3\%$ with $95\%$ confidence, even in the subcritical regime.
@@ -1368,7 +1368,7 @@ mechanisms may reconcile the theoretical predictions with the empirical findings
   lower than the asymptotic theory predicts. However, a high-resolution verification
   at $n = 1500$ with $\delta = 0.3$ (Gaussian teacher-student data, trained with Adam,
   20 seeds per $\gamma$, 10 values of $\gamma/\gamma_\star$ from $0.3$ to $2.0$)
-  achieved $100\%$ global convergence at every tested point---including at
+  achieved $100\%$ global convergence at every tested point, including at
   $\gamma = 0.3\,\gamma_\star$, deep in the subcritical regime. While the primary
   GNM experiments (Section~\ref{sec:landscape-dynamics}) used gradient-based critical
   point search to decouple landscape geometry from optimizer bias, this Adam-based
@@ -1377,7 +1377,7 @@ mechanisms may reconcile the theoretical predictions with the empirical findings
   moderate~$n$.
 
   \item \textbf{Optimization inductive bias.} Gradient-based methods explore the parameter
-  space along trajectories that are implicitly regularized---SGD follows the manifold of
+  space along trajectories that are implicitly regularized: SGD follows the manifold of
   near-minimal norm solutions \cite{gunasekar2018}, and gradient flow in overparameterized
   networks converges to the max-margin classifier in parameter space \cite{lyu2020}. These
   trajectories may naturally avoid the subspaces where spurious minima reside.
@@ -1406,9 +1406,9 @@ landscapes.
 Perhaps the most striking finding is the disconnect between landscape geometry and
 optimization dynamics: gradient-based methods succeed well below $\gamma_\star$,
 suggesting that the topological complexity of the loss surface is a poor predictor
-of optimization difficulty. This reinforces an emerging picture: the success
-of neural network training is driven not by the absence of bad critical points, but by
-the inductive biases of the optimizer that steer trajectories away from them.
+of optimization difficulty. This reinforces an emerging picture: optimizers succeed because their inductive
+biases steer trajectories away from bad critical points, even when such points
+provably exist in abundance.
 
 The central message is that moderate overparameterization suffices: one does not need
 the width to be polynomially large in the sample size (Figure~\ref{fig:spurious-count}).
