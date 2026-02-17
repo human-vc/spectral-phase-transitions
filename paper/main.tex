@@ -98,35 +98,7 @@ scales polynomially in~$n$ (often $m = \Omega(n^6)$), far exceeding practical ne
 sizes. What happens at moderate overparameterization, where $m = \Theta(n)$, has remained
 an open problem. We resolve it for two-layer ReLU networks.
 
-\subsection{Main contributions}
-
-\begin{enumerate}[label=(\roman*)]
-  \item \textbf{Sharp topological threshold.} We identify a critical width-to-sample ratio $\gamma_\star$ (depending on the
-  data covariance spectrum) that marks a topological phase transition in the loss landscape
-  (Figure~\ref{fig:phase-diagram}):
-  for $\gamma > \gamma_\star$, all local minima of the empirical risk
-  are global with probability $1 - e^{-\Omega(n)}$, and for $\gamma < \gamma_\star$, the expected number of
-  spurious critical points grows exponentially (Theorem~\ref{thm:phase-transition}).
-  This provides a \emph{sufficient} condition on the width for a benign landscape; as we
-  discuss in Section~\ref{sec:landscape-dynamics}, it is not a necessary condition for
-  successful optimization.
-  Empirical training dynamics confirm that the boundary is meaningful but not sharp
-  in practice (Figure~\ref{fig:empirical-validation}).
-
-  \item \textbf{Spectral characterization.} We give an explicit fixed-point equation for $\gamma_\star$ in terms
-  of the Stieltjes transform of the limiting spectral distribution of the data Gram matrix
-  (Theorem~\ref{thm:critical-ratio}; Figure~\ref{fig:spectral-density}).
-
-  \item \textbf{Universal scaling at the transition.} We prove that the spectral gap of the Hessian
-  at critical points scales as $|\gamma - \gamma_\star|$ near the transition, with universal critical
-  exponent $\beta = 1$ (Theorem~\ref{thm:scaling}; Figure~\ref{fig:scaling-law}).
-
-  \item \textbf{Spectral decoupling technique.} We introduce a decomposition of the Hessian
-  at critical points into a ``data block'' and a ``weight block'' coupled through a rank-deficient
-  interaction term (Section~\ref{sec:decoupling}), which may be of independent interest.
-\end{enumerate}
-
-\begin{figure}[H]
+\begin{figure}[t!]
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -159,12 +131,33 @@ an open problem. We resolve it for two-layer ReLU networks.
 \label{fig:phase-diagram}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.75\textwidth]{figures/fig4_phase_boundary_empirical.pdf}
-\caption[Training dynamics and the topological boundary]{Training dynamics for two-layer ReLU networks with $n=100$, gradient flow optimization ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps), nonlinear teacher with $m_{\mathrm{teacher}} = n/2$. Color encodes $\log_{10}(\text{median loss})$ over 3 seeds per $(\delta, \gamma)$ pair. The dashed curve shows the theoretical topological boundary $\gamma^\star = 4/(2 + 3\delta)$ from Theorem~\ref{thm:phase-transition}. While the theory predicts a landscape transition at $\gamma^\star$, gradient flow achieves low loss even in parts of the subcritical regime, indicating that the optimization trajectory avoids the spurious critical points predicted by the static analysis (see Section~\ref{sec:landscape-dynamics}).}
-\label{fig:empirical-validation}
-\end{figure}
+\subsection{Main contributions}
+
+\begin{enumerate}[label=(\roman*)]
+  \item \textbf{Sharp topological threshold.} We identify a critical width-to-sample ratio $\gamma_\star$ (depending on the
+  data covariance spectrum) that marks a topological phase transition in the loss landscape
+  (Figure~\ref{fig:phase-diagram}):
+  for $\gamma > \gamma_\star$, all local minima of the empirical risk
+  are global with probability $1 - e^{-\Omega(n)}$, and for $\gamma < \gamma_\star$, the expected number of
+  spurious critical points grows exponentially (Theorem~\ref{thm:phase-transition}).
+  This provides a \emph{sufficient} condition on the width for a benign landscape; as we
+  discuss in Section~\ref{sec:landscape-dynamics}, it is not a necessary condition for
+  successful optimization.
+  Empirical training dynamics confirm that the boundary is meaningful but not sharp
+  in practice (Figure~\ref{fig:empirical-validation}).
+
+  \item \textbf{Spectral characterization.} We give an explicit fixed-point equation for $\gamma_\star$ in terms
+  of the Stieltjes transform of the limiting spectral distribution of the data Gram matrix
+  (Theorem~\ref{thm:critical-ratio}; Figure~\ref{fig:spectral-density}).
+
+  \item \textbf{Universal scaling at the transition.} We prove that the spectral gap of the Hessian
+  at critical points scales as $|\gamma - \gamma_\star|$ near the transition, with universal critical
+  exponent $\beta = 1$ (Theorem~\ref{thm:scaling}; Figure~\ref{fig:scaling-law}).
+
+  \item \textbf{Spectral decoupling technique.} We introduce a decomposition of the Hessian
+  at critical points into a ``data block'' and a ``weight block'' coupled through a rank-deficient
+  interaction term (Section~\ref{sec:decoupling}), which may be of independent interest.
+\end{enumerate}
 
 \FloatBarrier
 \subsection{Related work}
@@ -454,6 +447,13 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   (exact at $\delta = 1/4$; see Proposition~\ref{prop:isotropic}).
 \end{theorem}
 
+\begin{figure}[t!]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/fig5_spectral_density.pdf}
+\caption[Hessian spectral density]{Empirical spectral density of the Hessian eigenvalues at critical points for varying $\gamma$ with $\delta = 1$, $n = 100$. As $\gamma$ increases through the critical ratio $\gamma^\star = 4/5$, the spectral support shifts rightward and the gap opens, consistent with the predicted spectral phase transition.}
+\label{fig:spectral-density}
+\end{figure}
+
 \begin{remark}\label{rem:delta1}
   For $\Sigma = I_d$ and $\delta = 1$ (i.e., $d = n$), the first-order approximation
   gives $\gamma_\star \approx 4/(2+3) = 4/5$. (The exact
@@ -513,13 +513,6 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   dynamically inaccessible to practical optimization trajectories.
 \end{remark}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.75\textwidth]{figures/fig5_spectral_density.pdf}
-\caption[Hessian spectral density]{Empirical spectral density of the Hessian eigenvalues at critical points for varying $\gamma$ with $\delta = 1$, $n = 100$. As $\gamma$ increases through the critical ratio $\gamma^\star = 4/5$, the spectral support shifts rightward and the gap opens, consistent with the predicted spectral phase transition.}
-\label{fig:spectral-density}
-\end{figure}
-
 \subsection{Spectral gap scaling}
 
 At the phase transition, we establish a universal critical exponent for the spectral gap
@@ -562,7 +555,7 @@ of the Hessian.
   \end{remark}
 \end{theorem}
 
-\begin{figure}[H]
+\begin{figure}[t!]
 \centering
 \begin{tikzpicture}
 \begin{loglogaxis}[
@@ -1141,15 +1134,7 @@ property.
 
 \subsection{Empirical validation on real data}\label{sec:mnist}
 
-To test whether the phase transition predicted by our theory persists beyond synthetic
-Gaussian data, we run the gradient flow experiment on whitened MNIST digits
-(Figure~\ref{fig:mnist}). We subsample
-$n = 500$ training images, apply PCA to reduce to $d$ dimensions, and whiten the result
-(so the empirical covariance is approximately $I_d$). We then sweep $\gamma = m/n$ from
-$0.2$ to $2.0$ for $\delta \in \{0.05, 0.10, 0.15\}$, training two-layer ReLU networks
-with gradient flow ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps, $m \le 600$, median over 3 seeds).
-
-\begin{figure}[H]
+\begin{figure}[t!]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig7_mnist_phase_boundary.pdf}
 \caption[MNIST training dynamics]{Training dynamics on whitened MNIST data ($n = 500$).
@@ -1161,6 +1146,14 @@ with gradient flow ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps, $m \le 600$, me
 \label{fig:mnist}
 \end{figure}
 
+To test whether the phase transition predicted by our theory persists beyond synthetic
+Gaussian data, we run the gradient flow experiment on whitened MNIST digits
+(Figure~\ref{fig:mnist}). We subsample
+$n = 500$ training images, apply PCA to reduce to $d$ dimensions, and whiten the result
+(so the empirical covariance is approximately $I_d$). We then sweep $\gamma = m/n$ from
+$0.2$ to $2.0$ for $\delta \in \{0.05, 0.10, 0.15\}$, training two-layer ReLU networks
+with gradient flow ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps, $m \le 600$, median over 3 seeds).
+
 Figure~\ref{fig:mnist} shows that the theoretical boundary $\gamma^\star(\delta)$ roughly
 coincides with the region of elevated training loss on real data. At low $\delta$ (few
 PCA components), the loss remains elevated across all $\gamma$, reflecting the difficulty
@@ -1170,15 +1163,15 @@ case (Figure~\ref{fig:empirical-validation}), reflecting both the non-Gaussian s
 of real data and the general observation that optimization dynamics smooth out the
 landscape-level transition (Section~\ref{sec:landscape-dynamics}).
 
-\label{sec:cifar10}
-To further validate the universality of our results, we repeat the experiment on the CIFAR-10 dataset, which consists of natural images rather than handwritten digits. Using the same preprocessing pipeline (subsampling $n=200$, PCA to $d$ dimensions, whitening) and training protocol, we observe a similar phase transition structure (Figure~\ref{fig:cifar10}).
-
-\begin{figure}[H]
+\begin{figure}[t!]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig8_cifar10_phase_boundary.pdf}
-\caption[CIFAR-10 training dynamics]{Training dynamics on whitened CIFAR-10 data ($n = 200$). The theoretical topological boundary $\gamma^\star(\delta)$ (dashed line) is overlaid on the training loss heatmap. The loss gradient is smooth rather than exhibiting a sharp transition, consistent with the observation that optimization dynamics transcend the static landscape barriers (Section~\ref{sec:landscape-dynamics}).}
+\caption[CIFAR-10 training dynamics]{Training dynamics on whitened CIFAR-10 data ($n = 200$). The theoretical topological boundary $\gamma^\star(\delta)$ (dashed line) is overlaid on the training loss heatmap. The loss gradient is smooth, consistent with the observation that optimization dynamics transcend the static landscape barriers (Section~\ref{sec:landscape-dynamics}).}
 \label{fig:cifar10}
 \end{figure}
+
+\label{sec:cifar10}
+To further validate the universality of our results, we repeat the experiment on the CIFAR-10 dataset, which consists of natural images. Using the same preprocessing pipeline (subsampling $n=200$, PCA to $d$ dimensions, whitening) and training protocol, we observe a similar phase transition structure (Figure~\ref{fig:cifar10}).
 
 \FloatBarrier
 \subsection{General activation functions}\label{sec:general-activations}
@@ -1315,6 +1308,13 @@ Remark~\ref{rem:crossover} may widen or narrow depending on the tail index.
 
 \section{Landscape Geometry versus Optimization Dynamics}\label{sec:landscape-dynamics}
 
+\begin{figure}[t!]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/fig4_phase_boundary_empirical.pdf}
+\caption[Training dynamics and the topological boundary]{Training dynamics for two-layer ReLU networks with $n=100$, gradient flow optimization ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps), nonlinear teacher with $m_{\mathrm{teacher}} = n/2$. Color encodes $\log_{10}(\text{median loss})$ over 3 seeds per $(\delta, \gamma)$ pair. The dashed curve shows the theoretical topological boundary $\gamma^\star = 4/(2 + 3\delta)$ from Theorem~\ref{thm:phase-transition}. While the theory predicts a landscape transition at $\gamma^\star$, gradient flow achieves low loss even in parts of the subcritical regime, indicating that the optimization trajectory avoids the spurious critical points predicted by the static analysis.}
+\label{fig:empirical-validation}
+\end{figure}
+
 The theoretical results of
 Sections~\ref{sec:main}--\ref{sec:second-moment} characterize the \emph{static geometry}
 of the loss surface: Theorem~\ref{thm:phase-transition}(b) proves that exponentially
@@ -1423,7 +1423,7 @@ for $\delta < 1/2$, well-approximated by $4/(2+3\delta)$ for small~$\delta$.
 \appendix
 \section{Additional Figures}
 
-\begin{figure}[H]
+\begin{figure}[t!]
 \centering
 \resizebox{0.85\textwidth}{!}{%
 \begin{tikzpicture}
