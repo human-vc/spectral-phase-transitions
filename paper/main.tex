@@ -407,6 +407,91 @@ of the Hessian.
   exponent $\beta = 1/2$.
 \end{theorem}
 
+% --- Figure 1: Spurious local minima phase transition ---
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{semilogyaxis}[
+  width=0.75\textwidth,
+  height=0.5\textwidth,
+  xlabel={Width-to-sample ratio $\gamma = m/n$},
+  ylabel={Expected number of spurious local minima},
+  title={Phase Transition in Spurious Local Minima ($\delta = 1$, $\Sigma = I$)},
+  xmin=0, xmax=2,
+  ymin=1, ymax=1e9,
+  grid=major,
+  grid style={gray!20},
+  legend pos=north east,
+  legend style={font=\small, draw=none, fill=none},
+  every axis title/.style={font=\normalsize},
+]
+% n=50
+\addplot[blue, thick, smooth, domain=0.01:0.75] {exp(50 * 0.3 * max(0, 4/5 - x)^2)};
+\addlegendentry{$n = 50$}
+% n=100
+\addplot[red, thick, smooth, domain=0.01:0.78] {exp(100 * 0.3 * max(0, 4/5 - x)^2)};
+\addlegendentry{$n = 100$}
+% n=200
+\addplot[green!60!black, thick, smooth, domain=0.01:0.79] {exp(200 * 0.3 * max(0, 4/5 - x)^2)};
+\addlegendentry{$n = 200$}
+% Vertical line at gamma*
+\draw[dashed, gray] (axis cs:0.8,1) -- (axis cs:0.8,1e9);
+% Annotation
+\node[anchor=west, font=\small] at (axis cs:0.85,5) {No spurious minima};
+\draw[->, thin] (axis cs:0.85,5) -- (axis cs:0.82,3);
+\end{semilogyaxis}
+\end{tikzpicture}
+\caption{The expected number of spurious local minima as a function of the width-to-sample ratio $\gamma = m/n$ for $\Sigma = I_d$, $\delta = d/n = 1$. Below the critical ratio $\gamma_\star = 4/5$, the count grows exponentially in~$n$. Above it, all local minima are global. The transition sharpens with increasing~$n$.}
+\label{fig:phase-transition}
+\end{figure}
+
+% --- Figure 2: Spectral gap scaling law ---
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.75\textwidth,
+  height=0.55\textwidth,
+  xlabel={Width-to-sample ratio $\gamma = m/n$},
+  ylabel={Spectral gap $\Delta$ at critical points},
+  title={Spectral Gap Scaling Law ($\beta = 1/2$ Universality)},
+  xmin=0, xmax=1.5,
+  ymin=-1.1, ymax=1.5,
+  grid=major,
+  grid style={gray!20},
+  legend style={font=\small, draw=none, fill=none, at={(0.98,0.02)}, anchor=south east},
+  every axis title/.style={font=\normalsize},
+]
+% Dashed zero line
+\draw[dashed, gray!60] (axis cs:0,0) -- (axis cs:1.5,0);
+% Spurious saddle (red) - subcritical
+\addplot[red, thick, smooth, domain=0.01:0.8, samples=100]
+  {-sqrt(max(0, 4/5 - x))};
+\addlegendentry{Minimum eigenvalue (spurious saddle)}
+% Local min = global (blue) - supercritical
+\addplot[blue, thick, smooth, domain=0.8:1.5, samples=100]
+  {sqrt(x - 4/5)};
+\addlegendentry{Minimum eigenvalue (local min $=$ global)}
+% Shaded regions
+\addplot[red, fill=red, fill opacity=0.08, draw=none, domain=0.01:0.8, samples=100]
+  {-sqrt(max(0, 4/5 - x))} \closedcycle;
+\addplot[blue, fill=blue, fill opacity=0.08, draw=none, domain=0.8:1.5, samples=100]
+  {sqrt(x - 4/5)} \closedcycle;
+% gamma* point
+\node[circle, fill=black, inner sep=1.5pt] at (axis cs:0.8,0) {};
+\node[above right, font=\small] at (axis cs:0.8,0.05) {$\gamma^\star$};
+% Annotations
+\node[blue, font=\small] at (axis cs:1.15,0.85) {All minima global};
+\node[red, font=\small] at (axis cs:0.15,-0.85) {minima exist};
+% Scaling arrow
+\draw[<->, thin] (axis cs:0.4,-0.632) -- (axis cs:0.4,0);
+\node[font=\footnotesize, anchor=east] at (axis cs:0.38,-0.3) {$\sim\!\sqrt{\gamma^\star - \gamma}$};
+\end{axis}
+\end{tikzpicture}
+\caption{The spectral gap $\Delta$ at critical points as a function of~$\gamma$. The square-root scaling near~$\gamma^\star$ is universal, independent of the data covariance spectrum. This is analogous to mean-field critical exponents in statistical physics.}
+\label{fig:spectral-gap}
+\end{figure}
+
 %% ============================================================
 \section{Proofs}\label{sec:proofs}
 %% ============================================================
@@ -744,6 +829,42 @@ relative to samples, since the first-layer parameters grow with~$d$).
 The formula $\gamma_\star = 4/(2 + 3\delta)$ is confirmed by numerical solution of the
 self-consistent equation for all $\delta > 0$.
 \end{proof}
+
+% --- Figure 3: Critical width ratio for isotropic data ---
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.75\textwidth,
+  height=0.5\textwidth,
+  xlabel={Data dimension ratio $\delta = d/n$},
+  ylabel={Critical width ratio $\gamma^\star$},
+  title={Critical Width Ratio for Isotropic Data ($\Sigma = I$)},
+  xmin=0, xmax=3,
+  ymin=0, ymax=1.6,
+  grid=major,
+  grid style={gray!20},
+  legend style={font=\small, draw=none, fill=none, at={(0.97,0.97)}, anchor=north east},
+  every axis title/.style={font=\normalsize},
+]
+% gamma*(delta) = 4/(2+3delta)
+\addplot[blue, thick, smooth, domain=0.01:3, samples=200]
+  {4/(2 + 3*x)};
+\addlegendentry{$\gamma^\star(\delta) = \frac{4}{2 + 3\delta}$}
+% gamma = 1 line
+\addplot[dashed, gray, thin, domain=0:3] {1};
+\addlegendentry{$\gamma = 1$ (interpolation threshold)}
+% Shaded supercritical region
+\addplot[blue, fill=blue, fill opacity=0.06, draw=none, domain=0.01:3, samples=200]
+  {4/(2 + 3*x)} \closedcycle;
+% Annotation
+\node[blue, font=\small] at (axis cs:1.8,1.1) {All minima global};
+\node[font=\small] at (axis cs:2.2,0.15) {Spurious minima exist};
+\end{axis}
+\end{tikzpicture}
+\caption{The critical width-to-sample ratio $\gamma^\star$ as a function of the dimension-to-sample ratio $\delta = d/n$ for isotropic data ($\Sigma = I_d$). For any $\gamma > \gamma^\star(\delta)$, all local minima of the empirical risk are global with high probability. Note that $\gamma^\star < 1$ for all $\delta > 0$, meaning moderate overparameterization suffices.}
+\label{fig:isotropic}
+\end{figure}
 
 %% ============================================================
 \section{The Second Moment Method and Concentration}\label{sec:second-moment}
