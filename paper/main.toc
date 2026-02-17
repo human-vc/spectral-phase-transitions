@@ -1,9 +1,9 @@
 \contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
 \contentsline {subsection}{\numberline {1.1}Main contributions}{2}{subsection.1.1}%
 \contentsline {subsection}{\numberline {1.2}Related work}{3}{subsection.1.2}%
-\contentsline {paragraph}{Loss landscape of neural networks.}{3}{section*.2}%
-\contentsline {paragraph}{Overparameterization and global convergence.}{3}{section*.3}%
-\contentsline {paragraph}{Random matrix theory in ML.}{4}{section*.4}%
+\contentsline {paragraph}{Loss landscape geometry.}{3}{section*.2}%
+\contentsline {paragraph}{Overparameterization thresholds.}{3}{section*.3}%
+\contentsline {paragraph}{Random matrix theory in learning.}{4}{section*.4}%
 \contentsline {section}{\numberline {2}Problem Setup}{4}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Network architecture and loss}{4}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Data model}{5}{subsection.2.2}%

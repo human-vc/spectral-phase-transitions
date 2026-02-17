@@ -77,23 +77,26 @@ that separates the data-dependent and weight-dependent contributions to the Hess
 
 \section{Introduction}
 
-Gradient descent reliably finds good solutions to neural network optimization problems
-despite the extreme non-convexity of the loss landscape. The empirical risk is a highly
-non-convex function of the network's parameters, and classical optimization theory predicts
-that gradient-based methods should become trapped in poor local minima. Yet in practice,
-this rarely occurs. Understanding this phenomenon requires disentangling two distinct
-questions: \emph{what does the loss landscape look like} (its static geometry), and
-\emph{how does an optimizer move through it} (the dynamics). This paper addresses
-the first question precisely and connects it to the second empirically.
+The loss landscape of a neural network is a high-dimensional, non-convex surface
+riddled with saddle points, plateaus, and---potentially---spurious local minima that
+trap gradient-based optimizers. Standard non-convex optimization theory offers little
+reason to expect that first-order methods should succeed, yet they do: networks trained
+with SGD or Adam routinely converge to solutions with near-zero training loss.
+Two distinct questions underlie this puzzle: \emph{what is the geometry of the loss
+surface itself}, and \emph{why do optimizers navigate it so effectively}? This paper
+gives a sharp answer to the first question and connects it to the second through
+large-scale experiments.
 
-A growing body of work \cite{choromanska2015,kawaguchi2016,safran2018,venturi2019} has provided partial explanations by studying
-the geometry of the loss surface. The overparameterized regime, where the number of
-parameters exceeds the number of data points, has received particular attention, with
-results showing that all local minima become global in sufficiently wide networks \cite{du2019,allenzhu2019}.
-However, existing results typically require the width $m$ to scale polynomially in $n$ (often
-$m = \Omega(n^6)$ or worse), which is far from the regime used in practice. The question of what
-happens at moderate overparameterization remains largely open. In this paper, we give a
-precise answer for two-layer ReLU networks.
+Prior work has approached the landscape question from several angles
+\cite{choromanska2015,kawaguchi2016,safran2018,venturi2019}. Choromanska et al.\
+connected neural loss surfaces to spin-glass Hamiltonians; Kawaguchi showed that linear
+networks have no spurious minima; Safran and Shamir exhibited spurious minima in
+underparameterized ReLU networks. In the overparameterized regime, Du et al.\
+\cite{du2019}, Allen-Zhu et al.\ \cite{allenzhu2019}, and the NTK framework
+\cite{jacot2018} established global convergence guarantees---but only when the width $m$
+scales polynomially in~$n$ (often $m = \Omega(n^6)$), far exceeding practical network
+sizes. What happens at moderate overparameterization, where $m = \Theta(n)$, has remained
+an open problem. We resolve it for two-layer ReLU networks.
 
 \subsection{Main contributions}
 
@@ -165,25 +168,26 @@ precise answer for two-layer ReLU networks.
 
 \subsection{Related work}
 
-\paragraph{Loss landscape of neural networks.}
-Choromanska et al.\ \cite{choromanska2015} drew an analogy between
-neural network loss surfaces and spin glass models. Kawaguchi \cite{kawaguchi2016} showed that for linear
-networks, every local minimum is global. Safran and Shamir \cite{safran2018} demonstrated the existence
-of spurious local minima for two-layer ReLU networks but in the underparameterized regime.
-Our work precisely locates the transition between these regimes.
+\paragraph{Loss landscape geometry.}
+The spin-glass analogy of Choromanska et al.\ \cite{choromanska2015} and Kawaguchi's
+\cite{kawaguchi2016} proof that linear networks have no spurious minima launched a line of
+work on loss surface topology. Safran and Shamir \cite{safran2018} constructed explicit
+spurious minima for underparameterized ReLU networks; Venturi et al.\ \cite{venturi2019}
+gave conditions for their absence. Our contribution is to locate the exact transition
+point between these regimes as a function of the width-to-sample ratio.
 
-\paragraph{Overparameterization and global convergence.}
-Du et al.\ \cite{du2019}, Allen-Zhu et al.\ \cite{allenzhu2019},
-and Zou et al.\ \cite{zou2020} proved that gradient descent converges to global minima when $m$ is
-polynomially large in $n$. The Neural Tangent Kernel (NTK) framework \cite{jacot2018} provides a
-complementary view via linearization. Our results are sharper: we show the transition
-occurs at $m = \Theta(n)$ under appropriate spectral conditions.
+\paragraph{Overparameterization thresholds.}
+The convergence guarantees of Du et al.\ \cite{du2019}, Allen-Zhu et al.\
+\cite{allenzhu2019}, and Zou et al.\ \cite{zou2020} require $m = \mathrm{poly}(n)$
+and operate through NTK linearization \cite{jacot2018}. Our results are qualitatively
+different: the transition occurs at $m = \Theta(n)$, determined by the spectral
+interaction between the data covariance and the gated Hessian blocks.
 
-\paragraph{Random matrix theory in ML.}
+\paragraph{Random matrix theory in learning.}
 Pennington and Worah \cite{pennington2017} and Louart et al.\ \cite{louart2018}
-applied random matrix theory to understand neural network Jacobians and kernel matrices.
-Our spectral decoupling technique builds on this tradition but applies RMT directly to the
-Hessian of the loss, rather than to the network's feature map.
+brought Marchenko--Pastur and free probability tools to the analysis of neural Jacobians
+and kernel matrices. Our spectral decoupling applies these tools directly to the Hessian
+of the empirical risk at critical points, rather than to the network's feature map.
 
 \section{Problem Setup}
 
@@ -1387,7 +1391,7 @@ landscapes.
 Perhaps the most striking finding is the disconnect between landscape geometry and
 optimization dynamics: gradient-based methods succeed well below $\gamma_\star$,
 suggesting that the topological complexity of the loss surface is a poor predictor
-of optimization difficulty. This adds to a growing body of evidence that the success
+of optimization difficulty. This reinforces an emerging picture: the success
 of neural network training is driven not by the absence of bad critical points, but by
 the inductive biases of the optimizer that steer trajectories away from them.
 
