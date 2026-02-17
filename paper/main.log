@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  16 FEB 2026 21:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  16 FEB 2026 22:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -948,7 +948,9 @@ m/it/10.95 x[]x[]$\T1/cmr/m/n/10.95 .
 }]
 
 [5]
-Package pgfplots info on input line 439: Using 'lua backend=false' for axis: ym
+Package pgfplots info on input line 463: Using 'lua backend=false' for axis: xm
+ode=log unsupported (yet).
+Package pgfplots info on input line 463: Using 'lua backend=false' for axis: ym
 ode=log unsupported (yet).
 
 
@@ -959,7 +961,9 @@ ode=log unsupported (yet).
 [8]
 
 [9]
-Overfull \hbox (9.31253pt too wide) in paragraph at lines 681--686
+
+[10]
+Overfull \hbox (9.31253pt too wide) in paragraph at lines 701--706
 []\T1/cmr/m/n/10.95 From the self-consistent equa-tion [], the edge $\OML/cmm/m
 /it/10.95 ^^U[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 ^^M\OT1/cmr/m/n/10.95 )$
  \T1/cmr/m/n/10.95 is de-ter-mined by the equa-tion $\OT1/cmr/m/n/10.95 ^^@(\OM
@@ -968,12 +972,12 @@ L/cmm/m/it/10.95 ^^M; ^^U[]\OT1/cmr/m/n/10.95 ) =
 
 
 
-[10]
-
 [11]
 
 [12]
-Overfull \hbox (21.54034pt too wide) in paragraph at lines 911--912
+
+[13]
+Overfull \hbox (21.54034pt too wide) in paragraph at lines 894--895
 []\T1/cmr/bx/n/10.95 Corollary 8.1 \T1/cmr/m/n/10.95 (Con-di-tion num-ber de-pe
 n-dence)\T1/cmr/bx/n/10.95 . []\T1/cmr/m/it/10.95 For $\OT1/cmr/m/n/10.95 ^^F$ 
 \T1/cmr/m/it/10.95 with con-di-tion num-ber $\OML/cmm/m/it/10.95 ^^T \OT1/cmr/m
@@ -983,26 +987,39 @@ n-dence)\T1/cmr/bx/n/10.95 . []\T1/cmr/m/it/10.95 For $\OT1/cmr/m/n/10.95 ^^F$
 
 
 
-[13]
-
 [14]
+Package pgfplots info on input line 1000: Using 'lua backend=false' for axis: y
+mode=log unsupported (yet).
 
-[15] (./main.aux)
+
+[15]
+
+[16] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 5AA50AB750920652427B0508E5981336;4428.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: 4AA57F3E71D7C2C0EC9F37C6FBC3127F;4551
+(rerunfilecheck)             After:  B1563277287D8147DB505C8127114F84;4566.
  ) 
 Here is how much of TeX's memory you used:
- 34477 strings out of 473190
- 800119 string characters out of 5715801
- 1410130 words of memory out of 5000000
- 57100 multiletter control sequences out of 15000+600000
+ 34486 strings out of 473190
+ 800376 string characters out of 5715801
+ 1362446 words of memory out of 5000000
+ 57105 multiletter control sequences out of 15000+600000
  582161 words of font info for 96 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,21n,91p,725b,2270s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,21n,91p,725b,2216s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -1032,10 +1049,10 @@ fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2025/texmf-dist/fo
 nts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/font
 s/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/
 type1/public/cm-super/sfti1095.pfb>
-Output written on main.pdf (15 pages, 525200 bytes).
+Output written on main.pdf (16 pages, 502574 bytes).
 PDF statistics:
- 489 PDF objects out of 1000 (max. 8388607)
- 408 compressed objects within 5 object streams
- 110 named destinations out of 1000 (max. 500000)
- 205 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 500 PDF objects out of 1000 (max. 8388607)
+ 418 compressed objects within 5 object streams
+ 114 named destinations out of 1000 (max. 500000)
+ 213 words of extra memory for PDF output out of 10000 (max. 10000000)
 

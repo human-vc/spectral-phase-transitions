@@ -13,15 +13,16 @@
 \contentsline {subsection}{\numberline {4.1}The critical ratio}{5}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}The phase transition}{6}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}Spectral gap scaling}{6}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Proofs}{8}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Proof of Theorem~\ref {thm:critical-ratio}: Identifying the critical ratio}{8}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Proof of Theorem~\ref {thm:phase-transition}: The phase transition}{9}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Proof of Theorem~\ref {thm:scaling}: Square-root scaling}{10}{subsection.5.3}%
-\contentsline {section}{\numberline {6}The Isotropic Case: Explicit Computations}{11}{section.6}%
-\contentsline {section}{\numberline {7}The Second Moment Method and Concentration}{12}{section.7}%
-\contentsline {section}{\numberline {8}Extensions and Discussion}{13}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Non-isotropic data: the role of the condition number}{13}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Connection to the neural tangent kernel}{13}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Implications for practice}{13}{subsection.8.3}%
+\contentsline {section}{\numberline {5}Proofs}{9}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Proof of Theorem~\ref {thm:critical-ratio}: Identifying the critical ratio}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Proof of Theorem~\ref {thm:phase-transition}: The phase transition}{10}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Proof of Theorem~\ref {thm:scaling}: Square-root scaling}{11}{subsection.5.3}%
+\contentsline {section}{\numberline {6}The Isotropic Case: Explicit Computations}{12}{section.6}%
+\contentsline {section}{\numberline {7}The Second Moment Method and Concentration}{13}{section.7}%
+\contentsline {section}{\numberline {8}Extensions and Discussion}{14}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Non-isotropic data: the role of the condition number}{14}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Connection to the neural tangent kernel}{14}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Implications for practice}{14}{subsection.8.3}%
 \contentsline {subsection}{\numberline {8.4}Open questions}{14}{subsection.8.4}%
-\contentsline {section}{\numberline {9}Conclusion}{14}{section.9}%
+\contentsline {section}{\numberline {9}Conclusion}{15}{section.9}%
+\contentsline {section}{\numberline {A}Additional Figures}{15}{appendix.A}%
