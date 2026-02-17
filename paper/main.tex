@@ -1321,12 +1321,16 @@ mechanisms may reconcile the theoretical predictions with the empirical findings
   \item \textbf{Finite-size effects.} The theoretical predictions hold in the proportional
   limit $d, n, m \to \infty$. At finite $n$, the activation patterns $\{D_j\}$ are
   not fully independent, and the effective dimensionality of the loss landscape may be
-  lower than the asymptotic theory predicts. However, a ``hero run'' at $n = 1500$ with
-  $\delta = 0.3$ (Gaussian teacher-student data, 20 seeds per $\gamma$, 10 values of
-  $\gamma/\gamma_\star$ from $0.3$ to $2.0$) achieved $100\%$ global convergence at
-  every tested point---including at $\gamma = 0.3\,\gamma_\star$, deep in the subcritical
-  regime. This demonstrates that the landscape--dynamics gap does not close at
-  moderate~$n$, ruling out finite-size effects as the primary explanation.
+  lower than the asymptotic theory predicts. However, a high-resolution verification
+  at $n = 1500$ with $\delta = 0.3$ (Gaussian teacher-student data, trained with Adam,
+  20 seeds per $\gamma$, 10 values of $\gamma/\gamma_\star$ from $0.3$ to $2.0$)
+  achieved $100\%$ global convergence at every tested point---including at
+  $\gamma = 0.3\,\gamma_\star$, deep in the subcritical regime. While the primary
+  GNM experiments (Section~\ref{sec:landscape-dynamics}) used gradient-based critical
+  point search to decouple landscape geometry from optimizer bias, this Adam-based
+  verification confirms that practical optimizers navigate the subcritical regime
+  even more effectively, and that the landscape--dynamics gap does not close at
+  moderate~$n$.
 
   \item \textbf{Optimization inductive bias.} Gradient-based methods explore the parameter
   space along trajectories that are implicitly regularized---SGD follows the manifold of
