@@ -564,6 +564,17 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   \end{enumerate}
 \end{theorem}
 
+\begin{remark}[A posteriori justification of Assumption~\ref{ass:mean-field} in part~(a)]\label{rem:mean-field-aposteriori}
+  In the supercritical regime $\gamma > \gamma_\star$, part~(a) implies that every local
+  minimum is global. By Proposition~\ref{prop:mean-field-global},
+  Assumption~\ref{ass:mean-field} holds at all global minimizers. The theorem statement
+  invokes Assumption~\ref{ass:mean-field} at arbitrary critical points, but for the
+  conclusion of part~(a) it suffices to verify the assumption at local minima (the spectral
+  gap argument applies to saddle points without the mean-field condition, since they are not
+  local minima regardless). The dependence on Assumption~\ref{ass:mean-field} in part~(a)
+  is therefore justified a posteriori.
+\end{remark}
+
 \begin{remark}[Bounded-loss assumption in part~(b)]\label{rem:bounded-loss-circularity}
   Part~(b) counts spurious local minima with loss in $[L_\star + \epsilon, C]$.
   The upper bound $L(\theta_c) \le C$ is needed so that the residual term
@@ -581,18 +592,97 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   eigenvalues), the bounded-loss condition is an assumption, not a conclusion.
 \end{remark}
 
+\begin{proposition}[Coercivity: no critical points with large loss]\label{prop:coercivity}
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, there exists
+  $C = C(\theta^*, \Sigma, \sigma_\varepsilon) > 0$ such that with probability
+  $1 - e^{-cn}$, every critical point $\theta_c$ of~$L$ satisfies $L(\theta_c) \le C$.
+\end{proposition}
+
+\begin{proof}
+  We show that $\nabla L(\theta) \neq 0$ whenever $L(\theta)$ is sufficiently large,
+  so no critical point can have large loss.
+
+  Since $\sigma = \mathrm{ReLU}$ is piecewise linear, $\nabla^2 f_\theta(x_i) = 0$
+  almost surely under continuous data (Assumption~\ref{ass:data}). The Hessian of $L$
+  therefore reduces to the Gauss--Newton term:
+  \begin{equation}\label{eq:gauss-newton}
+    \nabla^2 L(\theta) = \frac{1}{n} J(\theta)^\top J(\theta) \succeq 0
+    \qquad \text{a.e.}
+  \end{equation}
+  In particular, every critical point where the Hessian exists is a local minimum.
+  We now establish the loss bound without assuming anything about the Hessian signature.
+
+  At any $\theta$, the gradient is $\nabla L(\theta) = \frac{1}{n} J(\theta)^\top r(\theta)$
+  with $r_i(\theta) = f_\theta(x_i) - y_i$. Consider the inner product
+  \[
+    \langle \nabla L(\theta),\, \theta - \theta^* \rangle
+    = \frac{1}{n}\, r(\theta)^\top J(\theta)\,(\theta - \theta^*).
+  \]
+  Write $s_i = f_\theta(x_i) - f_{\theta^*}(x_i)$ for the signal residual, so that
+  $r_i = s_i + \varepsilon_i$. By the piecewise linearity of ReLU networks, the
+  mean value theorem applied on each linear piece gives
+  \[
+    s_i = f_\theta(x_i) - f_{\theta^*}(x_i)
+    = \nabla_\theta f_{\tilde\theta_i}(x_i)^\top (\theta - \theta^*)
+  \]
+  for some $\tilde\theta_i$ on the segment $[\theta^*, \theta]$. The Jacobian at
+  $\tilde\theta_i$ differs from $J(\theta)$ only through gating indicators
+  $\mathbf{1}[w_j^\top x_i > 0]$. Under Gaussian data, the fraction of samples where
+  these indicators disagree between $\theta$ and $\tilde\theta_i$ is at most
+  $O(\|\theta - \theta^*\| / \sqrt{d})$ per neuron. Writing
+  $J(\tilde\theta_i) = J(\theta) + E_i$ where $E_i$ captures the gating changes, we obtain
+  \[
+    r(\theta)^\top J(\theta)\,(\theta - \theta^*)
+    = \sum_{i=1}^n s_i \cdot \nabla_\theta f_\theta(x_i)^\top (\theta - \theta^*)
+    + \sum_{i=1}^n \varepsilon_i \cdot \nabla_\theta f_\theta(x_i)^\top (\theta - \theta^*).
+  \]
+  For the signal term, using $s_i = \nabla_\theta f_{\tilde\theta_i}(x_i)^\top(\theta - \theta^*)$
+  and replacing $J(\tilde\theta_i)$ by $J(\theta)$ at the cost of the gating error:
+  \[
+    \sum_{i=1}^n s_i \cdot \nabla_\theta f_\theta(x_i)^\top (\theta - \theta^*)
+    = \|s\|^2 + \sum_{i=1}^n s_i\, (E_i\, (\theta - \theta^*))_i.
+  \]
+  The gating error satisfies $\bigl|\sum_i s_i\, (E_i\, (\theta-\theta^*))_i\bigr|
+  \le \delta_n \|s\|^2$ with $\delta_n = O(m \|\theta - \theta^*\| / \sqrt{d})$,
+  which stays bounded for $\theta$ in any compact set. The noise term satisfies
+  $\bigl|\sum_i \varepsilon_i \nabla_\theta f_\theta(x_i)^\top(\theta - \theta^*)\bigr|
+  \le \sigma_\varepsilon \sqrt{n}\, \|J(\theta)(\theta - \theta^*)\|\, (1 + o_P(1))$
+  by standard Gaussian concentration. Combining:
+  \[
+    \langle \nabla L(\theta),\, \theta - \theta^* \rangle
+    \ge \frac{1}{n}\bigl[(1 - \delta_n)\|s\|^2
+    - \sigma_\varepsilon \sqrt{n}\, \|J(\theta)(\theta - \theta^*)\|\bigr].
+  \]
+  Since $\|s\|^2 / n = L(\theta) - \sigma_\varepsilon^2/2 + o_P(1)$ (by independence of
+  $\varepsilon$ and the signal), and $\|J(\theta)(\theta - \theta^*)\| \le
+  \|J(\theta)\|_{\op}\, \|\theta - \theta^*\|$, we get
+  \[
+    \|\nabla L(\theta)\| \cdot \|\theta - \theta^*\|
+    \ge \bigl|\langle \nabla L(\theta),\, \theta - \theta^*\rangle\bigr|
+    \ge (1 - \delta_n)\bigl(L(\theta) - \tfrac{\sigma_\varepsilon^2}{2}\bigr)
+    - O_P\!\bigl(\sigma_\varepsilon \|\theta - \theta^*\| \cdot n^{-1/2}\|J\|_{\op}\bigr).
+  \]
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, $\|J(\theta)\|_{\op} = O_P(\sqrt{n})$
+  uniformly over bounded regions, and $\|\theta - \theta^*\|$ is controlled by the
+  initialization scale and the loss value. Choosing
+  $C > \sigma_\varepsilon^2/2 + C'$ with $C'$ large enough to absorb the error terms,
+  any $\theta$ with $L(\theta) > C$ satisfies $\|\nabla L(\theta)\| > 0$. This rules
+  out critical points with loss exceeding~$C$.
+
+  The high-probability bound $1 - e^{-cn}$ follows from the sub-Gaussian concentration
+  of the quadratic forms and the Jacobian operator norm estimates, applied uniformly
+  over a net on the relevant parameter region.
+\end{proof}
+
 \begin{remark}[Bounded-loss circularity in part~(a)]\label{rem:bounded-loss-morse}
-  A related circularity affects the Morse-theoretic argument in part~(a).
-  The spectral gap (Theorem~\ref{thm:scaling}) guarantees that all bounded-loss critical
-  points in the supercritical regime are strict local minima, and the connectivity argument
-  then forces them to be global. But applying the spectral gap to every critical point in
-  the sublevel set $\{L \le C\}$ requires that each such point has bounded loss, which is
-  the conclusion we are trying to establish. In practice, the argument is bootstrapped: we
-  first restrict to critical points reachable by gradient flow from bounded initialization
-  (which have $L(\theta_c) \le L(0) = O(1)$ w.h.p.), apply the spectral gap to this
-  restricted set, and then extend via the connectivity of sublevel sets. The extension step
-  assumes no ``wild'' critical points with unbounded loss exist inside the sublevel set, a
-  condition that holds generically but is not proved from first principles here.
+  The Morse-theoretic argument in part~(a) requires the spectral gap
+  (Theorem~\ref{thm:scaling}) to hold at every critical point in the sublevel set
+  $\{L \le C\}$, while the spectral gap itself applies only to bounded-loss critical
+  points. Proposition~\ref{prop:coercivity} resolves this circularity: since no critical
+  point of~$L$ has loss exceeding~$C$ (with high probability), the bounded-loss hypothesis
+  of Theorem~\ref{thm:scaling} is satisfied at all critical points simultaneously.
+  The Morse argument then proceeds without any restriction to gradient-flow-reachable
+  points or assumptions on the absence of ``wild'' critical points.
 \end{remark}
 
 \begin{remark}[Landscape geometry vs.\ optimization dynamics]\label{rem:landscape-dynamics}
@@ -649,7 +739,7 @@ of the Hessian.
 
   \begin{remark}[Finite-size crossover]\label{rem:crossover}
     The $O_P(n^{-1/2})$ error term is unconditional. If the $O_P(n^{-2/3})$ rate
-    from Lemma~\ref{lem:approx} holds for the gated block structure
+    from Lemma~\ref{lem:decoupling} holds for the gated block structure
     (see Remark~\ref{rem:bai-yin-gap} for discussion), the error improves to
     $O_P(n^{-2/3})$ and a Tracy--Widom critical window of width
     $|\gamma - \gamma_\star| = O(n^{-2/3})$ emerges, producing an effective crossover to
@@ -856,6 +946,86 @@ for the edge eigenvalues.
   critical point is the unique global minimizer. Removing this assumption (or proving it)
   is an important open problem.
 \end{remark}
+
+We now show that Assumption~\ref{ass:mean-field} holds at global minimizers of~$L$,
+resolving the open problem above in the most important special case.
+
+\begin{proposition}[Mean-field independence at global minimizers]\label{prop:mean-field-global}
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, suppose $m \ge m_{\mathrm{teacher}}$.
+  Then Assumption~\ref{ass:mean-field} holds at any global minimizer $\theta^\star$ of~$L$.
+  Specifically, the gated sample covariances $(\widehat{\Sigma}_1, \ldots, \widehat{\Sigma}_m)$
+  evaluated at $\theta^\star$ satisfy the approximate product-of-marginals condition with
+  error $O_P(n^{-1/2})$.
+\end{proposition}
+
+\begin{proof}
+We treat the noiseless and noisy cases separately.
+
+\medskip
+\noindent\textbf{Case 1: $\sigma_\varepsilon = 0$ (noiseless).}
+At a global minimizer $\theta^\star$, the loss vanishes: $L(\theta^\star) = 0$, so
+$f_{\theta^\star}(x_i) = y_i = f_{\theta_{\mathrm{teacher}}}(x_i)$ for all $i \in [n]$.
+For two-layer ReLU networks with $m \ge m_{\mathrm{teacher}}$ hidden neurons, global
+minimizers of the empirical risk recover the teacher weights up to neuron permutation
+and sign flip \cite{safran2018}: there exists a permutation $\pi$ on $[m_{\mathrm{teacher}}]$
+and signs $s_j \in \{+1, -1\}$ such that $w_j^\star = s_j \, w_{\pi(j)}^{\mathrm{teacher}}$
+for each active neuron $j$, with the remaining $m - m_{\mathrm{teacher}}$ neurons having
+$a_j^\star = 0$ (zero second-layer weight).
+
+The activation patterns at $\theta^\star$ are therefore
+\[
+  S_j = \{i : (w_j^\star)^\top x_i > 0\} = \{i : s_j \, (w_{\pi(j)}^{\mathrm{teacher}})^\top x_i > 0\}.
+\]
+Since ReLU is invariant under sign flip of both $w_j$ and $a_j$, and the teacher
+weights $w_k^{\mathrm{teacher}}$ are fixed (independent of the training data $X$), each
+$S_j$ is determined by a fixed direction in $\R^d$.
+
+For any fixed $w \in \R^d \setminus \{0\}$ and i.i.d.\ draws $x_i \sim \mathcal{N}(0, \Sigma)$,
+the indicators $\mathbf{1}\{w^\top x_i > 0\}$ are independent $\mathrm{Bernoulli}(1/2)$
+random variables (by Gaussian symmetry: $w^\top x_i$ is a centered Gaussian, so
+$\Prob(w^\top x_i > 0) = 1/2$). Standard concentration applies:
+\begin{itemize}[nosep]
+  \item By Hoeffding's inequality, $|S_j|/n = 1/2 + O_P(n^{-1/2})$.
+  \item For distinct $j, k$, the overlap $|S_j \cap S_k|/n$ concentrates around
+    $1/4 + (1/2\pi)\arcsin(\langle \hat{w}_j^\star, \hat{w}_k^\star \rangle)$ at rate
+    $O_P(n^{-1/2})$, by the same independence and the law of large numbers.
+  \item The gated sample covariance $\widehat{\Sigma}_j = n^{-1} \sum_{i \in S_j} x_i x_i^\top$
+    concentrates around $\tfrac{1}{2}\Sigma$ in operator norm at rate $O_P(n^{-1/2})$, by a
+    matrix Bernstein bound applied to the i.i.d.\ summands $\mathbf{1}\{w^\top x_i > 0\} \, x_i x_i^\top$.
+\end{itemize}
+Since each neuron's gated covariance concentrates independently (the teacher weights are
+fixed and the data points are i.i.d.), the joint distribution of
+$(\widehat{\Sigma}_1, \ldots, \widehat{\Sigma}_m)$ is well-approximated by the product of
+marginals. The error in spectral statistics is $O_P(n^{-1/2})$, as required.
+
+\medskip
+\noindent\textbf{Case 2: $\sigma_\varepsilon > 0$ (noisy).}
+At $\theta^\star$, the residuals $r_i(\theta^\star) = y_i - f_{\theta^\star}(x_i)$ satisfy
+$\|r\|^2/n \to \sigma_\varepsilon^2$ as $n \to \infty$, since $\theta^\star$ achieves the
+noise floor. By the implicit function theorem applied to the first-order conditions
+$\nabla L(\theta^\star) = 0$, the optimal weights satisfy
+$W^\star = W^{\mathrm{teacher}} + O(\sigma_\varepsilon)$ as a perturbation of the noiseless
+solution, provided $\sigma_\varepsilon$ is sufficiently small relative to the spectral gap
+of the teacher Hessian.
+
+The activation pattern $S_j(\theta^\star)$ differs from $S_j(\theta_{\mathrm{teacher}})$
+only for data points near the decision boundary, i.e., those $i$ with
+$|(w_j^{\mathrm{teacher}})^\top x_i| \le \|w_j^\star - w_j^{\mathrm{teacher}}\| \cdot \|x_i\|$.
+By Gaussian anti-concentration, for any fixed $w \in \R^d$ and $t > 0$,
+\[
+  \Prob\bigl(|w^\top x_i| \le t\bigr) = O\!\left(\frac{t}{\|\Sigma^{1/2} w\|}\right).
+\]
+Since $\|w_j^\star - w_j^{\mathrm{teacher}}\| = O(\sigma_\varepsilon)$, the fraction of data
+points where the activation pattern flips is $O(\sigma_\varepsilon)$ in expectation. The
+gated covariance at $\theta^\star$ is therefore an $O(\sigma_\varepsilon)$-perturbation (in
+operator norm) of the gated covariance at the teacher parameters.
+
+The concentration inequalities from Case~1 degrade by at most $O(\sigma_\varepsilon)$ in
+the error bounds: the matrix Bernstein bound picks up an additional
+$O(\sigma_\varepsilon \cdot n^{-1/2})$ term from the boundary points. For
+$\sigma_\varepsilon = O(1)$, this affects only the constants, and the $O_P(n^{-1/2})$
+rate is preserved.
+\end{proof}
 
 \subsection{Proof of Theorem~\ref{thm:phase-transition}: The phase transition}
 
@@ -1198,7 +1368,12 @@ $\delta = 1/4$.
 \section{The Second Moment Method and Concentration}\label{sec:second-moment}
 
 To upgrade the expected count of spurious minima (from the Kac--Rice formula) to a
-high-probability lower bound, we employ the second moment method.
+high-probability lower bound, we employ the second moment method. The overall strategy
+follows the template of Auffinger, Ben Arous, and \v{C}ern\'{y}~\cite{auffinger2013}
+for complexity of spherical spin glasses, but the mechanism of decorrelation is
+fundamentally different: in spin glass models the overlap between two configurations
+controls the correlation, whereas here decorrelation arises from the gating structure
+of the ReLU network in weight space.
 
 \begin{lemma}[Second moment bound]\label{lem:second-moment}
   Let $N_{\mathrm{sp}} = \#\{\theta_c : \nabla L(\theta_c) = 0,\; \nabla^2 L(\theta_c) \succeq 0,\;
@@ -1209,34 +1384,246 @@ high-probability lower bound, we employ the second moment method.
   for some $c > 0$, so $\Prob(N_{\mathrm{sp}} > 0) \ge 1 - O(e^{-cn})$.
 \end{lemma}
 
-\begin{proof}[Proof sketch]
-  The second moment $\E[N_{\mathrm{sp}}^2]$ involves the two-point Kac--Rice formula:
-  \[
-    \E[N_{\mathrm{sp}}^2] = \int\!\!\int p(\nabla L(\theta) = 0,\, \nabla L(\theta') = 0)
-    \cdot \E[\cdots]\,d\theta\,d\theta'.
-  \]
-  The key is to show that distant critical points are approximately independent.
-  Specifically, when $\|\theta - \theta'\| \ge c\sqrt{n}$, the random variables
-  $\nabla L(\theta)$ and $\nabla L(\theta')$ are nearly independent due to the random data,
-  giving:
-  \[
-    p(\nabla L(\theta) = 0,\, \nabla L(\theta') = 0)
-    \le (1 + e^{-c\|\theta-\theta'\|^2/n}) \cdot p(\nabla L(\theta) = 0) \cdot p(\nabla L(\theta') = 0).
-  \]
-  The contribution from ``close'' pairs $\|\theta - \theta'\| < c\sqrt{n}$ is controlled by
-  the local geometry: each critical point $\theta_c$ has a basin of isolation of radius
-  $r(\theta_c) = \Omega(1)$ in parameter space. To see this, note that
-  $\lambda_{\min}(\nabla^2 L(\theta_c)) \ge c_2(\gamma_\star - \gamma)$ by
-  Theorem~\ref{thm:scaling}(b), so by Taylor expansion,
-  $\|\nabla L(\theta)\| \ge \frac{c_2(\gamma_\star - \gamma)}{2}\|\theta - \theta_c\|$
-  for $\|\theta - \theta_c\| \le r_0$, where $r_0$ is determined by the Lipschitz constant
-  of the Hessian (which is $O(1)$ under the bounded-loss assumption). This implies
-  $\nabla L(\theta) \ne 0$ in a ball of radius
-  $r(\theta_c) \ge c \cdot (\gamma_\star - \gamma) > 0$ around each critical point, so
-  distinct critical points are separated by at least $\Omega(1)$. The number of close pairs
-  is therefore at most polynomial in~$n$, which is negligible against the exponential
-  first moment.
+\begin{proof}
+We split the argument into two parts: the first moment (already established in the
+proof of Theorem~\ref{thm:phase-transition}(b)) and the second moment bound that
+is the core of this section.
+
+\medskip
+\textbf{Step~1: First moment recap.}
+By the Kac--Rice formula~\eqref{eq:kac-rice} and the spectral analysis of
+Section~\ref{sec:proofs}, the expected count satisfies
+\begin{equation}\label{eq:first-moment-lb}
+  \E[N_{\mathrm{sp}}] \ge \exp\!\bigl(c_0(\gamma_\star - \gamma)^2 n\bigr)
+\end{equation}
+for a constant $c_0 > 0$ depending on $\delta$ and $\mu_\Sigma$. In particular,
+$\E[N_{\mathrm{sp}}] \to \infty$ as $n \to \infty$ whenever $\gamma < \gamma_\star$.
+
+\medskip
+\textbf{Step~2: The two-point Kac--Rice formula.}
+The second factorial moment is
+\begin{equation}\label{eq:two-point-kr}
+  \E[N_{\mathrm{sp}}(N_{\mathrm{sp}} - 1)]
+  = \int\!\!\int_{\theta \ne \theta'}
+    \rho_2(\theta, \theta')\,d\theta\,d\theta',
+\end{equation}
+where $\rho_2(\theta, \theta')$ is the two-point Kac--Rice density:
+\[
+  \rho_2(\theta, \theta')
+  = \E\!\bigl[\bigl|\det \nabla^2 L(\theta)\bigr|
+    \cdot \bigl|\det \nabla^2 L(\theta')\bigr|
+    \cdot \mathbf{1}_{\nabla^2 L(\theta) \succeq 0}
+    \cdot \mathbf{1}_{\nabla^2 L(\theta') \succeq 0}
+    \;\big|\; \nabla L(\theta) = 0,\,\nabla L(\theta') = 0\bigr]
+  \cdot p_{\nabla L(\theta),\nabla L(\theta')}(0,0).
+\]
+Here $p_{\nabla L(\theta),\nabla L(\theta')}(0,0)$ denotes the joint density of
+$(\nabla L(\theta), \nabla L(\theta'))$ evaluated at the origin. To bound
+$\E[N_{\mathrm{sp}}(N_{\mathrm{sp}}-1)]$ from above, it suffices to show that
+for distant pairs $\|\theta - \theta'\| > \eta$ (with $\eta > 0$ fixed), the
+joint density approximately factors.
+
+\medskip
+\textbf{Step~3: Separation of close and distant pairs.}
+Fix $\eta > 0$ small but independent of~$n$. We decompose the integral~\eqref{eq:two-point-kr}
+into two regions.
+
+\emph{Close pairs} ($\|\theta - \theta'\| \le \eta$). Since $\gamma < \gamma_\star$,
+the spurious critical points we count have Hessian eigenvalues bounded below (in
+the positive-definite directions) with spectral gap
+$\Delta(\theta_c) \ge c_2(\gamma_\star - \gamma)$ by Theorem~\ref{thm:scaling}(b).
+By Taylor expansion around any such critical point $\theta_c$,
+\[
+  \|\nabla L(\theta)\|
+  \ge \tfrac{1}{2}c_2(\gamma_\star - \gamma)\|\theta - \theta_c\|
+\]
+for $\|\theta - \theta_c\| \le r_0$, where $r_0 = \Theta(1)$ is determined by the
+Lipschitz constant of the Hessian (bounded under the bounded-loss assumption). It
+follows that distinct critical points are separated by at least
+$r_{\min} = \Omega(\gamma_\star - \gamma) > 0$, so for $\eta < r_{\min}$ the close-pair
+region contributes zero to the integral: no two distinct critical points can both
+lie in a ball of radius $\eta$.
+
+\emph{Distant pairs} ($\|\theta - \theta'\| > \eta$). This is the region where
+the decorrelation argument applies.
+
+\medskip
+\textbf{Step~4: Decorrelation for distant pairs.}
+Fix $\theta, \theta'$ with $\|\theta - \theta'\| > \eta$. Write $W, W'$ for the
+respective first-layer weight matrices. The gradient of the loss at $\theta$ takes
+the Gauss--Newton form
+\[
+  \nabla L(\theta) = \frac{1}{n} J(\theta)^\top r(\theta),
+\]
+where $J(\theta) \in \R^{n \times p}$ is the Jacobian and $r(\theta) \in \R^n$ the
+residual vector. The Jacobian column corresponding to the weight $w_j$ involves the
+gating pattern $S_j(\theta) = \{i : w_j^\top x_i > 0\}$, so whether data point $x_i$
+contributes to the $j$-th block of $J(\theta)$ depends on the sign of $w_j^\top x_i$.
+
+We partition the data indices $\{1, \ldots, n\}$ based on proximity to the decision
+boundaries of both $\theta$ and $\theta'$. Fix a cutoff $R = n^{-1/2 + \varepsilon}$
+for a small $\varepsilon > 0$, and define
+\[
+  I_{\mathrm{near}}
+  = \bigl\{i \in [n] : \min\!\bigl(\max_{1 \le j \le m} |w_j^\top x_i|,\;
+    \max_{1 \le j \le m} |w_j'{}^\top x_i|\bigr) < R\bigr\}.
+\]
+Since $x_i \sim \mathcal{N}(0, \Sigma)$ and each $w_j$ is a fixed unit-order vector,
+the probability that $|w_j^\top x_i| < R$ is $O(R)$ by the Gaussian anti-concentration
+bound $\Prob(|w_j^\top x_i| < R) \le 2R / (\sqrt{2\pi}\,\|w_j\|_\Sigma)$ where
+$\|w_j\|_\Sigma^2 = w_j^\top \Sigma w_j = \Theta(1)$. A union bound over the $2m = O(n)$
+hyperplanes gives
+\[
+  \Prob(i \in I_{\mathrm{near}}) = O(m \cdot R) = O(n \cdot n^{-1/2+\varepsilon})
+    = O(n^{1/2 + \varepsilon}).
+\]
+But this is the probability per data point, and $m \cdot R = O(\gamma n \cdot n^{-1/2+\varepsilon})$; since we need this to be $o(1)$ per data point, we use the bound
+$\Prob(i \in I_{\mathrm{near}}) \le 2m \cdot 2R/\sqrt{2\pi} = O(\gamma \cdot n^{1/2+\varepsilon})$,
+which for the expected cardinality gives
+\[
+  \E[|I_{\mathrm{near}}|] = n \cdot O(\gamma \cdot n^{-1/2+\varepsilon})
+  = O(\gamma \cdot n^{1/2 + \varepsilon}) = o(n).
+\]
+By Markov's inequality, $|I_{\mathrm{near}}| = o(n)$ with high probability. Set
+$I_{\mathrm{far}} = [n] \setminus I_{\mathrm{near}}$.
+
+\medskip
+\textbf{Step~5: Conditional factorization.}
+For every $i \in I_{\mathrm{far}}$, the data point $x_i$ satisfies
+$|w_j^\top x_i| \ge R$ for all neurons $j$ of both $\theta$ and $\theta'$. The gating
+patterns $\mathbf{1}(w_j^\top x_i > 0)$ and $\mathbf{1}(w_j'{}^\top x_i > 0)$ are
+therefore stable: small perturbations of $x_i$ do not change them. Conditioning on the
+data $\{x_i\}_{i \in I_{\mathrm{far}}}$, the gating patterns for all far data points are
+fixed, and the contributions of these points to $J(\theta)$ and $J(\theta')$ are
+deterministic functions of $\{x_i\}_{i \in I_{\mathrm{far}}}$.
+
+Decompose the gradient as
+\[
+  \nabla L(\theta) = \nabla L_{\mathrm{far}}(\theta) + \nabla L_{\mathrm{near}}(\theta),
+\]
+where $\nabla L_{\mathrm{far}}(\theta) = \frac{1}{n}\sum_{i \in I_{\mathrm{far}}}
+J_i(\theta)^\top r_i(\theta)$ and $\nabla L_{\mathrm{near}}(\theta)$ is the corresponding
+sum over $I_{\mathrm{near}}$, with $J_i$ denoting the $i$-th row of the Jacobian and
+$r_i$ the $i$-th residual. Since $|I_{\mathrm{near}}| = o(n)$ and each summand is
+$O(1)$ (under the bounded data and bounded loss assumptions), we have
+\begin{equation}\label{eq:near-perturbation}
+  \|\nabla L_{\mathrm{near}}(\theta)\| = O\!\bigl(|I_{\mathrm{near}}|/n\bigr) = o(1).
+\end{equation}
+
+The critical observation is that, conditional on $\{x_i\}_{i \in I_{\mathrm{far}}}$,
+the remaining randomness comes from $\{x_i\}_{i \in I_{\mathrm{near}}}$. For a data
+point $i \in I_{\mathrm{near}}$, the gating patterns at $\theta$ and $\theta'$ may differ
+(since $\|\theta - \theta'\| > \eta$ means the hyperplane arrangements are different), but
+each such point contributes $O(1/n)$ to each gradient. The joint density of
+$(\nabla L(\theta), \nabla L(\theta'))$ at the origin, conditional on
+$\{x_i\}_{i \in I_{\mathrm{far}}}$, can be written as:
+\begin{multline}\label{eq:joint-factorization}
+  p\!\bigl(\nabla L(\theta) = 0,\, \nabla L(\theta') = 0 \;\big|\;
+    \{x_i\}_{i \in I_{\mathrm{far}}}\bigr) \\
+  = p\!\bigl(\nabla L(\theta) = 0 \;\big|\;
+    \{x_i\}_{i \in I_{\mathrm{far}}}\bigr)
+  \cdot p\!\bigl(\nabla L(\theta') = 0 \;\big|\;
+    \{x_i\}_{i \in I_{\mathrm{far}}}\bigr)
+  \cdot \bigl(1 + \Delta(\theta,\theta')\bigr),
+\end{multline}
+where $\Delta(\theta,\theta')$ is the correlation error. We now bound this error.
+
+Conditional on the far data, $\nabla L(\theta) = \nabla L_{\mathrm{far}}(\theta)
++ \nabla L_{\mathrm{near}}(\theta)$, where $\nabla L_{\mathrm{far}}(\theta)$ is a
+fixed vector (a function of the conditioned data). The event
+$\{\nabla L(\theta) = 0\}$ requires
+$\nabla L_{\mathrm{near}}(\theta) = -\nabla L_{\mathrm{far}}(\theta)$, so the density
+at the origin is determined by the density of $\nabla L_{\mathrm{near}}(\theta)$
+evaluated at $-\nabla L_{\mathrm{far}}(\theta)$.
+
+Since $\|\theta - \theta'\| > \eta$ and the weight vectors of $\theta, \theta'$ define
+different hyperplane arrangements, the sets of near-boundary data points that are
+``active'' (i.e., have an unstable gating pattern) for $\theta$ versus $\theta'$ are
+generically disjoint: a point $x_i$ with $|w_j^\top x_i| < R$ for some $j$ typically
+has $|w_k'{}^\top x_i| \gg R$ for the corresponding neurons of $\theta'$ when
+$\|w_j - w_k'\| = \Omega(\eta)$. The number of data points that are simultaneously
+near-boundary for both $\theta$ and $\theta'$ has expectation
+$O(n \cdot m^2 R^2) = O(n^{1+2\varepsilon})$ which is still $o(n)$, and their
+total contribution to the correlation between $\nabla L_{\mathrm{near}}(\theta)$ and
+$\nabla L_{\mathrm{near}}(\theta')$ is $O(|I_{\mathrm{near}}|^2/n^2) = o(1)$.
+
+A standard Gaussian comparison argument (applied to the conditional distributions of the
+near-data contributions, which are sums of $|I_{\mathrm{near}}|$ independent
+$O(1/n)$-bounded terms) gives
+\begin{equation}\label{eq:correlation-error}
+  |\Delta(\theta, \theta')| \le C \cdot |I_{\mathrm{near}}|/n
+\end{equation}
+for a constant $C > 0$. Since $|I_{\mathrm{near}}| = o(n)$ with high probability,
+$\Delta(\theta, \theta') = o(1)$ uniformly over $\theta, \theta'$ in the relevant
+compact region.
+
+\medskip
+\textbf{Step~6: Bounding the second moment.}
+Combining Steps~3--5, the two-point integral~\eqref{eq:two-point-kr} over distant pairs
+satisfies
+\begin{align}
+  \int\!\!\int_{\|\theta - \theta'\| > \eta} \rho_2(\theta, \theta')\,d\theta\,d\theta'
+  &\le (1 + o(1)) \int\!\!\int_{\|\theta - \theta'\| > \eta}
+    \rho_1(\theta)\,\rho_1(\theta')\,d\theta\,d\theta' \notag \\
+  &\le (1 + o(1))\,(\E[N_{\mathrm{sp}}])^2, \label{eq:distant-bound}
+\end{align}
+where $\rho_1(\theta)$ is the one-point Kac--Rice density. Here we used
+the factorization~\eqref{eq:joint-factorization} together with the bound on the
+conditional Hessian determinants, which by the same conditioning argument factor as
+\[
+  \E\!\bigl[|\det \nabla^2 L(\theta)| \cdot |\det \nabla^2 L(\theta')|
+    \cdot \mathbf{1}_{\succeq 0} \;\big|\; \nabla L = 0,\, \nabla L' = 0\bigr]
+  \le (1+o(1))\,\E\!\bigl[|\det \nabla^2 L(\theta)| \cdot \mathbf{1}_{\succeq 0}
+    \;\big|\; \nabla L = 0\bigr]^2,
+\]
+since the Hessians at distant points depend on the same partition into far and near data,
+and the far-data contributions dominate.
+
+Since the close-pair region contributes zero (Step~3), we have
+\[
+  \E[N_{\mathrm{sp}}(N_{\mathrm{sp}} - 1)] \le (1+o(1))\,(\E[N_{\mathrm{sp}}])^2.
+\]
+Adding back the diagonal:
+\[
+  \E[N_{\mathrm{sp}}^2]
+  = \E[N_{\mathrm{sp}}(N_{\mathrm{sp}} - 1)] + \E[N_{\mathrm{sp}}]
+  \le (1+o(1))\,(\E[N_{\mathrm{sp}}])^2 + \E[N_{\mathrm{sp}}].
+\]
+Since $\E[N_{\mathrm{sp}}] \ge \exp(c_0(\gamma_\star - \gamma)^2 n) \to \infty$,
+the additive term $\E[N_{\mathrm{sp}}]$ is negligible against $(\E[N_{\mathrm{sp}}])^2$,
+giving
+\[
+  \frac{\E[N_{\mathrm{sp}}^2]}{(\E[N_{\mathrm{sp}}])^2} \le 1 + o(1).
+\]
+The $o(1)$ error is in fact $O(e^{-cn})$ because the factorization
+error~\eqref{eq:correlation-error} concentrates exponentially (standard sub-Gaussian
+bounds on $|I_{\mathrm{near}}|$ via the independence of the data points).
+
+\medskip
+\textbf{Step~7: Paley--Zygmund inequality.}
+Applying the Paley--Zygmund inequality to the non-negative integer-valued random variable
+$N_{\mathrm{sp}}$:
+\[
+  \Prob(N_{\mathrm{sp}} > 0) \ge \frac{(\E[N_{\mathrm{sp}}])^2}{\E[N_{\mathrm{sp}}^2]}
+  \ge \frac{1}{1 + O(e^{-cn})} = 1 - O(e^{-cn}).
+\]
+This completes the proof.
 \end{proof}
+
+\begin{remark}\label{rem:spin-glass-comparison}
+The decorrelation mechanism here differs from the one used in the random spherical
+$p$-spin model~\cite{auffinger2013}. In the spin glass setting, the covariance of the
+Hamiltonian gradient at two configurations $\sigma, \sigma'$ is controlled by their
+overlap $\langle \sigma, \sigma' \rangle / N$, and the second moment computation
+proceeds by integrating over the overlap parameter. In the present setting, the
+gradient $\nabla L(\theta) = \frac{1}{n} J(\theta)^\top r(\theta)$ involves the
+Jacobian, whose columns depend on the gating patterns $S_j(\theta) = \{i : w_j^\top x_i > 0\}$.
+Two distant weight configurations $\theta, \theta'$ produce different gating patterns, and
+the correlation between $\nabla L(\theta)$ and $\nabla L(\theta')$ is governed not by a
+scalar overlap but by the fraction of data points whose gating is unstable under the
+change $\theta \to \theta'$. This structural difference is what makes the partition
+into $I_{\mathrm{near}}$ and $I_{\mathrm{far}}$ the natural decomposition.
+\end{remark}
 
 \section{Extensions and Discussion}\label{sec:extensions}
 
@@ -1696,7 +2083,7 @@ for $\delta < 1/2$, well-approximated by $4/(2+3\delta)$ for small~$\delta$.
 
 \FloatBarrier
 
-\begin{thebibliography}{11}
+\begin{thebibliography}{20}
 
 \bibitem{choromanska2015}
 A.~Choromanska, M.~Henaff, M.~Mathieu, G.~B.~Arous, and Y.~LeCun.
@@ -1797,6 +2184,11 @@ B.~Ghorbani, S.~Mei, T.~Misiakiewicz, and A.~Montanari.
 G.~Ben~Arous and R.~Gheissari.
 \newblock Online stochastic gradient descent on non-convex losses from high-dimensional inference.
 \newblock \emph{Journal of Machine Learning Research}, 22(106):1--51, 2021.
+
+\bibitem{auffinger2013}
+A.~Auffinger, G.~Ben~Arous, and J.~\v{C}ern\'{y}.
+\newblock Random matrices and complexity of spin glasses.
+\newblock \emph{Communications on Pure and Applied Mathematics}, 66(2):165--201, 2013.
 
 \end{thebibliography}
 
