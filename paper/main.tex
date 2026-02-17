@@ -75,8 +75,8 @@ predicts that gradient-based methods should become trapped in poor local minima.
 practice, this rarely occurs.
 
 A growing body of work \cite{choromanska2015,kawaguchi2016,safran2018,venturi2019} has provided partial explanations by studying
-the geometry of the loss surface. The overparameterized regime---where the number of
-parameters exceeds the number of data points---has received particular attention, with
+the geometry of the loss surface. The overparameterized regime, where the number of
+parameters exceeds the number of data points, has received particular attention, with
 results showing that all local minima become global in sufficiently wide networks \cite{du2019,allenzhu2019}.
 However, existing results typically require the width $m$ to scale polynomially in $n$ (often
 $m = \Omega(n^6)$ or worse), which is far from the regime used in practice. The question of what
@@ -239,9 +239,9 @@ the roles of the data geometry and the weight geometry.
   is itself of order $O(n^{-1/2})$ (by the linear scaling of
   Theorem~\ref{thm:scaling}), so the $O_P(n^{-1/2})$ decoupling error in
   Lemma~\ref{lem:decoupling} competes directly with the gap. A finer analysis using a
-  leave-one-out argument in the style of Bai and Silverstein---removing one data point
+  leave-one-out argument in the style of Bai and Silverstein (removing one data point
   $x_i$ at a time and controlling the rank-one perturbation to each gated covariance
-  $\widehat{\Sigma}_j$---yields the improved bound
+  $\widehat{\Sigma}_j$) yields the improved bound
   \[
     \bigl\|\nabla^2 L(\theta_c) - H_{\mathrm{dec}}(\theta_c)\bigr\|_{\op}
     = O_P\!\left(n^{-2/3}\right).
@@ -327,7 +327,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   of $1/2$ (the probability that a ReLU unit is active for isotropic Gaussian inputs).
 \end{definition}
 
-\begin{theorem}[Critical ratio --- main result]\label{thm:critical-ratio}
+\begin{theorem}[Critical ratio]\label{thm:critical-ratio}
   Under Assumptions~\ref{ass:data}--\ref{ass:labels}, define:
   \begin{equation}\label{eq:gamma-star}
     \gamma_\star = \inf\!\left\{\gamma > 0 : \Gamma(\gamma, 0^-) > 0\right\},
@@ -631,7 +631,7 @@ The key is that along this path, the Hessian in the ``transverse'' directions
 (perpendicular to the path) remains positive semidefinite, which follows from the
 spectral gap bound. This means any critical point along the path must be a minimum,
 and by continuity of~$L$, we cannot have $L(\theta_c) > L(\theta_{\mathrm{opt}})$ with a
-minimum in between---the path must pass through a saddle point, contradicting the
+minimum in between; the path must pass through a saddle point, contradicting the
 positivity of the Hessian.
 
 More precisely, we use the mountain pass theorem (Ambrosetti--Rabinowitz): if $\theta_c$
@@ -711,7 +711,7 @@ This gives the Taylor expansion:
 \end{equation}
 
 \medskip
-\textbf{Step 2: Supercritical regime --- bounded-loss critical points.}
+\textbf{Step 2: Supercritical regime: bounded-loss critical points.}
 
 For $\gamma > \gamma_\star$, the spectral edge satisfies $\lambda_-(\gamma) > 0$.
 By Tracy--Widom theory for sample covariance matrices, the smallest eigenvalue of
@@ -889,7 +889,7 @@ property.
   narrower networks to train successfully.
 
   \item \textbf{Phase transition sharpness:} The exponential concentration implies that
-  the transition is practically a ``cliff''---there is a narrow window of widths around
+  the transition is practically a ``cliff,'' and there is a narrow window of widths around
   $m = \gamma_\star n$ where optimization difficulty changes dramatically.
 \end{enumerate}
 
@@ -897,15 +897,15 @@ property.
 
 To test whether the phase transition predicted by our theory persists beyond synthetic
 Gaussian data, we run the gradient flow experiment on whitened MNIST digits. We subsample
-$n = 200$ training images, apply PCA to reduce to $d$ dimensions, and whiten the result
+$n = 500$ training images, apply PCA to reduce to $d$ dimensions, and whiten the result
 (so the empirical covariance is approximately $I_d$). We then sweep $\gamma = m/n$ from
-$0.3$ to $2.5$ for $\delta \in \{0.15, 0.25, 0.40\}$, training two-layer ReLU networks
-with gradient flow ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps, median over 3 seeds).
+$0.2$ to $2.0$ for $\delta \in \{0.05, 0.10, 0.15\}$, training two-layer ReLU networks
+with gradient flow ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps, $m \le 600$, median over 3 seeds).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig7_mnist_phase_boundary.pdf}
-\caption[MNIST phase boundary]{Phase boundary on whitened MNIST data ($n = 200$).
+\caption[MNIST phase boundary]{Phase boundary on whitened MNIST data ($n = 500$).
   Color encodes $\log_{10}(\text{median loss})$. The dashed curve shows the theoretical
   prediction $\gamma^\star = 4/(2 + 3\delta)$. Despite the non-Gaussian, discrete nature
   of real image data, the empirical transition region aligns with the theoretical boundary,
@@ -916,11 +916,12 @@ with gradient flow ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps, median over 3 s
 Figure~\ref{fig:mnist} shows that the theoretical boundary $\gamma^\star(\delta)$ tracks the
 empirical transition region on real data. At low $\delta$ (few PCA components), the loss
 remains elevated across all $\gamma$, reflecting the difficulty of fitting 10-class labels
-with limited input features. As $\delta$ increases, the loss drops sharply above the
-theoretical curve, consistent with the predicted phase transition. The transition is softer
+with limited input features. As $\delta$ increases, the loss drops by over an order of
+magnitude, consistent with the predicted phase transition. The transition is softer
 than in the synthetic case (Figure~\ref{fig:empirical-validation}), which is expected:
 MNIST has non-Gaussian tails and residual structure even after whitening. Nevertheless,
-the qualitative agreement provides empirical support for the universality conjecture.
+the qualitative agreement at $n = 500$ provides empirical support for the universality
+conjecture.
 
 \subsection{General activation functions}\label{sec:general-activations}
 
@@ -979,8 +980,8 @@ Here $\Phi$ and $\varphi$ denote the standard normal CDF and PDF, and
 $\varsigma(z) = 1/(1 + e^{-z})$ is the logistic sigmoid. The table reveals a clear
 ordering: ReLU has the largest $\kappa$ among standard activations and therefore the
 smallest $\gamma_\star$, requiring the fewest neurons to eliminate spurious local minima.
-Activations with smaller $\kappa$---such as Sigmoid, whose derivative is uniformly
-small---require proportionally more neurons. Intuitively, a larger $\kappa$ means each
+Activations with smaller $\kappa$ (such as Sigmoid, whose derivative is uniformly
+small) require proportionally more neurons. Intuitively, a larger $\kappa$ means each
 neuron's gradient carries more information about the loss curvature, so fewer neurons
 suffice to ``fill in'' all directions of the Hessian.
 
@@ -1056,8 +1057,8 @@ neural networks: there exists a critical width-to-sample ratio $\gamma_\star$ (d
 on the data covariance spectrum and the dimension-to-sample ratio) above which all local
 minima are global and below which exponentially many spurious local minima exist. The
 transition is characterized by a spectral gap that vanishes at $\gamma_\star$, and we
-identified the universal critical exponent. Our spectral decoupling technique---decomposing
-the Hessian at critical points into data and weight contributions---may find broader
+identified the universal critical exponent. Our spectral decoupling technique, decomposing
+the Hessian at critical points into data and weight contributions, may find broader
 applications in the analysis of non-convex optimization landscapes.
 
 The central message is that moderate overparameterization suffices: one does not need
