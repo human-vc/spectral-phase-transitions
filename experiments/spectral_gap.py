@@ -1,13 +1,14 @@
-import json
-import sys
-import os
 import argparse
+import json
+import os
+import sys
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.autograd.functional import hessian
 
+def compute_gamma_star(delta):
+    return 4.0 / (2.0 + 3.0 * delta)
 
 class TwoLayerReLU(nn.Module):
     def __init__(self, d, m):
@@ -20,221 +21,121 @@ class TwoLayerReLU(nn.Module):
     def forward(self, x):
         return self.fc2(torch.relu(self.fc1(x)))
 
-
-class TeacherNetwork(nn.Module):
-    def __init__(self, d, m_star):
-        super().__init__()
-        self.fc1 = nn.Linear(d, m_star, bias=False)
-        self.fc2 = nn.Linear(m_star, 1, bias=False)
-        nn.init.normal_(self.fc1.weight, std=1.0 / np.sqrt(d))
-        nn.init.normal_(self.fc2.weight, std=1.0 / np.sqrt(m_star))
-
-    def forward(self, x):
-        return self.fc2(torch.relu(self.fc1(x)))
-
-
-def generate_data(n, d, m_star, noise_std, seed):
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-    X = torch.randn(n, d)
-    teacher = TeacherNetwork(d, m_star)
-    with torch.no_grad():
-        y = teacher(X) + noise_std * torch.randn(n, 1)
-    return X, y
-
-
-def make_loss_fn(model, X, y):
-    def loss_fn(*params):
+def compute_full_hessian(model, X, y):
+    params = list(model.parameters())
+    shapes = [p.shape for p in params]
+    numels = [p.numel() for p in params]
+    
+    def loss_fn(flat_params):
+        # Reconstruct params from flat vector
         idx = 0
-        for p in model.parameters():
-            numel = p.numel()
-            p.data = params[idx].reshape(p.shape)
-            idx += 1
-        pred = model(X)
+        w1 = flat_params[idx:idx+numels[0]].view(shapes[0])
+        idx += numels[0]
+        w2 = flat_params[idx:idx+numels[1]].view(shapes[1])
+        
+        # Manual forward pass
+        h = torch.relu(X @ w1.t())
+        pred = h @ w2.t()
         return nn.functional.mse_loss(pred, y)
-    return loss_fn
+    
+    flat_current_params = torch.cat([p.view(-1) for p in params])
+    H = torch.autograd.functional.hessian(loss_fn, flat_current_params)
+    return H
 
-
-def compute_hessian_eigenvalues(model, X, y, num_eigenvalues=5):
-    param_list = tuple(p.contiguous().view(-1) for p in model.parameters())
-    flat_params = torch.cat(param_list)
-    total_params = flat_params.numel()
-
-    if total_params > 2000:
-        return approximate_hessian_eigenvalues(model, X, y, num_eigenvalues)
-
-    def flat_loss(flat_p):
-        idx = 0
-        params_reconstructed = []
-        for p in model.parameters():
-            numel = p.numel()
-            params_reconstructed.append(flat_p[idx:idx + numel].reshape(p.shape))
-            idx += numel
-
-        h = torch.relu(X @ params_reconstructed[0].t())
-        pred = h @ params_reconstructed[1].t()
-        return nn.functional.mse_loss(pred, y)
-
-    H = torch.autograd.functional.hessian(flat_loss, flat_params)
-    H_np = H.detach().numpy()
-    H_sym = 0.5 * (H_np + H_np.T)
-    eigenvalues = np.linalg.eigvalsh(H_sym)
-    return eigenvalues
-
-
-def approximate_hessian_eigenvalues(model, X, y, num_eigenvalues=5, num_iterations=100):
-    params = [p for p in model.parameters()]
-    flat_params = torch.cat([p.contiguous().view(-1) for p in params])
-    total_params = flat_params.numel()
-    k = min(num_eigenvalues, total_params)
-
-    def hvp(vec):
-        model.zero_grad()
-        pred = model(X)
-        loss = nn.functional.mse_loss(pred, y)
-        grads = torch.autograd.grad(loss, params, create_graph=True)
-        flat_grad = torch.cat([g.contiguous().view(-1) for g in grads])
-        grad_vec_product = torch.sum(flat_grad * vec)
-        hvp_grads = torch.autograd.grad(grad_vec_product, params, retain_graph=True)
-        return torch.cat([g.contiguous().view(-1) for g in hvp_grads]).detach()
-
-    V = torch.randn(total_params, k)
-    V, _ = torch.linalg.qr(V)
-
-    for _ in range(num_iterations):
-        AV = torch.zeros_like(V)
-        for j in range(k):
-            AV[:, j] = hvp(V[:, j])
-        V, _ = torch.linalg.qr(AV)
-
-    T = torch.zeros(k, k)
-    for j in range(k):
-        Av = hvp(V[:, j])
-        for i in range(k):
-            T[i, j] = torch.dot(V[:, i], Av)
-
-    eigenvalues = torch.linalg.eigvalsh(T).numpy()
-    return eigenvalues
-
-
-def train_to_critical_point(X, y, d, m, seed, lr=0.01, epochs=3000):
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-    model = TwoLayerReLU(d, m)
-    nn.init.normal_(model.fc1.weight, std=1.0 / np.sqrt(d))
-    nn.init.normal_(model.fc2.weight, std=1.0 / np.sqrt(m))
+def train_to_critical_point(model, X, y, lr=1e-4, epochs=10000, tol=1e-6):
     optimizer = optim.SGD(model.parameters(), lr=lr)
-
+    criterion = nn.MSELoss()
+    
     for epoch in range(epochs):
         optimizer.zero_grad()
         pred = model(X)
-        loss = nn.functional.mse_loss(pred, y)
+        loss = criterion(pred, y)
         loss.backward()
-        grad_norm = sum(p.grad.norm().item() ** 2 for p in model.parameters()) ** 0.5
-        optimizer.step()
-        if grad_norm < 1e-5:
+        
+        grad_norm = torch.cat([p.grad.view(-1) for p in model.parameters()]).norm()
+        if grad_norm < tol:
             break
+            
+        optimizer.step()
+    
+    return loss.item()
 
-    with torch.no_grad():
-        final_loss = nn.functional.mse_loss(model(X), y).item()
-
-    return model, final_loss
-
-
-def compute_gamma_star(delta):
-    return 4.0 / (2.0 + 3.0 * delta)
-
-
-def run_spectral_experiment(delta_values, gamma_offsets, n_base, num_seeds,
-                            noise_std, lr, epochs):
+def run_experiment(args):
+    torch.manual_seed(args.seed)
+    np.random.seed(args.seed)
+    
     results = []
-    total = len(delta_values) * len(gamma_offsets) * num_seeds
-    count = 0
-
-    for delta in delta_values:
-        d = max(1, int(round(delta * n_base)))
-        n = n_base
-        m_star = max(1, n // 4)
-        gs = compute_gamma_star(delta)
-
-        data_seed = 10000
-        X, y = generate_data(n, d, m_star, noise_std, data_seed)
-
+    
+    delta_grid = np.linspace(args.delta_min, args.delta_max, args.num_delta)
+    if args.quick:
+        delta_grid = delta_grid[:2]
+        args.num_seeds = 1
+        args.epochs = 1000
+        
+    gamma_offsets = [-0.5, -0.2, 0.0, 0.2, 0.5]
+    
+    for delta in delta_grid:
+        d = int(delta * args.n)
+        gamma_star = compute_gamma_star(delta)
+        
         for offset in gamma_offsets:
-            gamma = gs + offset
-            if gamma <= 0:
-                continue
-            m = max(1, int(round(gamma * n)))
-
-            for seed in range(num_seeds):
-                count += 1
-                sys.stdout.write(f"\r  [{count}/{total}] delta={delta:.2f} gamma={gamma:.2f} offset={offset:+.2f} seed={seed}")
-                sys.stdout.flush()
-
-                model, final_loss = train_to_critical_point(X, y, d, m, seed, lr, epochs)
-                eigenvalues = compute_hessian_eigenvalues(model, X, y)
-                min_eigenvalue = float(eigenvalues[0])
-                spectral_gap = float(eigenvalues[1] - eigenvalues[0]) if len(eigenvalues) > 1 else 0.0
-                is_saddle = min_eigenvalue < -1e-6
-                is_local_min = min_eigenvalue > -1e-6
-
+            gamma = gamma_star + offset
+            if gamma <= 0: continue
+            
+            m = int(gamma * args.n)
+            
+            for seed in range(args.num_seeds):
+                # Teacher
+                m_teacher = max(1, args.n // 4)
+                teacher = TwoLayerReLU(d, m_teacher)
+                with torch.no_grad():
+                    teacher.fc1.weight.normal_(0, 1/np.sqrt(d))
+                    teacher.fc2.weight.normal_(0, 1/np.sqrt(m_teacher))
+                
+                X = torch.randn(args.n, d)
+                with torch.no_grad():
+                    y = teacher(X) + args.noise * torch.randn(args.n, 1)
+                
+                model = TwoLayerReLU(d, m)
+                with torch.no_grad():
+                    model.fc1.weight.normal_(0, 1/np.sqrt(d))
+                    model.fc2.weight.normal_(0, 1/np.sqrt(m))
+                
+                final_loss = train_to_critical_point(model, X, y, lr=args.lr, epochs=args.epochs)
+                
+                H = compute_full_hessian(model, X, y)
+                eigvals = torch.linalg.eigvalsh(H)
+                min_eig = eigvals[0].item()
+                
                 results.append({
-                    "gamma": float(gamma),
                     "delta": float(delta),
-                    "gamma_star": float(gs),
+                    "gamma": float(gamma),
+                    "gamma_star": float(gamma_star),
                     "gamma_offset": float(offset),
-                    "n": n,
-                    "d": d,
-                    "m": m,
-                    "seed": seed,
+                    "min_eig": min_eig,
                     "final_loss": final_loss,
-                    "min_eigenvalue": min_eigenvalue,
-                    "spectral_gap": spectral_gap,
-                    "is_saddle": bool(is_saddle),
-                    "is_local_min": bool(is_local_min),
-                    "top_eigenvalues": [float(e) for e in eigenvalues[:5]],
+                    "seed": seed
                 })
-
-    sys.stdout.write("\n")
+                
     return results
 
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--n-base", type=int, default=30)
-    parser.add_argument("--num-seeds", type=int, default=5)
-    parser.add_argument("--num-delta", type=int, default=4)
-    parser.add_argument("--delta-min", type=float, default=0.2)
-    parser.add_argument("--delta-max", type=float, default=0.8)
-    parser.add_argument("--noise-std", type=float, default=0.1)
-    parser.add_argument("--lr", type=float, default=0.005)
-    parser.add_argument("--epochs", type=int, default=3000)
-    parser.add_argument("--output", type=str, default="results/spectral_gap.json")
-    args = parser.parse_args()
-
-    delta_values = np.linspace(args.delta_min, args.delta_max, args.num_delta).tolist()
-    gamma_offsets = [-0.8, -0.5, -0.3, -0.15, -0.05, 0.0, 0.05, 0.15, 0.3, 0.5, 0.8]
-
-    print(f"Spectral gap experiment: {args.num_delta} delta x {len(gamma_offsets)} offsets x {args.num_seeds} seeds")
-    print(f"  delta range: [{args.delta_min}, {args.delta_max}]")
-    print(f"  gamma offsets from gamma*: {gamma_offsets}")
-
-    results = run_spectral_experiment(
-        delta_values, gamma_offsets, args.n_base, args.num_seeds,
-        args.noise_std, args.lr, args.epochs,
-    )
-
-    os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
-    with open(args.output, "w") as f:
-        json.dump({
-            "config": vars(args),
-            "delta_values": delta_values,
-            "gamma_offsets": gamma_offsets,
-            "results": results,
-        }, f, indent=2)
-
-    print(f"Done. {len(results)} spectral measurements saved to {args.output}")
-
-
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--n", type=int, default=30)
+    parser.add_argument("--delta_min", type=float, default=0.5)
+    parser.add_argument("--delta_max", type=float, default=2.0)
+    parser.add_argument("--num_delta", type=int, default=4)
+    parser.add_argument("--num_seeds", type=int, default=5)
+    parser.add_argument("--lr", type=float, default=1e-3)
+    parser.add_argument("--epochs", type=int, default=20000)
+    parser.add_argument("--noise", type=float, default=0.0)
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--quick", action="store_true")
+    parser.add_argument("--output", type=str, default="experiments/results/spectral_gap.json")
+    args = parser.parse_args()
+    
+    results = run_experiment(args)
+    
+    os.makedirs(os.path.dirname(args.output), exist_ok=True)
+    with open(args.output, "w") as f:
+        json.dump(results, f)
