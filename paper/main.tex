@@ -99,21 +99,24 @@ precise answer for two-layer ReLU networks.
 
 \begin{enumerate}[label=(\roman*)]
   \item \textbf{Sharp topological threshold.} We identify a critical width-to-sample ratio $\gamma_\star$ (depending on the
-  data covariance spectrum) that marks a topological phase transition in the loss landscape:
+  data covariance spectrum) that marks a topological phase transition in the loss landscape
+  (Figure~\ref{fig:phase-diagram}):
   for $\gamma > \gamma_\star$, all local minima of the empirical risk
   are global with probability $1 - e^{-\Omega(n)}$, and for $\gamma < \gamma_\star$, the expected number of
   spurious critical points grows exponentially (Theorem~\ref{thm:phase-transition}).
   This provides a \emph{sufficient} condition on the width for a benign landscape; as we
   discuss in Section~\ref{sec:landscape-dynamics}, it is not a necessary condition for
   successful optimization.
+  Empirical training dynamics confirm that the boundary is meaningful but not sharp
+  in practice (Figure~\ref{fig:empirical-validation}).
 
   \item \textbf{Spectral characterization.} We give an explicit fixed-point equation for $\gamma_\star$ in terms
   of the Stieltjes transform of the limiting spectral distribution of the data Gram matrix
-  (Theorem~\ref{thm:critical-ratio}).
+  (Theorem~\ref{thm:critical-ratio}; Figure~\ref{fig:spectral-density}).
 
   \item \textbf{Universal scaling at the transition.} We prove that the spectral gap of the Hessian
   at critical points scales as $|\gamma - \gamma_\star|$ near the transition, with universal critical
-  exponent $\beta = 1$ (Theorem~\ref{thm:scaling}).
+  exponent $\beta = 1$ (Theorem~\ref{thm:scaling}; Figure~\ref{fig:scaling-law}).
 
   \item \textbf{Spectral decoupling technique.} We introduce a decomposition of the Hessian
   at critical points into a ``data block'' and a ``weight block'' coupled through a rank-deficient
