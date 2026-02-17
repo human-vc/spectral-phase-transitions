@@ -145,7 +145,7 @@ def run_experiment():
     
     # Parameters
     n = 200
-    deltas = [0.05, 0.10, 0.15]
+    deltas = [0.1, 0.3, 0.5, 0.7, 0.9, 1.0]
     dims = [int(delta * n) for delta in deltas] 
     gammas = np.linspace(0.2, 2.0, 10).tolist() 
     num_seeds = 3
@@ -184,7 +184,7 @@ def run_experiment():
     fig.colorbar(c, ax=ax, label=r"$\log_{10}(\mathrm{loss})$")
 
     # Theoretical boundary
-    d_theory = np.linspace(0.02, 0.18, 100)
+    d_theory = np.linspace(deltas[0], deltas[-1], 100)
     g_theory = [get_gamma_star(d) for d in d_theory]
     ax.plot(d_theory, g_theory, "k--", linewidth=2, label=r"$\gamma^\star = 4/(2+3\delta)$")
 
@@ -194,10 +194,8 @@ def run_experiment():
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     
-    ax.set_xlim(0.04, 0.16) 
+    ax.set_xlim(deltas[0], deltas[-1]) 
     ax.set_ylim(gammas[0], gammas[-1])
-    
-    ax.set_title("CIFAR-10 Phase Boundary (n=200)")
 
     output_path = Path.home() / "projects/spectral-phase-transitions/paper/figures/fig8_cifar10_phase_boundary.pdf"
     output_path.parent.mkdir(parents=True, exist_ok=True)
