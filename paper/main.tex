@@ -470,8 +470,8 @@ of the Hessian.
 \addlegendentry{Min.\ eigenvalue (local min $=$ global)}
 \node[circle, fill=black, inner sep=1.5pt] at (axis cs:0.8,0) {};
 \node[above right, font=\footnotesize] at (axis cs:0.82,0.05) {$\gamma^\star$};
-\node[blue, font=\footnotesize] at (axis cs:1.2,0.9) {All minima global};
-\node[red, font=\footnotesize] at (axis cs:0.25,-0.75) {minima exist};
+\node[blue, font=\footnotesize] at (axis cs:1.15,0.5) {All minima global};
+\node[red, font=\footnotesize] at (axis cs:0.35,-0.45) {minima exist};
 \draw[<->, thin] (axis cs:0.4,-0.632) -- (axis cs:0.4,0);
 \node[font=\scriptsize, anchor=east] at (axis cs:0.38,-0.3) {$\sim\!\sqrt{\gamma^\star - \gamma}$};
 \end{axis}
@@ -830,26 +830,30 @@ self-consistent equation for all $\delta > 0$.
   width=12cm,
   height=8cm,
   xlabel={Data dimension ratio $\delta = d/n$},
-  ylabel={Critical width ratio $\gamma^\star$},
+  ylabel={Width-to-sample ratio $\gamma = m/n$},
   xmin=0, xmax=3,
-  ymin=0, ymax=1.6,
+  ymin=0, ymax=2,
   grid=major,
   grid style={gray!20},
-  legend style={font=\footnotesize, draw=none, fill=none, at={(0.97,0.97)}, anchor=north east},
+  legend style={font=\footnotesize, draw=gray!50, fill=white, fill opacity=0.9,
+    at={(0.98,0.98)}, anchor=north east},
 ]
-% gamma*(delta) = 4/(2+3delta)
-\addplot[blue, thick, smooth, domain=0.01:3, samples=200]
+% Shaded subcritical region (below curve) - red
+\addplot[red, fill=red, fill opacity=0.08, draw=none, domain=0.01:3, samples=200]
+  {4/(2 + 3*x)} \closedcycle;
+% Shaded supercritical region (above curve) - blue
+\addplot[blue, fill=blue, fill opacity=0.08, draw=none, domain=0.01:3, samples=200]
+  {4/(2 + 3*x)} |- (axis cs:3,2) |- (axis cs:0.01,2) -- cycle;
+% The critical curve
+\addplot[black, very thick, smooth, domain=0.01:3, samples=200]
   {4/(2 + 3*x)};
 \addlegendentry{$\gamma^\star(\delta) = \frac{4}{2 + 3\delta}$}
-% gamma = 1 line
-\addplot[dashed, gray, thin, domain=0:3] {1};
+% gamma = 1 interpolation line
+\addplot[dashed, gray!70, domain=0:3] {1};
 \addlegendentry{$\gamma = 1$ (interpolation threshold)}
-% Shaded supercritical region
-\addplot[blue, fill=blue, fill opacity=0.06, draw=none, domain=0.01:3, samples=200]
-  {4/(2 + 3*x)} \closedcycle;
-% Annotation
-\node[blue, font=\small] at (axis cs:1.8,1.1) {All minima global};
-\node[font=\small] at (axis cs:2.2,0.15) {Spurious minima exist};
+% Annotations centered in their regions
+\node[blue, font=\footnotesize] at (axis cs:1.5,1.4) {All minima global};
+\node[red, font=\footnotesize] at (axis cs:1.8,0.2) {Spurious minima exist};
 \end{axis}
 \end{tikzpicture}%
 }
