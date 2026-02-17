@@ -108,22 +108,9 @@ an open problem. We resolve it for two-layer ReLU networks.
   This provides a \emph{sufficient} condition on the width for a benign landscape; as we
   discuss in Section~\ref{sec:landscape-dynamics}, it is not a necessary condition for
   successful optimization.
-  Empirical training dynamics confirm that the boundary is meaningful but not sharp
-  in practice (Figure~\ref{fig:empirical-validation}).
-
-  \item \textbf{Spectral characterization.} We give an explicit fixed-point equation for $\gamma_\star$ in terms
-  of the Stieltjes transform of the limiting spectral distribution of the data Gram matrix
-  (Theorem~\ref{thm:critical-ratio}; Figure~\ref{fig:spectral-density}).
-
-  \item \textbf{Universal scaling at the transition.} We prove that the spectral gap of the Hessian
-  at critical points scales as $|\gamma - \gamma_\star|$ near the transition, with universal critical
-  exponent $\beta = 1$ (Theorem~\ref{thm:scaling}; Figure~\ref{fig:scaling-law}).
-
-  \item \textbf{Spectral decoupling technique.} We introduce a decomposition of the Hessian
-  at critical points into a ``data block'' and a ``weight block'' coupled through a rank-deficient
-  interaction term (Section~\ref{sec:decoupling}), which may be of independent interest.
 \end{enumerate}
 
+%%% FIGURE 1: Phase diagram — placed immediately after the threshold contribution
 \begin{figure}[!ht]
 \centering
 \begin{tikzpicture}
@@ -157,12 +144,30 @@ an open problem. We resolve it for two-layer ReLU networks.
 \label{fig:phase-diagram}
 \end{figure}
 
+Empirical training dynamics confirm that the boundary is meaningful but not sharp
+in practice (Figure~\ref{fig:empirical-validation}).
+
+%%% FIGURE 2: Training dynamics — placed immediately after the empirical statement
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig4_phase_boundary_empirical.pdf}
 \caption[Training dynamics and the topological boundary]{Training dynamics for two-layer ReLU networks with $n=100$, gradient flow optimization ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps), nonlinear teacher with $m_{\mathrm{teacher}} = n/2$. Color encodes $\log_{10}(\text{median loss})$ over 3 seeds per $(\delta, \gamma)$ pair. The dashed curve shows the theoretical topological boundary $\gamma^\star = 4/(2 + 3\delta)$ from Theorem~\ref{thm:phase-transition}. While the theory predicts a landscape transition at $\gamma^\star$, gradient flow achieves low loss even in parts of the subcritical regime, indicating that the optimization trajectory avoids the spurious critical points predicted by the static analysis (see Section~\ref{sec:landscape-dynamics}).}
 \label{fig:empirical-validation}
 \end{figure}
+
+\begin{enumerate}[label=(\roman*), resume]
+  \item \textbf{Spectral characterization.} We give an explicit fixed-point equation for $\gamma_\star$ in terms
+  of the Stieltjes transform of the limiting spectral distribution of the data Gram matrix
+  (Theorem~\ref{thm:critical-ratio}; Figure~\ref{fig:spectral-density}).
+
+  \item \textbf{Universal scaling at the transition.} We prove that the spectral gap of the Hessian
+  at critical points scales as $|\gamma - \gamma_\star|$ near the transition, with universal critical
+  exponent $\beta = 1$ (Theorem~\ref{thm:scaling}; Figure~\ref{fig:scaling-law}).
+
+  \item \textbf{Spectral decoupling technique.} We introduce a decomposition of the Hessian
+  at critical points into a ``data block'' and a ``weight block'' coupled through a rank-deficient
+  interaction term (Section~\ref{sec:decoupling}), which may be of independent interest.
+\end{enumerate}
 
 \subsection{Related work}
 
@@ -477,13 +482,6 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   1 + \delta + O(\delta^2) \approx 3/2$, which is exact at $\delta = 1/4$.
 \end{remark}
 
-\begin{figure}[!ht]
-\centering
-\includegraphics[width=0.75\textwidth]{figures/fig5_spectral_density.pdf}
-\caption[Hessian spectral density]{Empirical spectral density of the Hessian eigenvalues at critical points for varying $\gamma$ with $\delta = 1$, $n = 100$. As $\gamma$ increases through the critical ratio $\gamma^\star = 4/5$, the spectral support shifts rightward and the gap opens, consistent with the predicted spectral phase transition.}
-\label{fig:spectral-density}
-\end{figure}
-
 \subsection{The phase transition}
 
 \begin{theorem}[Sharp phase transition]\label{thm:phase-transition}
@@ -515,6 +513,13 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   minima exist in the landscape, their basins of attraction are either vanishingly small or
   dynamically inaccessible to practical optimization trajectories.
 \end{remark}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/fig5_spectral_density.pdf}
+\caption[Hessian spectral density]{Empirical spectral density of the Hessian eigenvalues at critical points for varying $\gamma$ with $\delta = 1$, $n = 100$. As $\gamma$ increases through the critical ratio $\gamma^\star = 4/5$, the spectral support shifts rightward and the gap opens, consistent with the predicted spectral phase transition.}
+\label{fig:spectral-density}
+\end{figure}
 
 \subsection{Spectral gap scaling}
 
