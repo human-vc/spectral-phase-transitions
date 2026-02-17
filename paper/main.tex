@@ -123,6 +123,46 @@ precise answer for two-layer ReLU networks.
   interaction term (Section~\ref{sec:decoupling}), which may be of independent interest.
 \end{enumerate}
 
+\begin{figure}[!ht]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=10cm, height=8cm,
+  axis x line=bottom, axis y line=left,
+  xlabel={Dimension-to-sample ratio $\delta = d/n$},
+  ylabel={Width-to-sample ratio $\gamma = m/n$},
+  xmin=0, xmax=3,
+  ymin=0, ymax=2.5,
+  domain=0:3, samples=200,
+  no markers,
+  clip=true
+]
+\addplot[draw=none, fill=blue, fill opacity=0.1] coordinates {(0,0) (0,2.5) (3,2.5) (3,0)};
+\addplot[draw=none, fill=white, domain=0:3] {4/(2+3*x)} \closedcycle;
+\addplot[draw=none, fill=red, fill opacity=0.1, domain=0:3] {4/(2+3*x)} \closedcycle;
+
+\addplot[thick, black, domain=0:0.45] {2*(1-2*x)/(1-x-x^2)};
+\addplot[thick, black, dashed, domain=0:3] {4/(2+3*x)};
+
+\node[blue!60!black, font=\bfseries] at (axis cs:1.5, 1.8) {All minima global};
+\node[red!60!black, font=\bfseries, align=center] at (axis cs:0.5, 0.4) {Spurious\\minima exist};
+
+\node[circle, fill, inner sep=2pt] at (axis cs:0.25, 1.4545) {};
+\node[anchor=south west, font=\footnotesize] at (axis cs:0.25, 1.4545) {$\delta = 1/4$};
+
+\end{axis}
+\end{tikzpicture}
+\caption[Phase diagram]{Phase diagram in the $(\delta, \gamma)$ plane. The solid curve shows the exact critical ratio $\gamma_\star(\delta) = 2(1-2\delta)/(1-\delta-\delta^2)$; the dashed curve shows the first-order approximation $4/(2+3\delta)$. Above $\gamma_\star$, Theorem~\ref{thm:phase-transition}(a) guarantees that all local minima are global; below it, exponentially many spurious critical points exist (Theorem~\ref{thm:phase-transition}(b)).}
+\label{fig:phase-diagram}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/fig4_phase_boundary_empirical.pdf}
+\caption[Training dynamics and the topological boundary]{Training dynamics for two-layer ReLU networks with $n=100$, gradient flow optimization ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps), nonlinear teacher with $m_{\mathrm{teacher}} = n/2$. Color encodes $\log_{10}(\text{median loss})$ over 3 seeds per $(\delta, \gamma)$ pair. The dashed curve shows the theoretical topological boundary $\gamma^\star = 4/(2 + 3\delta)$ from Theorem~\ref{thm:phase-transition}. While the theory predicts a landscape transition at $\gamma^\star$, gradient flow achieves low loss even in parts of the subcritical regime, indicating that the optimization trajectory avoids the spurious critical points predicted by the static analysis (see Section~\ref{sec:landscape-dynamics}).}
+\label{fig:empirical-validation}
+\end{figure}
+
 \subsection{Related work}
 
 \paragraph{Loss landscape of neural networks.}
@@ -415,6 +455,13 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   1 + \delta + O(\delta^2) \approx 3/2$, which is exact at $\delta = 1/4$.
 \end{remark}
 
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/fig5_spectral_density.pdf}
+\caption[Hessian spectral density]{Empirical spectral density of the Hessian eigenvalues at critical points for varying $\gamma$ with $\delta = 1$, $n = 100$. As $\gamma$ increases through the critical ratio $\gamma^\star = 4/5$, the spectral support shifts rightward and the gap opens, consistent with the predicted spectral phase transition.}
+\label{fig:spectral-density}
+\end{figure}
+
 \subsection{The phase transition}
 
 \begin{theorem}[Sharp phase transition]\label{thm:phase-transition}
@@ -489,40 +536,7 @@ of the Hessian.
   \end{remark}
 \end{theorem}
 
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-  width=10cm, height=8cm,
-  axis x line=bottom, axis y line=left,
-  xlabel={Dimension-to-sample ratio $\delta = d/n$},
-  ylabel={Width-to-sample ratio $\gamma = m/n$},
-  xmin=0, xmax=3,
-  ymin=0, ymax=2.5,
-  domain=0:3, samples=200,
-  no markers,
-  clip=true
-]
-\addplot[draw=none, fill=blue, fill opacity=0.1] coordinates {(0,0) (0,2.5) (3,2.5) (3,0)};
-\addplot[draw=none, fill=white, domain=0:3] {4/(2+3*x)} \closedcycle;
-\addplot[draw=none, fill=red, fill opacity=0.1, domain=0:3] {4/(2+3*x)} \closedcycle;
-
-\addplot[thick, black, domain=0:0.45] {2*(1-2*x)/(1-x-x^2)};
-\addplot[thick, black, dashed, domain=0:3] {4/(2+3*x)};
-
-\node[blue!60!black, font=\bfseries] at (axis cs:1.5, 1.8) {All minima global};
-\node[red!60!black, font=\bfseries, align=center] at (axis cs:0.5, 0.4) {Spurious\\minima exist};
-
-\node[circle, fill, inner sep=2pt] at (axis cs:0.25, 1.4545) {};
-\node[anchor=south west, font=\footnotesize] at (axis cs:0.25, 1.4545) {$\delta = 1/4$};
-
-\end{axis}
-\end{tikzpicture}
-\caption[Phase diagram]{Phase diagram in the $(\delta, \gamma)$ plane. The solid curve shows the exact critical ratio $\gamma_\star(\delta) = 2(1-2\delta)/(1-\delta-\delta^2)$; the dashed curve shows the first-order approximation $4/(2+3\delta)$. Above $\gamma_\star$, Theorem~\ref{thm:phase-transition}(a) guarantees that all local minima are global; below it, exponentially many spurious critical points exist (Theorem~\ref{thm:phase-transition}(b)).}
-\label{fig:phase-diagram}
-\end{figure}
-
-\begin{figure}[htbp]
+\begin{figure}[!ht]
 \centering
 \begin{tikzpicture}
 \begin{loglogaxis}[
@@ -553,20 +567,6 @@ of the Hessian.
 \end{tikzpicture}
 \caption[Scaling of the spectral gap]{Scaling of the spectral gap $|\Delta|$ versus distance from the critical ratio $|\gamma - \gamma_\star|$. Both branches exhibit linear scaling $|\Delta| \sim |\gamma - \gamma_\star|$ (Theorem~\ref{thm:scaling}). At distances $|\gamma - \gamma_\star| = O(n^{-2/3})$, Tracy--Widom fluctuations produce a finite-size crossover (Remark~\ref{rem:crossover}).}
 \label{fig:scaling-law}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.75\textwidth]{figures/fig4_phase_boundary_empirical.pdf}
-\caption[Training dynamics and the topological boundary]{Training dynamics for two-layer ReLU networks with $n=100$, gradient flow optimization ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps), nonlinear teacher with $m_{\mathrm{teacher}} = n/2$. Color encodes $\log_{10}(\text{median loss})$ over 3 seeds per $(\delta, \gamma)$ pair. The dashed curve shows the theoretical topological boundary $\gamma^\star = 4/(2 + 3\delta)$ from Theorem~\ref{thm:phase-transition}. While the theory predicts a landscape transition at $\gamma^\star$, gradient flow achieves low loss even in parts of the subcritical regime, indicating that the optimization trajectory avoids the spurious critical points predicted by the static analysis (see Section~\ref{sec:landscape-dynamics}).}
-\label{fig:empirical-validation}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.75\textwidth]{figures/fig5_spectral_density.pdf}
-\caption[Hessian spectral density]{Empirical spectral density of the Hessian eigenvalues at critical points for varying $\gamma$ with $\delta = 1$, $n = 100$. As $\gamma$ increases through the critical ratio $\gamma^\star = 4/5$, the spectral support shifts rightward and the gap opens, consistent with the predicted spectral phase transition.}
-\label{fig:spectral-density}
 \end{figure}
 
 \section{Proofs}\label{sec:proofs}
