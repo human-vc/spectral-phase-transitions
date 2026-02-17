@@ -893,6 +893,35 @@ property.
   $m = \gamma_\star n$ where optimization difficulty changes dramatically.
 \end{enumerate}
 
+\subsection{Empirical validation on real data}\label{sec:mnist}
+
+To test whether the phase transition predicted by our theory persists beyond synthetic
+Gaussian data, we run the gradient flow experiment on whitened MNIST digits. We subsample
+$n = 200$ training images, apply PCA to reduce to $d$ dimensions, and whiten the result
+(so the empirical covariance is approximately $I_d$). We then sweep $\gamma = m/n$ from
+$0.3$ to $2.5$ for $\delta \in \{0.15, 0.25, 0.40\}$, training two-layer ReLU networks
+with gradient flow ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps, median over 3 seeds).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/fig7_mnist_phase_boundary.pdf}
+\caption[MNIST phase boundary]{Phase boundary on whitened MNIST data ($n = 200$).
+  Color encodes $\log_{10}(\text{median loss})$. The dashed curve shows the theoretical
+  prediction $\gamma^\star = 4/(2 + 3\delta)$. Despite the non-Gaussian, discrete nature
+  of real image data, the empirical transition region aligns with the theoretical boundary,
+  supporting the universality conjecture of Section~\ref{sec:universality}.}
+\label{fig:mnist}
+\end{figure}
+
+Figure~\ref{fig:mnist} shows that the theoretical boundary $\gamma^\star(\delta)$ tracks the
+empirical transition region on real data. At low $\delta$ (few PCA components), the loss
+remains elevated across all $\gamma$, reflecting the difficulty of fitting 10-class labels
+with limited input features. As $\delta$ increases, the loss drops sharply above the
+theoretical curve, consistent with the predicted phase transition. The transition is softer
+than in the synthetic case (Figure~\ref{fig:empirical-validation}), which is expected:
+MNIST has non-Gaussian tails and residual structure even after whitening. Nevertheless,
+the qualitative agreement provides empirical support for the universality conjecture.
+
 \subsection{General activation functions}\label{sec:general-activations}
 
 The critical ratio $\gamma_\star = 4/(2 + 3\delta)$ was derived for ReLU networks, where
