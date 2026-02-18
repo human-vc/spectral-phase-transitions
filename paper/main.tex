@@ -75,7 +75,17 @@ scales polynomially in~$n$ (often $m = \Omega(n^6)$), far exceeding practical ne
 sizes. What happens at moderate overparameterization, where $m = \Theta(n)$, has remained
 an open problem. We resolve it for two-layer ReLU networks.
 
-\begin{figure}[!htb]
+\subsection{Main contributions}
+
+\begin{enumerate}[label=(\roman*)]
+  \item \textbf{Sharp topological threshold.} We identify a critical width-to-sample ratio $\gamma_\star$ (depending on the
+  data covariance spectrum) that marks a topological phase transition in the loss landscape
+  (Figure~\ref{fig:phase-diagram}):
+  for $\gamma > \gamma_\star$, all local minima of the empirical risk
+  are global with probability $1 - e^{-\Omega(n)}$, and for $\gamma < \gamma_\star$, the expected number of
+  spurious critical points grows exponentially (Theorem~\ref{thm:phase-transition}).
+
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -108,15 +118,6 @@ an open problem. We resolve it for two-layer ReLU networks.
 \label{fig:phase-diagram}
 \end{figure}
 
-\subsection{Main contributions}
-
-\begin{enumerate}[label=(\roman*)]
-  \item \textbf{Sharp topological threshold.} We identify a critical width-to-sample ratio $\gamma_\star$ (depending on the
-  data covariance spectrum) that marks a topological phase transition in the loss landscape
-  (Figure~\ref{fig:phase-diagram}):
-  for $\gamma > \gamma_\star$, all local minima of the empirical risk
-  are global with probability $1 - e^{-\Omega(n)}$, and for $\gamma < \gamma_\star$, the expected number of
-  spurious critical points grows exponentially (Theorem~\ref{thm:phase-transition}).
   This provides a \emph{sufficient} condition on the width for a benign landscape; as we
   discuss in Section~\ref{sec:landscape-dynamics}, it is not a necessary condition for
   successful optimization.
