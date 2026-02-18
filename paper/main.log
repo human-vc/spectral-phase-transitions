@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 20:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 21:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1158,8 +1158,8 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.810 \begin{equation}
-                      \label{eq:half-space-mean}]
+l.812 \end{equation}
+                    ]
 
 [14]
 Overfull \hbox (6.49622pt too wide) in paragraph at lines 923--929
@@ -1343,10 +1343,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: DBD3B99DED66555E22E194AD78303EA8;6577.
  ) 
 Here is how much of TeX's memory you used:
- 41319 strings out of 473190
- 974210 string characters out of 5715801
+ 41320 strings out of 473190
+ 974220 string characters out of 5715801
  1585708 words of memory out of 5000000
- 63748 multiletter control sequences out of 15000+600000
+ 63749 multiletter control sequences out of 15000+600000
  583465 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,21n,96p,1430b,2278s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1382,7 +1382,7 @@ ype1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/typ
 e1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1
 /public/cm-super/sfti1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/p
 ublic/cm-super/sfti1095.pfb>
-Output written on main.pdf (37 pages, 761415 bytes).
+Output written on main.pdf (37 pages, 761551 bytes).
 PDF statistics:
  1117 PDF objects out of 1200 (max. 8388607)
  839 compressed objects within 9 object streams
