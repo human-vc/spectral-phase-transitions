@@ -296,8 +296,22 @@ the roles of the data geometry and the weight geometry.
   Theorem~\ref{thm:critical-ratio}, Step~2).
 \end{definition}
 
+\subsection{Generalized second-order derivatives for ReLU}\label{sec:generalized-hessian}
+
+For ReLU networks, the Hessian $\nabla^2 L(\theta)$ is defined almost everywhere. At points where $\nabla L(\theta)$ exists but $\nabla^2 L(\theta)$ is undefined (the measure-zero set of parameters where some $w_j^\top x_i = 0$), we adopt the convention of the Clarke generalized Hessian. Specifically, we consider the limit of smooth approximations (e.g., Softplus $\sigma_\beta(x) = \frac{1}{\beta}\log(1+e^{\beta x})$ as $\beta \to \infty$).
+
+Under this convention, the singular contribution from the kinks ($\sigma''$) is distributional. However, for any fixed data set $X$ with continuous distribution, the set of parameters $\theta$ where any $w_j^\top x_i = 0$ has measure zero. Thus, for almost every $\theta$, the Hessian is well-defined and equals the Gauss--Newton term plus a residual term involving $\nabla^2 f_\theta(x_i) = 0$.
+
+\begin{lemma}[Residual Hessian Contribution]\label{lem:residual-zero}
+  For ReLU networks trained on data with a continuous distribution, the residual term $R(\theta)$ in the Hessian decomposition satisfies $R(\theta) = 0$ almost everywhere.
+\end{lemma}
+
+\begin{proof}
+  Since $\sigma(z) = \max(0, z)$ has $\sigma''(z) = 0$ for $z \ne 0$, the second derivative $\nabla^2 f_\theta(x_i)$ vanishes whenever $w_j^\top x_i \ne 0$ for all $j$. The set of such parameters has measure zero.
+\end{proof}
+
 \begin{proposition}[Hessian block decomposition]\label{prop:block}
-  At any critical point $\theta_c$ of $L$, the Hessian in \eqref{eq:hessian-decomp} can be
+  At any critical point $\theta_c$ of $L$ where the Hessian is defined, it can be
   written in the block form with respect to the partition $\theta = (W, a)$:
   \begin{equation}\label{eq:block}
     \nabla^2 L(\theta_c) = \begin{pmatrix} H_{WW} & H_{Wa} \\ H_{Wa}^\top & H_{aa} \end{pmatrix},
@@ -305,13 +319,12 @@ the roles of the data geometry and the weight geometry.
   where:
   \begin{align}
     H_{aa} &= \frac{1}{nm} \Phi(\theta_c)^\top \Phi(\theta_c), \label{eq:Haa} \\
-    H_{WW} &= \frac{1}{nm} \Psi(\theta_c)^\top \Psi(\theta_c) + R(\theta_c), \label{eq:HWW}
+    H_{WW} &= \frac{1}{nm} \Psi(\theta_c)^\top \Psi(\theta_c), \label{eq:HWW}
   \end{align}
   with $\Phi(\theta_c) \in \R^{n \times m}$ the feature matrix
-  $\Phi_{ij} = \frac{1}{\sqrt{m}} \sigma(w_j^\top x_i)$,
-  $\Psi(\theta_c) \in \R^{n \times md}$ the first-layer Jacobian, and $R(\theta_c)$ the
-  residual Hessian contribution satisfying
-  $\|R(\theta_c)\|_{\op} \le \frac{\|r(\theta_c)\|_\infty}{\sqrt{m}}$.
+  $\Phi_{ij} = \frac{1}{\sqrt{m}} \sigma(w_j^\top x_i)$ and
+  $\Psi(\theta_c) \in \R^{n \times md}$ the first-layer Jacobian.
+  The residual term vanishes almost everywhere by Lemma~\ref{lem:residual-zero}.
 \end{proposition}
 
 \begin{proof}
@@ -323,11 +336,7 @@ the roles of the data geometry and the weight geometry.
   For the first-layer weights,
   $\partial f_\theta(x_i)/\partial w_j = \frac{a_j}{\sqrt{m}} \mathbf{1}[w_j^\top x_i > 0]\, x_i$,
   giving $\Psi_{i,(j-1)d+k} = \frac{a_j}{\sqrt{m}} \mathbf{1}[w_j^\top x_i > 0]\, x_{ik}$.
-  The residual term $R$ arises from the second-order derivatives of $f_\theta$ with respect
-  to~$W$; since $\sigma'' = 0$ a.e.\ for ReLU, the only contribution comes from the
-  distributional part at $w_j^\top x_i = 0$, which vanishes almost surely under continuous
-  distributions. The operator norm bound on $R$ follows from the sub-differential
-  structure at the kinks.
+  By Lemma~\ref{lem:residual-zero}, the residual contribution is zero almost everywhere.
 \end{proof}
 
 \begin{remark}[Role of the second-layer weights]\label{rem:second-layer}
