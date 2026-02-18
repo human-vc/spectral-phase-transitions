@@ -1,32 +1,18 @@
-# Spectral Phase Transitions in the Loss Landscape of Finite-Width Neural Networks
+# Spectral Phase Transitions in the Loss Landscape of Neural Networks
 
-**December-February 2026**
+This repository investigates the critical-point structure of the empirical risk landscape for two-layer ReLU neural networks. We identify a sharp topological phase transition in the Hessian spectrum, determined by a critical width-to-sample ratio $\gamma_\star$.
 
-## Summary
+## Key Findings
 
-We study the critical-point structure of the empirical risk landscape for two-layer ReLU neural networks trained on $n$ data points in $\mathbb{R}^d$ with $m$ hidden neurons. Our main result establishes a **sharp phase transition** in the Hessian spectrum at critical points:
-
-- **Supercritical regime** ($\gamma = m/n > \gamma_\star$): All local minima are global with probability $1 - e^{-\Omega(n)}$.
-- **Subcritical regime** ($\gamma < \gamma_\star$): Exponentially many spurious local minima exist.
-
-### The Critical Ratio
-
-For isotropic data ($\Sigma = I_d$) with $\delta = d/n$:
-
-$$\gamma_\star(\delta) = \frac{4}{2 + 3\delta}$$
-
-For $\delta = 1$ (i.e., $d = n$): $\gamma_\star = 4/5$, meaning $m \geq \lceil 4n/5 \rceil$ hidden neurons suffice.
-
-### Universal Scaling Law
-
-At the transition, the spectral gap scales as $|\gamma - \gamma_\star|^{1/2}$, yielding a universal critical exponent $\beta = 1/2$.
+- **Topological Phase Transition:** Above a critical ratio $\gamma_\star$, the loss landscape is benign (all local minima are global). Below it, spurious local minima proliferate exponentially.
+- **Exact Threshold:** For isotropic data, the critical ratio is given by $\gamma_\star(\delta) = 2(1-2\delta)/(1-\delta-\delta^2)$, or approximately $4/(2+3\delta)$.
+- **Unconditional Proof:** We establish these results unconditionally using a deterministic equivalent for the gated Hessian resolvent (via anisotropic local laws).
+- **Optimization Gap:** While the landscape topology suggests optimization should fail below $\gamma_\star$, gradient-based optimizers succeed well into the subcritical regime, highlighting a fundamental gap between landscape geometry and optimization dynamics.
 
 ## Repository Structure
 
-```
-paper/          LaTeX source and compiled PDF
-experiments/    Numerical experiments (forthcoming)
-```
+- `paper/`: LaTeX source and compiled PDF of the main paper.
+- `experiments/`: Code for reproducing the phase transition plots, Hessian spectral density analysis, and training dynamics experiments (MNIST, CIFAR-10).
 
 ## Building the Paper
 
@@ -35,13 +21,6 @@ cd paper
 pdflatex main.tex
 pdflatex main.tex  # run twice for cross-references
 ```
-
-## Key Techniques
-
-- **Spectral decoupling**: Decomposition of the Hessian at critical points into data and weight contributions
-- **Kac–Rice formula**: Counting critical points via the expected number formula
-- **Random matrix theory**: Marchenko–Pastur law and free convolution for the limiting spectrum
-- **Tracy–Widom fluctuations**: Finite-$n$ corrections to the spectral edge
 
 ## License
 
