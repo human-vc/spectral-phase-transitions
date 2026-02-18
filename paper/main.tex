@@ -49,36 +49,7 @@
 \maketitle
 
 \begin{abstract}
-A central puzzle in deep learning theory is why gradient descent reliably finds good solutions despite the extreme non-convexity of neural network loss landscapes, particularly in the moderately overparameterized regime where existing theoretical guarantees require polynomial width scaling far exceeding practical network sizes.
-We study the critical-point structure of the empirical risk landscape for two-layer
-neural networks with ReLU activations, trained on $n$ data points in $\R^d$ with $m$ hidden
-neurons. Our main result identifies a critical width-to-sample ratio
-$\gamma_\star$, depending on the spectral distribution of the data covariance, that marks a
-\emph{topological phase transition} in the loss landscape: above $\gamma_\star$, the landscape
-is provably benign (all local minima are global with high probability), while below
-$\gamma_\star$, the expected number of spurious critical points grows exponentially in $n$.
-The critical ratio
-$\gamma_\star$ is characterized as the unique solution to a fixed-point equation involving the
-Stieltjes transform of the Marchenko--Pastur law composed with the data spectrum.
-For isotropic data ($\Sigma = I_d$), the critical ratio takes the explicit form
-$\gamma_\star(\delta) = 2(1-2\delta)/(1 - \delta - \delta^2)$ for $\delta < 1/2$,
-which admits the first-order approximation $\gamma_\star \approx 4/(2 + 3\delta)$
-(exact at $\delta = 1/4$).
-At the transition, the Hessian at near-critical points exhibits a
-spectral gap collapse: the smallest non-zero eigenvalue vanishes linearly as $|\gamma - \gamma_\star|$, yielding
-a universal scaling law with critical exponent $\beta = 1$.
-Yet gradient-based optimizers navigate the subcritical ($\gamma < \gamma_\star$) regime
-with apparent ease, achieving near-zero training loss well below the theoretical threshold.
-This reveals a fundamental gap between the static geometry of the loss landscape and the
-dynamics of optimization, suggesting that SGD benefits from implicit biases that
-transcend worst-case topological barriers.
-Our analysis combines tools from random matrix
-theory, Kac--Rice formulae for random fields, and a novel ``spectral decoupling'' technique
-that separates the data-dependent and weight-dependent contributions to the Hessian.
-A deterministic equivalent for the gated Hessian resolvent, established via the
-anisotropic local law framework of Knowles and Yin, shows that the spectral statistics
-at bounded-loss critical points are independent of the weight-data dependence structure,
-making all results unconditional.
+  Existing theoretical guarantees for gradient descent in overparameterized neural networks require the width to scale polynomially in the sample size, far exceeding practical network sizes. We study the critical-point structure of the empirical risk landscape for two-layer ReLU networks with $n$ samples in $\mathbb{R}^d$ and $m$ hidden neurons, and identify a critical width-to-sample ratio $\gamma_\star$, determined by a fixed-point equation involving the Stieltjes transform of the Marchenko--Pastur law composed with the data covariance spectrum, that marks a topological phase transition: above $\gamma_\star$, all local minima are global with probability $1 - e^{-\Omega(n)}$; below it, the expected number of spurious critical points grows exponentially. For isotropic data, $\gamma_\star(\delta) = 2(1-2\delta)/(1 - \delta - \delta^2)$ when $\delta = d/n < 1/2$. At the transition, the Hessian spectral gap vanishes linearly in $|\gamma - \gamma_\star|$ with universal critical exponent $\beta = 1$. Our analysis operates in the proportional regime $m = \Theta(n)$, bypassing prior polynomial width requirements. A novel spectral decoupling of the Hessian, combined with a deterministic equivalent for the gated Hessian resolvent via the anisotropic local law framework, makes all results unconditional. Yet experiments show that gradient-based optimizers achieve near-zero loss well below $\gamma_\star$, revealing a fundamental gap between landscape topology and optimization dynamics.
 \end{abstract}
 
 \tableofcontents

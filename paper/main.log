@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 21:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  17 FEB 2026 21:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1060,9 +1060,9 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.178 
+l.149 
       ]
-Overfull \hbox (16.39532pt too wide) in paragraph at lines 208--217
+Overfull \hbox (16.39532pt too wide) in paragraph at lines 179--188
  []\T1/cmr/bx/n/10.95 Random ma-trix tools for neu-ral net-works.[] \T1/cmr/m/n
 /10.95 The tech-ni-cal ma-chin-ery we build on (Marchenko--
  []
@@ -1077,7 +1077,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 [5]
-Overfull \hbox (2.74733pt too wide) in paragraph at lines 347--351
+Overfull \hbox (2.74733pt too wide) in paragraph at lines 318--322
 []\T1/cmr/m/n/10.95 Direct com-pu-ta-tion. For the second-layer weights, $\OML/
 cmm/m/it/10.95 @f[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 x[]\OT1/cmr/m/n/10.9
 5 )\OML/cmm/m/it/10.95 =@a[] \OT1/cmr/m/n/10.95 = []\OML/cmm/m/it/10.95 ^^[\OT1
@@ -1086,7 +1086,7 @@ m/it/10.95 =[]$\T1/cmr/m/n/10.95 ,
  []
 
 
-Overfull \hbox (12.99272pt too wide) in paragraph at lines 352--360
+Overfull \hbox (12.99272pt too wide) in paragraph at lines 323--331
 []\T1/cmr/m/n/10.95 For the first-layer weights, $\OML/cmm/m/it/10.95 @f[]\OT1/
 cmr/m/n/10.95 (\OML/cmm/m/it/10.95 x[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 =
 @w[] \OT1/cmr/m/n/10.95 = []\OT1/cmr/bx/n/10.95 1\OT1/cmr/m/n/10.95 [\OML/cmm/m
@@ -1102,11 +1102,11 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.360 \end{proof}
+l.331 \end{proof}
                  ]
 
 [7]
-Overfull \hbox (13.85963pt too wide) in paragraph at lines 425--427
+Overfull \hbox (13.85963pt too wide) in paragraph at lines 396--398
 []\T1/cmr/m/n/10.95 The \T1/cmr/m/it/10.95 gated co-vari-ance\T1/cmr/m/n/10.95 
 : For weight $\OML/cmm/m/it/10.95 w[]$\T1/cmr/m/n/10.95 , let $\OML/cmm/m/it/10
 .95 S[] \OT1/cmr/m/n/10.95 = \OMS/cmsy/m/n/10.95 f\OML/cmm/m/it/10.95 i \OT1/cm
@@ -1124,11 +1124,11 @@ m/it/10.95 x[]x[]$\T1/cmr/m/n/10.95 .
 [10]
 
 [11]
-<figures/fig5_spectral_density.pdf, id=453, 867.24pt x 505.89pt>
+<figures/fig5_spectral_density.pdf, id=452, 867.24pt x 505.89pt>
 File: figures/fig5_spectral_density.pdf Graphic file (type pdf)
 <use figures/fig5_spectral_density.pdf>
 Package pdftex.def Info: figures/fig5_spectral_density.pdf  used on input line 
-705.
+676.
 (pdftex.def)             Requested size: 339.72592pt x 198.17628pt.
 
 
@@ -1137,9 +1137,9 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.738     \]
+l.709     \]
              <./figures/fig5_spectral_density.pdf>]
-Overfull \hbox (3.11331pt too wide) in paragraph at lines 744--751
+Overfull \hbox (3.11331pt too wide) in paragraph at lines 715--722
 []\T1/cmr/m/it/10.95 Remark \T1/cmr/m/n/10.95 4.13 (Finite--size crossover)\T1/
 cmr/m/it/10.95 . []\T1/cmr/m/n/10.95 The $\OML/cmm/m/it/10.95 O[]\OT1/cmr/m/n/1
 0.95 (\OML/cmm/m/it/10.95 n[]\OT1/cmr/m/n/10.95 )$ \T1/cmr/m/n/10.95 er-ror ter
@@ -1147,9 +1147,9 @@ m is un-con-di-tional. If the $\OML/cmm/m/it/10.95 O[]\OT1/cmr/m/n/10.95 (\OML/
 cmm/m/it/10.95 n[]\OT1/cmr/m/n/10.95 )$
  []
 
-Package pgfplots info on input line 767: Using 'lua backend=false' for axis: xm
+Package pgfplots info on input line 738: Using 'lua backend=false' for axis: xm
 ode=log unsupported (yet).
-Package pgfplots info on input line 767: Using 'lua backend=false' for axis: ym
+Package pgfplots info on input line 738: Using 'lua backend=false' for axis: ym
 ode=log unsupported (yet).
 
 
@@ -1158,11 +1158,11 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.812 \end{equation}
+l.783 \end{equation}
                     ]
 
 [14]
-Overfull \hbox (6.49622pt too wide) in paragraph at lines 923--929
+Overfull \hbox (6.49622pt too wide) in paragraph at lines 894--900
 []\T1/cmr/bx/n/10.95 Assumption 5.1 \T1/cmr/m/n/10.95 (Mean--field in-de-pen-de
 nce at crit-i-cal points)\T1/cmr/bx/n/10.95 . [](Su-per-seded by The-o-rem []5.
 4[].)
@@ -1175,7 +1175,7 @@ nce at crit-i-cal points)\T1/cmr/bx/n/10.95 . [](Su-per-seded by The-o-rem []5.
 [16]
 
 [17]
-Overfull \hbox (9.31253pt too wide) in paragraph at lines 1156--1161
+Overfull \hbox (9.31253pt too wide) in paragraph at lines 1127--1132
 []\T1/cmr/m/n/10.95 From the self-consistent equa-tion [], the edge $\OML/cmm/m
 /it/10.95 ^^U[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 ^^M\OT1/cmr/m/n/10.95 )$
  \T1/cmr/m/n/10.95 is de-ter-mined by the equa-tion $\OT1/cmr/m/n/10.95 ^^@(\OM
@@ -1195,7 +1195,7 @@ L/cmm/m/it/10.95 ^^M; ^^U[]\OT1/cmr/m/n/10.95 ) =
 [22]
 
 [23]
-Overfull \hbox (47.88351pt too wide) detected at line 1649
+Overfull \hbox (47.88351pt too wide) detected at line 1620
 \OML/cmm/m/it/10.95 ^^Z[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 ^^R; ^^R[]\OT1
 /cmr/m/n/10.95 ) = \U/msb/m/n/10.95 E [][][] \OMS/cmsy/m/n/10.95 r[]\OML/cmm/m/
 it/10.95 L\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 ^^R\OT1/cmr/m/n/10.95 )[] \OM
@@ -1214,7 +1214,7 @@ r\OML/cmm/m/it/10.95 L\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 ^^R\OT1/cmr/m/n/1
 [24]
 
 [25]
-Overfull \hbox (9.11208pt too wide) detected at line 1808
+Overfull \hbox (9.11208pt too wide) detected at line 1779
 \U/msb/m/n/10.95 E []\OMS/cmsy/m/n/10.95 j [] r[]\OML/cmm/m/it/10.95 L\OT1/cmr/
 m/n/10.95 (\OML/cmm/m/it/10.95 ^^R\OT1/cmr/m/n/10.95 )\OMS/cmsy/m/n/10.95 j ^^A
  j [] r[]\OML/cmm/m/it/10.95 L\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 ^^R[]\OT1
@@ -1231,7 +1231,7 @@ cmr/m/n/10.95 (\OML/cmm/m/it/10.95 ^^R\OT1/cmr/m/n/10.95 )\OMS/cmsy/m/n/10.95 j
 
 
 [26]
-Overfull \hbox (22.97247pt too wide) in paragraph at lines 1867--1869
+Overfull \hbox (22.97247pt too wide) in paragraph at lines 1838--1840
 []\T1/cmr/bx/n/10.95 Corollary 8.1 \T1/cmr/m/n/10.95 (Con-di-tion num-ber de-pe
 n-dence)\T1/cmr/bx/n/10.95 . []\T1/cmr/m/it/10.95 For $\OT1/cmr/m/n/10.95 ^^F$ 
 \T1/cmr/m/it/10.95 with con-di-tion num-ber $\U/msb/m/n/10.95 { \OT1/cmr/m/n/10
@@ -1242,14 +1242,14 @@ n-dence)\T1/cmr/bx/n/10.95 . []\T1/cmr/m/it/10.95 For $\OT1/cmr/m/n/10.95 ^^F$
 
 
 [27]
-<figures/fig7_mnist_phase_boundary.pdf, id=692, 419.57614pt x 316.3086pt>
+<figures/fig7_mnist_phase_boundary.pdf, id=691, 419.57614pt x 316.3086pt>
 File: figures/fig7_mnist_phase_boundary.pdf Graphic file (type pdf)
 <use figures/fig7_mnist_phase_boundary.pdf>
 Package pdftex.def Info: figures/fig7_mnist_phase_boundary.pdf  used on input l
-ine 1911.
+ine 1882.
 (pdftex.def)             Requested size: 339.72592pt x 256.11685pt.
 
-Underfull \hbox (badness 1147) in paragraph at lines 1917--1917
+Underfull \hbox (badness 1147) in paragraph at lines 1888--1888
 []\T1/cmr/m/n/10.95 Figure 4: []Training dy-nam-ics on whitened MNIST data ($\O
 ML/cmm/m/it/10.95 n \OT1/cmr/m/n/10.95 = 500$\T1/cmr/m/n/10.95 ). Color en-code
 s
@@ -1262,13 +1262,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1928 
+l.1899 
         <./figures/fig7_mnist_phase_boundary.pdf>]
-<figures/fig8_cifar10_phase_boundary.pdf, id=745, 418.05609pt x 316.3086pt>
+<figures/fig8_cifar10_phase_boundary.pdf, id=744, 418.05609pt x 316.3086pt>
 File: figures/fig8_cifar10_phase_boundary.pdf Graphic file (type pdf)
 <use figures/fig8_cifar10_phase_boundary.pdf>
 Package pdftex.def Info: figures/fig8_cifar10_phase_boundary.pdf  used on input
- line 1940.
+ line 1911.
 (pdftex.def)             Requested size: 339.72592pt x 257.05318pt.
 
 
@@ -1277,7 +1277,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1974 
+l.1945 
         <./figures/fig8_cifar10_phase_boundary.pdf>]
 
 [30
@@ -1285,15 +1285,15 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2058 \begin{enumerate}[label=(\roman*)]
+l.2029 \begin{enumerate}[label=(\roman*)]
                                          ]
 
 [31]
-<figures/fig4_phase_boundary_empirical.pdf, id=836, 418.13287pt x 316.3086pt>
+<figures/fig4_phase_boundary_empirical.pdf, id=835, 418.13287pt x 316.3086pt>
 File: figures/fig4_phase_boundary_empirical.pdf Graphic file (type pdf)
 <use figures/fig4_phase_boundary_empirical.pdf>
 Package pdftex.def Info: figures/fig4_phase_boundary_empirical.pdf  used on inp
-ut line 2106.
+ut line 2077.
 (pdftex.def)             Requested size: 339.72592pt x 256.99527pt.
 
 
@@ -1302,7 +1302,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2143 \end{table}
+l.2114 \end{table}
                    <./figures/fig4_phase_boundary_empirical.pdf>]
 
 [33
@@ -1310,7 +1310,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.3}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2196 
+l.2167 
        ]
 
 [34
@@ -1318,9 +1318,9 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.4}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2250 
+l.2221 
        ]
-Package pgfplots info on input line 2309: Using 'lua backend=false' for axis: y
+Package pgfplots info on input line 2280: Using 'lua backend=false' for axis: y
 mode=log unsupported (yet).
 
 
@@ -1331,7 +1331,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.2372 
+l.2343 
        ]
 
 [37] (./main.aux)
@@ -1343,13 +1343,13 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: DBD3B99DED66555E22E194AD78303EA8;6577.
  ) 
 Here is how much of TeX's memory you used:
- 41320 strings out of 473190
- 974220 string characters out of 5715801
- 1585708 words of memory out of 5000000
- 63749 multiletter control sequences out of 15000+600000
- 583465 words of font info for 99 fonts, out of 8000000 for 9000
+ 41318 strings out of 473190
+ 974198 string characters out of 5715801
+ 1582871 words of memory out of 5000000
+ 63748 multiletter control sequences out of 15000+600000
+ 582779 words of font info for 98 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,21n,96p,1430b,2278s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,21n,96p,1528b,2278s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -1380,12 +1380,11 @@ ts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2025/texmf-dist/fonts
 /type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2025/texmf-dist/fonts/t
 ype1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/typ
 e1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1
-/public/cm-super/sfti1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/p
-ublic/cm-super/sfti1095.pfb>
-Output written on main.pdf (37 pages, 761551 bytes).
+/public/cm-super/sfti1095.pfb>
+Output written on main.pdf (37 pages, 744267 bytes).
 PDF statistics:
- 1117 PDF objects out of 1200 (max. 8388607)
- 839 compressed objects within 9 object streams
+ 1112 PDF objects out of 1200 (max. 8388607)
+ 836 compressed objects within 9 object streams
  199 named destinations out of 1000 (max. 500000)
  449 words of extra memory for PDF output out of 10000 (max. 10000000)
 
