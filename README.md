@@ -19,7 +19,7 @@ This repository investigates the critical-point structure of the empirical risk 
 ```bash
 cd paper
 pdflatex main.tex
-pdflatex main.tex  # run twice for cross-references
+pdflatex main.tex  
 ```
 
 ## License
