@@ -104,7 +104,7 @@ scales polynomially in~$n$ (often $m = \Omega(n^6)$), far exceeding practical ne
 sizes. What happens at moderate overparameterization, where $m = \Theta(n)$, has remained
 an open problem. We resolve it for two-layer ReLU networks.
 
-\begin{figure}[t!]
+\begin{figure}[!htb]
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -751,7 +751,7 @@ of the Hessian.
   \end{remark}
 \end{theorem}
 
-\begin{figure}[t!]
+\begin{figure}[!htb]
 \centering
 \begin{tikzpicture}
 \begin{loglogaxis}[
@@ -1906,7 +1906,7 @@ property.
 
 \subsection{Empirical validation on real data}\label{sec:mnist}
 
-\begin{figure}[t!]
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig7_mnist_phase_boundary.pdf}
 \caption[MNIST training dynamics]{Training dynamics on whitened MNIST data ($n = 500$).
@@ -1935,7 +1935,7 @@ case (Figure~\ref{fig:empirical-validation}), reflecting both the non-Gaussian s
 of real data and the general observation that optimization dynamics smooth out the
 landscape-level transition (Section~\ref{sec:landscape-dynamics}).
 
-\begin{figure}[t!]
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig8_cifar10_phase_boundary.pdf}
 \caption[CIFAR-10 training dynamics]{Training dynamics on whitened CIFAR-10 data ($n = 200$). The theoretical topological boundary $\gamma^\star(\delta)$ (dashed line) is overlaid on the training loss heatmap. The loss gradient is smooth, consistent with the observation that optimization dynamics transcend the static landscape barriers (Section~\ref{sec:landscape-dynamics}).}
@@ -2101,7 +2101,7 @@ Remark~\ref{rem:crossover} may widen or narrow depending on the tail index.
 
 \section{Landscape Geometry versus Optimization Dynamics}\label{sec:landscape-dynamics}
 
-\begin{figure}[t!]
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/fig4_phase_boundary_empirical.pdf}
 \caption[Training dynamics and the topological boundary]{Training dynamics for two-layer ReLU networks with $n=100$, gradient flow optimization ($\eta = 5 \times 10^{-4}$, $20{,}000$ steps), nonlinear teacher with $m_{\mathrm{teacher}} = n/2$. Color encodes $\log_{10}(\text{median loss})$ over 3 seeds per $(\delta, \gamma)$ pair. The dashed curve shows the theoretical topological boundary $\gamma^\star = 4/(2 + 3\delta)$ from Theorem~\ref{thm:phase-transition}. While the theory predicts a landscape transition at $\gamma^\star$, gradient flow achieves low loss even in parts of the subcritical regime, indicating that the optimization trajectory avoids the spurious critical points predicted by the static analysis.}
@@ -2279,7 +2279,7 @@ for $\delta < 1/2$, well-approximated by $4/(2+3\delta)$ for small~$\delta$.
 \appendix
 \section{Additional Figures}
 
-\begin{figure}[t!]
+\begin{figure}[!htb]
 \centering
 \resizebox{0.85\textwidth}{!}{%
 \begin{tikzpicture}
