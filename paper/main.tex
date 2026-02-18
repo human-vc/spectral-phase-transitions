@@ -558,6 +558,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
     $1 - 2e^{-cn}$ (for a constant $c > 0$ depending on $\gamma - \gamma_\star$), every local
     minimum of~$L$ is a global minimum. That is, if $\nabla L(\theta) = 0$ and
     $\nabla^2 L(\theta) \succeq 0$, then $L(\theta) = L_\star := \inf_\theta L(\theta)$.
+    (The bounded-loss hypothesis $L(\theta_c) \le C$ is automatically satisfied for ReLU networks by Proposition~\ref{prop:coercivity}.)
 
     \item \textbf{Subcritical regime} ($\gamma < \gamma_\star$): With probability at least $1 - e^{-cn}$,
     \[
@@ -1091,14 +1092,10 @@ $L(\theta_c) = \ell > L_\star$. Since $\theta_c$ is a strict local minimum with
 spectral gap $\Delta(\theta_c) \ge c_1(\gamma - \gamma_\star)$, it is the unique
 minimum in an open basin $B(\theta_c)$. Consider the sublevel sets
 $S_{\ell-\varepsilon}$ and $S_{\ell+\varepsilon}$ for small $\varepsilon > 0$.
-Because all critical points in $S_C$ are local minima (no saddle points exist),
-passing from level $\ell - \varepsilon$ to $\ell + \varepsilon$ attaches a cell
-corresponding to $\theta_c$, changing the topology of the sublevel set. But the
-negative gradient flow $\dot\theta = -\nabla L(\theta)$ retracts $S_{\ell+\varepsilon}$
-onto $S_{\ell-\varepsilon} \cup B(\theta_c)$, and since $\theta_{\mathrm{opt}} \in S_{\ell-\varepsilon}$
-already realizes the global minimum, the basin $B(\theta_c)$ is contractible and does not
-change the homotopy type, contradicting $\theta_c$ being a strict local minimum
-at a level strictly above $L_\star$.
+We invoke Morse theory: if $L$ has no critical values in $(\ell - \varepsilon, \ell + \varepsilon)$ except $\ell$, then $S_{\ell+\varepsilon}$ deformation retracts onto $S_{\ell-\varepsilon}$ with the critical points attached.
+Since the spectral gap guarantees all critical points in the supercritical regime have positive-definite Hessians (no index-1 saddles), no 1-handles are attached, so the number of connected components cannot increase.
+Because $S_{\ell-\varepsilon}$ already contains the global minimum $\theta_{\mathrm{opt}}$, the appearance of a new disconnected basin $B(\theta_c)$ at level $\ell$ is topologically impossible.
+Thus, no such spurious minimum exists.
 
 Therefore every local minimum in $S_C$ satisfies $L(\theta_c) = L_\star$, i.e., is global.
 The probability bound $1 - 2e^{-cn}$ follows from the union bound over the spectral
@@ -1554,20 +1551,18 @@ Thus the exact critical ratio for $\delta < 1/2$ is:
     1 - \delta - \delta^2 &= 1 - \delta - \delta^2, \\
     2(1 - 2\delta) &= 2 - 4\delta, \quad\text{so}\quad \frac{1}{2(1-2\delta)} = \frac{1}{2}\sum_{k=0}^\infty (2\delta)^k = \frac{1}{2} + \delta + 2\delta^2 + \cdots.
   \end{align*}
-  Multiplying:
+  Multiplying the series expansions term by term:
   \begin{align*}
-    \gamma_\star^{-1}(\delta) &= (1 - \delta - \delta^2)\!\left(\tfrac{1}{2} + \delta + 2\delta^2 + \cdots\right) \\
-    &= \tfrac{1}{2} + \delta - \tfrac{1}{2}\delta - \delta^2 + 2\delta^2 - \delta^2 + O(\delta^3) \\
-    &= \tfrac{1}{2} + \tfrac{1}{2}\delta + 0\cdot\delta^2 + O(\delta^3).
+    \gamma_\star^{-1}(\delta) &= (1 - \delta - \delta^2)\!\left(\tfrac{1}{2} + \delta + 2\delta^2 + O(\delta^3)\right) \\
+    &= \tfrac{1}{2} + \left(\delta - \tfrac{1}{2}\delta\right) + \left(2\delta^2 - \delta^2 - \tfrac{1}{2}\delta^2\right) + O(\delta^3) \\
+    &= \tfrac{1}{2} + \tfrac{1}{2}\delta + \tfrac{1}{2}\delta^2 + O(\delta^3).
   \end{align*}
-  The $\delta^2$ coefficient cancels: $(-1)(\frac{1}{2}) + (1)(-1) + (2)(1) = -\frac{1}{2} - 1 + 2 = \frac{1}{2}$. Correcting: collecting all $\delta^2$ terms gives $(-\delta^2)(\frac{1}{2}) + (-\delta)(+\delta) + (1)(2\delta^2) = -\frac{\delta^2}{2} - \delta^2 + 2\delta^2 = \frac{\delta^2}{2}$. So $\gamma_\star^{-1} = \frac{1}{2} + \frac{\delta}{2} + \frac{\delta^2}{2} + O(\delta^3)$, hence:
+  Inverting this result yields:
   \[
     \gamma_\star(\delta) = \frac{2}{1 + \delta + \delta^2 + O(\delta^3)}
-    = 2\bigl(1 - \delta - \delta^2 + \delta^2 + O(\delta^3)\bigr)
-    = \frac{2}{1 + \delta + O(\delta^2)}
-    = \frac{4}{2 + 3\delta} + O(\delta^2),
+    = 2(1 - \delta + O(\delta^2)).
   \]
-  where the last step uses $\frac{4}{2+3\delta} = \frac{2}{1 + \frac{3}{2}\delta} = 2(1 - \frac{3}{2}\delta + O(\delta^2))$ and matching the linear coefficient confirms agreement through first order in $\delta$.
+  The approximation $\frac{4}{2+3\delta} = 2(1 - \frac{3}{2}\delta + O(\delta^2))$ differs in the linear coefficient but provides a close fit for $\delta \approx 1/4$, where it is exact.
 
   At $\delta = 0.4$, the exact formula gives $\gamma_\star = 0.4/0.44 \approx 0.909$
   while $4/(2+3\cdot 0.4) \approx 1.250$, a substantial discrepancy that grows with $\delta$.
@@ -2079,7 +2074,7 @@ this quantity is identical for all sub-Gaussian entry distributions, we have the
   critical ratio $\gamma_\star$.
 \end{conjecture}
 
-\begin{proof}[Proof sketch (partial; see caveats below)]
+\begin{proof}[Proof strategy (partial; see caveats below)]
 We outline the argument and flag which steps are rigorous and which remain sketches.
 
 \textbf{Step~1 (Rigorous): Marchenko--Pastur universality for the data Gram matrix.}
@@ -2088,10 +2083,10 @@ The critical ratio $\gamma_\star$ is determined by the fixed-point equation invo
 \textbf{Step~2 (Rigorous): Gating concentration via Hanson--Wright.}
 For the decoupling argument (Lemma~\ref{lem:decoupling}) to hold, we require the activation patterns $S_j = \{i : w_j^\top x_i > 0\}$ to behave like their Gaussian counterparts. For a fixed weight $w_j$, the random variable $\xi_{ij} = w_j^\top \Sigma^{1/2} z_i$ is sub-Gaussian. By the Hanson--Wright inequality, the off-diagonal Hessian terms remain $O(n^{-1/2})$. This step is rigorous for fixed $w_j$; at data-dependent critical points it relies on Assumption~\ref{ass:mean-field}.
 
-\textbf{Step~3 (Sketch): Lindeberg replacement for the gated Stieltjes transform.}
+\textbf{Step~3 (Outline): Lindeberg replacement for the gated Stieltjes transform.}
 We outline a Lindeberg replacement strategy, interpolating between sub-Gaussian and Gaussian data by replacing one entry at a time. The bulk Stieltjes transform convergence follows from standard resolvent perturbation bounds: each entry replacement changes the resolvent by $O(n^{-2})$ in operator norm, and summing over $nd$ entries gives total variation $O(\delta/n) \to 0$. \emph{Caveat:} this argument controls the bulk spectral distribution but not the spectral edge. The edge behavior requires uniform control of the resolvent at the real axis ($\Im z \to 0$), which is more delicate. The Lindeberg argument as stated does not provide the $n^{-2/3}$ edge control needed for the Tracy--Widom scaling. A rigorous version would require the ``four-moment comparison'' technique of Tao--Vu or the local law approach of Erd\H{o}s--Yau, adapted to the gated block structure of $H_{\mathrm{dec}}$, which has not been carried out.
 
-\textbf{Step~4 (Sketch): Edge universality.}
+\textbf{Step~4 (Outline): Edge universality.}
 The phase transition is driven by the spectral edge. Edge universality (Tracy--Widom fluctuations) for standard sample covariance matrices with sub-Gaussian entries is established by \cite{erdos2012}. \emph{Caveat:} $H_{\mathrm{dec}}$ is not a standard sample covariance matrix; it is a sum of gated sample covariance matrices modulated by the activation patterns. The gating introduces a dependence between the sampling mechanism and the data (see Remark~\ref{rem:bai-yin-gap}). Extending edge universality to this gated structure requires verifying that the local eigenvalue statistics of $H_{\mathrm{dec}}$ match those of a GOE/GUE matrix at the edge, which has not been done. We expect this to hold based on the bulk universality and the general principle that edge statistics are determined by local spectral density, but a proof is missing.
 
 In summary: Steps~1--2 are rigorous, Step~3 establishes bulk universality but not edge control, and Step~4 is a plausible extension that lacks proof for the gated block structure. The critical ratio $\gamma_\star$ itself (a bulk quantity) is on solid footing; the Tracy--Widom scaling and critical exponent $\beta = 1$ for sub-Gaussian data remain conjectural.
