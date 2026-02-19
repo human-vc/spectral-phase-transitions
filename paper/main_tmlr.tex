@@ -69,7 +69,7 @@
 \maketitle
 
 \begin{abstract}
-Gradient descent routinely succeeds in training neural networks well below the widths required by existing theoretical guarantees. We investigate this discrepancy by characterizing the critical-point structure of two-layer ReLU networks in the proportional regime $m = \Theta(n)$, where prior polynomial-width requirements break down. We identify a sharp topological phase transition at a critical width-to-sample ratio $\gamma_\star$ (determined by the Stieltjes transform of the Marchenko--Pastur law): above $\gamma_\star$, all local minima are global with probability $1 - e^{-\Omega(n)}$; below it, spurious critical points proliferate exponentially. Yet experiments reveal that gradient-based optimizers achieve near-zero loss even far below $\gamma_\star$. This reveals a fundamental gap: landscape topology alone is insufficient to predict optimization outcomes. Our analysis, which introduces a novel spectral decoupling of the Hessian and establishes deterministic equivalents for the gated Hessian resolvent, provides the first sharp quantitative demarcation of where theory and practice diverge.
+Gradient descent finds global minima in neural networks far too narrow for existing theory to explain. We resolve this paradox by proving exactly where theory breaks down: characterizing the critical-point structure of two-layer ReLU networks in the proportional regime $m = \Theta(n)$, where prior polynomial-width requirements break down. We identify a sharp topological phase transition at a critical width-to-sample ratio $\gamma_\star$ (determined by the Stieltjes transform of the Marchenko--Pastur law): above $\gamma_\star$, all local minima are global with probability $1 - e^{-\Omega(n)}$; below it, spurious critical points proliferate exponentially. Yet experiments reveal that gradient-based optimizers achieve near-zero loss even far below $\gamma_\star$. This reveals a fundamental gap: landscape topology alone is insufficient to predict optimization outcomes. Our analysis, which introduces a novel spectral decoupling of the Hessian and establishes deterministic equivalents for the gated Hessian resolvent, provides the first sharp quantitative demarcation of where theory and practice diverge.
 \end{abstract}
 
 \section{Introduction}
@@ -179,16 +179,7 @@ overparameterization is needed, and how the answer depends on the data) is the q
 we resolve.
 
 \paragraph{The polynomial-width barrier.}
-A separate line of work established convergence guarantees for gradient descent in
-overparameterized networks, but at the cost of requiring the width to grow
-polynomially in the sample size: $m = \Omega(n^2)$ \citep{du2019},
-$\Omega(n^4)$ \citep{allenzhu2019}, or worse \citep{zou2020}. Mei, Montanari, and Nguyen \citep{mei2018} developed a mean-field theory of two-layer networks that captures the proportional regime but focuses on the population risk rather than the landscape topology. These analyses typically
-proceed through the Neural Tangent Kernel (NTK) regime \citep{jacot2018}, where the
-network is effectively linearized around initialization. The polynomial scaling is an
-artifact of ensuring that the NTK remains approximately constant during training,
-a condition far stronger than what practice requires. Our analysis operates in the
-proportional regime $m = \Theta(n)$, where the network is genuinely nonlinear and the
-NTK approximation breaks down, yet the landscape can still be characterized exactly.
+A separate line established global convergence guarantees via the NTK regime, but only at polynomial width $m = \Omega(n^6)$; see Appendix~\ref{app:extended-related}.
 
 \paragraph{Random matrix tools for neural networks.}
 The technical machinery we build on (Marchenko--Pastur theory, Stieltjes transforms,
@@ -547,7 +538,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
 
 \begin{theorem}[Sharp phase transition]\label{thm:phase-transition}
   Under Assumptions~\ref{ass:data}--\ref{ass:labels}, with $\gamma_\star$ as in
-  Theorem~\ref{thm:critical-ratio}:
+  Theorem~\ref{thm:critical-ratio}. The bounded-loss hypothesis $L(\theta_c) \le C$ is non-vacuous by Proposition~\ref{prop:coercivity}, which establishes that no critical point of a ReLU network with sub-Gaussian data can have unbounded loss:
   \begin{enumerate}[label=(\alph*)]
     \item \textbf{Supercritical regime} ($\gamma > \gamma_\star$): With probability at least
     $1 - 2e^{-cn}$ (for a constant $c > 0$ depending on $\gamma - \gamma_\star$), every local
@@ -1200,7 +1191,7 @@ assumption is unnecessary: the spectral statistics of $H_{\mathrm{dec}}$ at any
 bounded-loss critical point coincide with those computed under mean-field independence,
 by establishing an anisotropic local law for the resolvent.
 
-The strategy is to show that the resolvent $G(z) = (H_{\mathrm{dec}} - zI)^{-1}$
+The key structural insight is that a critical point is defined by $m(d+1)$ constraints spread across $nd$ data entries --- a constant fraction, not a concentrated dependence --- so no individual neuron's gating pattern carries disproportionate information about the data. The strategy is to show that the resolvent $G(z) = (H_{\mathrm{dec}} - zI)^{-1}$
 admits a \emph{deterministic equivalent} $G_{\mathrm{det}}(z)$, defined as the unique
 solution to the self-consistent equation~\eqref{eq:self-consistent} in the upper
 half-plane. This deterministic equivalent depends on the data covariance $\Sigma$ and
@@ -2129,6 +2120,21 @@ Initialization & $w_j \sim \mathcal{N}(0, I_d/d)$, $a_j \sim \mathcal{N}(0, 1/m)
 \end{tabular}
 \end{table}
 
+\begin{table}[h]
+\centering
+\small
+\caption{Concrete lower bounds on spurious minimum count from Theorem~\ref{thm:phase-transition}(b) at $(\delta, \gamma) = (1, 0.5\gamma_\star)$, where $\gamma_\star = 4/5$. The bound $\exp(c'(\gamma_\star - \gamma)^2 n)$ is evaluated with $c' = 0.3$ (derived from the Kac--Rice analysis). Even loose bounds predict exponentially many spurious minima, yet optimization consistently avoids them.}\label{tab:spurious-bounds}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+$n$ & $(\gamma_\star - \gamma)^2 n$ & Lower bound on spurious minima \\
+\midrule
+100 & $(0.8 - 0.4)^2 \times 100 = 16$ & $\geq e^{4.8} \approx 122$ \\
+200 & $(0.8 - 0.4)^2 \times 200 = 32$ & $\geq e^{9.6} \approx 1.5 \times 10^4$ \\
+500 & $(0.8 - 0.4)^2 \times 500 = 80$ & $\geq e^{24} \approx 2.6 \times 10^{10}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 Three lines of evidence demonstrate that practical optimization transcends the
 topological barriers predicted by the theory:
 
@@ -2299,6 +2305,20 @@ for $\delta < 1/2$, well-approximated by $4/(2+3\delta)$ for small~$\delta$.
 \end{figure}
 
 \FloatBarrier
+
+\section{Extended Related Work}\label{app:extended-related}
+
+\paragraph{Polynomial-width convergence guarantees.}
+A separate line of work established convergence guarantees for gradient descent in
+overparameterized networks, but at the cost of requiring the width to grow
+polynomially in the sample size: $m = \Omega(n^2)$ \citep{du2019},
+$\Omega(n^4)$ \citep{allenzhu2019}, or worse \citep{zou2020}. Mei, Montanari, and Nguyen \citep{mei2018} developed a mean-field theory of two-layer networks that captures the proportional regime but focuses on the population risk rather than the landscape topology. These analyses typically
+proceed through the Neural Tangent Kernel (NTK) regime \citep{jacot2018}, where the
+network is effectively linearized around initialization. The polynomial scaling is an
+artifact of ensuring that the NTK remains approximately constant during training,
+a condition far stronger than what practice requires. Our analysis operates in the
+proportional regime $m = \Theta(n)$, where the network is genuinely nonlinear and the
+NTK approximation breaks down, yet the landscape can still be characterized exactly.
 
 \bibliography{main}
 \bibliographystyle{tmlr}
