@@ -69,18 +69,16 @@
 \maketitle
 
 \begin{abstract}
-Existing theoretical guarantees for gradient descent in overparameterized neural networks require the width to scale polynomially in the sample size, far exceeding practical network sizes. We study the critical-point structure of the empirical risk landscape for two-layer ReLU networks with $n$ samples in $\mathbb{R}^d$ and $m$ hidden neurons, and identify a critical width-to-sample ratio $\gamma_\star$, determined by a fixed-point equation involving the Stieltjes transform of the Marchenko--Pastur law composed with the data covariance spectrum, that marks a topological phase transition: above $\gamma_\star$, all local minima are global with probability $1 - e^{-\Omega(n)}$; below it, the expected number of spurious critical points grows exponentially. For isotropic data, $\gamma_\star(\delta) = 2(1-2\delta)/(1 - \delta - \delta^2)$ when $\delta = d/n < 1/2$. At the transition, the Hessian spectral gap vanishes linearly in $|\gamma - \gamma_\star|$ with universal critical exponent $\beta = 1$. Our analysis operates in the proportional regime $m = \Theta(n)$, bypassing prior polynomial width requirements. A novel spectral decoupling of the Hessian, combined with a deterministic equivalent for the gated Hessian resolvent via the anisotropic local law framework, makes all main results unconditional. Yet experiments show that gradient-based optimizers achieve near-zero loss well below $\gamma_\star$, revealing a fundamental gap between landscape topology and optimization dynamics.
+Gradient descent routinely succeeds in training neural networks well below the widths required by existing theoretical guarantees. We investigate this discrepancy by characterizing the critical-point structure of two-layer ReLU networks in the proportional regime $m = \Theta(n)$, where prior polynomial-width requirements break down. We identify a sharp topological phase transition at a critical width-to-sample ratio $\gamma_\star$ (determined by the Stieltjes transform of the Marchenko--Pastur law): above $\gamma_\star$, all local minima are global with probability $1 - e^{-\Omega(n)}$; below it, spurious critical points proliferate exponentially. Yet experiments reveal that gradient-based optimizers achieve near-zero loss even far below $\gamma_\star$. This reveals a fundamental gap: landscape topology alone is insufficient to predict optimization outcomes. Our analysis, which introduces a novel spectral decoupling of the Hessian and establishes deterministic equivalents for the gated Hessian resolvent, provides the exact tool needed to diagnose where theory and practice diverge.
 \end{abstract}
 
 \section{Introduction}
 
-The loss landscape of a neural network is a high-dimensional, non-convex surface
-riddled with saddle points, plateaus, and potentially spurious local minima that
-trap gradient-based optimizers. Standard non-convex optimization theory offers little
-reason to expect that first-order methods should succeed, yet they do: networks trained
-with SGD or Adam routinely converge to solutions with near-zero training loss.
-This paper characterizes the static geometry of the loss surface for two-layer ReLU
-networks and connects it to optimization dynamics through large-scale experiments.
+Neural network training presents a puzzle. Standard non-convex optimization theory predicts that first-order methods should fail: the loss landscape is riddled with saddle points, plateaus, and exponentially many spurious local minima. Yet in practice, SGD and Adam routinely converge to solutions with near-zero training loss using network widths far smaller than theoretical guarantees require.
+
+This paper investigates the gap between landscape topology and optimization dynamics. We develop exact characterizations of the critical-point structure for two-layer ReLU networks in the proportional regime $m = \Theta(n)$---where prior polynomial-width requirements break down---and use these to diagnose precisely where theory and practice diverge.
+
+Our experiments reveal a striking discrepancy. Even when landscape analysis predicts exponentially many spurious minima, gradient descent achieves near-zero training loss. This observation motivates our theoretical question: can we characterize landscape topology so precisely that the gap itself becomes visible? We answer affirmatively, identifying a sharp topological threshold $\gamma_\star$ that demarcates where benign geometry becomes possible---and then demonstrate empirically that optimizers succeed even where the landscape remains topologically complex.
 
 Prior work has approached the landscape question from several angles
 \citep{choromanska2015,kawaguchi2016,safran2018,venturi2019,geiger2019,sagun2017}. Choromanska et al.\
@@ -95,9 +93,10 @@ an open problem. We resolve it for two-layer ReLU networks.
 
 \subsection{Main contributions}
 
+Our contributions address the puzzle from complementary angles: exact theoretical characterization of landscape topology, followed by empirical demonstration that this characterization is insufficient to predict optimization outcomes.
+
 \begin{enumerate}[label=(\roman*)]
-  \item \textbf{Sharp topological threshold.} We identify a critical width-to-sample ratio $\gamma_\star$ (depending on the
-  data covariance spectrum) that marks a topological phase transition in the loss landscape
+  \item \textbf{Sharp topological threshold.} We identify the minimal sufficient condition for a benign landscape: a critical width-to-sample ratio $\gamma_\star$ (depending on the data covariance spectrum) that marks a topological phase transition
   (Figure~\ref{fig:phase-diagram}):
   for $\gamma > \gamma_\star$, all local minima of the empirical risk
   are global with probability $1 - e^{-\Omega(n)}$, and for $\gamma < \gamma_\star$, the expected number of
@@ -136,11 +135,8 @@ an open problem. We resolve it for two-layer ReLU networks.
 \label{fig:phase-diagram}
 \end{figure}
 
-  This provides a \emph{sufficient} condition on the width for a benign landscape; as we
-  discuss in Section~\ref{sec:landscape-dynamics}, it is not a necessary condition for
-  successful optimization.
-  Empirical training dynamics confirm that the boundary is meaningful but not sharp
-  in practice (Figure~\ref{fig:empirical-validation}).
+  Theorem~\ref{thm:phase-transition} establishes $\gamma_\star$ as a \emph{sufficient} condition for a benign landscape; crucially, as we demonstrate in Section~\ref{sec:landscape-dynamics}, it is not \emph{necessary} for successful optimization.
+  Empirical training dynamics confirm that gradient descent succeeds well below $\gamma_\star$ (Figure~\ref{fig:empirical-validation}), revealing that landscape topology alone is insufficient to predict optimization difficulty.
 
   \item \textbf{Spectral characterization.} We give an explicit fixed-point equation for $\gamma_\star$ in terms
   of the Stieltjes transform of the limiting spectral distribution of the data Gram matrix
