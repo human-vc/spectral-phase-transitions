@@ -78,7 +78,7 @@ Neural network training presents a puzzle. Standard non-convex optimization theo
 
 This paper investigates the gap between landscape topology and optimization dynamics. We develop exact characterizations of the critical-point structure for two-layer ReLU networks in the proportional regime $m = \Theta(n)$, where prior polynomial-width requirements break down, and use these to diagnose precisely where theory and practice diverge.
 
-Our experiments reveal a striking discrepancy. Even when landscape analysis predicts exponentially many spurious minima, gradient descent achieves near-zero training loss. This observation motivates our theoretical goal: to characterize landscape topology so precisely that the gap itself becomes visible. We achieve this, identifying a sharp topological threshold $\gamma_\star$ that demarcates where benign geometry becomes possible, and then demonstrate empirically that optimizers succeed even where the landscape remains topologically complex.
+Our experiments reveal a striking discrepancy. Even when landscape analysis predicts exponentially many spurious minima, gradient descent achieves near-zero training loss. This observation motivates the following theoretical goal: characterize landscape topology with sufficient precision that the gap between theory and practice becomes analytically tractable. We achieve this by identifying a sharp topological threshold $\gamma_\star$ that demarcates where benign geometry becomes possible, and then demonstrate empirically that optimizers succeed even where the landscape remains topologically complex.
 
 Prior work has approached the landscape question from several angles
 \citep{choromanska2015,kawaguchi2016,safran2018,venturi2019,geiger2019,sagun2017}. Choromanska et al.\
