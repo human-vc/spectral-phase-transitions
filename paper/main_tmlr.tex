@@ -1,10 +1,19 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt]{article} % For LaTeX2e
+\usepackage{tmlr}
+\setcitestyle{numbers,square}
+% If accepted, instead use the following line for the camera-ready submission:
+%\usepackage[accepted]{tmlr}
+% To de-anonymize and remove mentions to TMLR (for example for posting to preprint servers), instead use the following:
+%\usepackage[preprint]{tmlr}
 
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
-\usepackage{geometry}
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{enumitem}
@@ -17,8 +26,20 @@
 \usepackage{float}
 \usepackage[most]{tcolorbox}
 
-\geometry{margin=1in}
+% TMLR formatting
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
 
+\title{Spectral Phase Transitions in the Loss Landscape\\of Finite-Width Neural Networks}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the tmlr package is used without the [accepted] or [preprint] options.
+% Non-anonymous submissions will be rejected without review.
+
+\author{\name Anonymous Authors \\
+      \addr Anonymous Institution}
+
+% Defs
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -29,30 +50,28 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
-
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\E}{\mathbb{E}}
+% \newcommand{\R}{\mathbb{R}}
+% \newcommand{\E}{\mathbb{E}}
 \newcommand{\Prob}{\mathbb{P}}
-\newcommand{\Cov}{\mathrm{Cov}}
+% \newcommand{\Cov}{\mathrm{Cov}}
 \newcommand{\tr}{\mathrm{tr}}
 \newcommand{\op}{\mathrm{op}}
 \newcommand{\supp}{\mathrm{supp}}
 \DeclareMathOperator{\sgn}{sgn}
-\DeclareMathOperator*{\argmin}{arg\,min}
-\DeclareMathOperator*{\argmax}{arg\,max}
+% \DeclareMathOperator*{\argmin}{arg\,min}
+% \DeclareMathOperator*{\argmax}{arg\,max}
 
-\title{Spectral Phase Transitions in the Loss Landscape\\of Finite-Width Neural Networks}
-\author{Jacob Crainic}
-\date{February 2026}
+\def\month{MM}  % Insert correct month for camera-ready version
+\def\year{YYYY} % Insert correct year for camera-ready version
+\def\openreview{\url{https://openreview.net/forum?id=XXXX}} % Insert correct link to OpenReview for camera-ready version
 
 \begin{document}
+
 \maketitle
 
 \begin{abstract}
-  Existing theoretical guarantees for gradient descent in overparameterized neural networks require the width to scale polynomially in the sample size, far exceeding practical network sizes. We study the critical-point structure of the empirical risk landscape for two-layer ReLU networks with $n$ samples in $\mathbb{R}^d$ and $m$ hidden neurons, and identify a critical width-to-sample ratio $\gamma_\star$, determined by a fixed-point equation involving the Stieltjes transform of the Marchenko--Pastur law composed with the data covariance spectrum, that marks a topological phase transition: above $\gamma_\star$, all local minima are global with probability $1 - e^{-\Omega(n)}$; below it, the expected number of spurious critical points grows exponentially. For isotropic data, $\gamma_\star(\delta) = 2(1-2\delta)/(1 - \delta - \delta^2)$ when $\delta = d/n < 1/2$. At the transition, the Hessian spectral gap vanishes linearly in $|\gamma - \gamma_\star|$ with universal critical exponent $\beta = 1$. Our analysis operates in the proportional regime $m = \Theta(n)$, bypassing prior polynomial width requirements. A novel spectral decoupling of the Hessian, combined with a deterministic equivalent for the gated Hessian resolvent via the anisotropic local law framework, makes all results unconditional. Yet experiments show that gradient-based optimizers achieve near-zero loss well below $\gamma_\star$, revealing a fundamental gap between landscape topology and optimization dynamics.
+Existing theoretical guarantees for gradient descent in overparameterized neural networks require the width to scale polynomially in the sample size, far exceeding practical network sizes. We study the critical-point structure of the empirical risk landscape for two-layer ReLU networks with $n$ samples in $\mathbb{R}^d$ and $m$ hidden neurons, and identify a critical width-to-sample ratio $\gamma_\star$, determined by a fixed-point equation involving the Stieltjes transform of the Marchenko--Pastur law composed with the data covariance spectrum, that marks a topological phase transition: above $\gamma_\star$, all local minima are global with probability $1 - e^{-\Omega(n)}$; below it, the expected number of spurious critical points grows exponentially. For isotropic data, $\gamma_\star(\delta) = 2(1-2\delta)/(1 - \delta - \delta^2)$ when $\delta = d/n < 1/2$. At the transition, the Hessian spectral gap vanishes linearly in $|\gamma - \gamma_\star|$ with universal critical exponent $\beta = 1$. Our analysis operates in the proportional regime $m = \Theta(n)$, bypassing prior polynomial width requirements. A novel spectral decoupling of the Hessian, combined with a deterministic equivalent for the gated Hessian resolvent via the anisotropic local law framework, makes all results unconditional. Yet experiments show that gradient-based optimizers achieve near-zero loss well below $\gamma_\star$, revealing a fundamental gap between landscape topology and optimization dynamics.
 \end{abstract}
-
-\tableofcontents
 
 \section{Introduction}
 
@@ -2407,5 +2426,7 @@ A.~Knowles and J.~Yin.
 \newblock \emph{Probability Theory and Related Fields}, 169(1):257--352, 2017.
 
 \end{thebibliography}
+
+
 
 \end{document}
