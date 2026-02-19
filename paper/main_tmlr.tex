@@ -76,9 +76,9 @@ Gradient descent routinely succeeds in training neural networks well below the w
 
 Neural network training presents a puzzle. Standard non-convex optimization theory predicts that first-order methods should fail: the loss landscape is riddled with saddle points, plateaus, and exponentially many spurious local minima. Yet in practice, SGD and Adam routinely converge to solutions with near-zero training loss using network widths far smaller than theoretical guarantees require.
 
-This paper investigates the gap between landscape topology and optimization dynamics. We develop exact characterizations of the critical-point structure for two-layer ReLU networks in the proportional regime $m = \Theta(n)$---where prior polynomial-width requirements break down---and use these to diagnose precisely where theory and practice diverge.
+This paper investigates the gap between landscape topology and optimization dynamics. We develop exact characterizations of the critical-point structure for two-layer ReLU networks in the proportional regime $m = \Theta(n)$, where prior polynomial-width requirements break down, and use these to diagnose precisely where theory and practice diverge.
 
-Our experiments reveal a striking discrepancy. Even when landscape analysis predicts exponentially many spurious minima, gradient descent achieves near-zero training loss. This observation motivates our theoretical question: can we characterize landscape topology so precisely that the gap itself becomes visible? We answer affirmatively, identifying a sharp topological threshold $\gamma_\star$ that demarcates where benign geometry becomes possible---and then demonstrate empirically that optimizers succeed even where the landscape remains topologically complex.
+Our experiments reveal a striking discrepancy. Even when landscape analysis predicts exponentially many spurious minima, gradient descent achieves near-zero training loss. This observation motivates our theoretical question: can we characterize landscape topology so precisely that the gap itself becomes visible? We answer affirmatively, identifying a sharp topological threshold $\gamma_\star$ that demarcates where benign geometry becomes possible, and then demonstrate empirically that optimizers succeed even where the landscape remains topologically complex.
 
 Prior work has approached the landscape question from several angles
 \citep{choromanska2015,kawaguchi2016,safran2018,venturi2019,geiger2019,sagun2017}. Choromanska et al.\
@@ -1228,10 +1228,10 @@ the data. The approximation holds uniformly over all bounded-loss critical point
   \end{equation}
   The limiting spectral distribution of $H_{\mathrm{dec}}(\theta_c)$ is therefore
   $\rho_\gamma$, the same measure that arises under Assumption~\ref{ass:mean-field}.
-  All downstream consequences---the critical ratio $\gamma_\star$
+  All downstream consequences, the critical ratio $\gamma_\star$
   (Theorem~\ref{thm:critical-ratio}), the phase transition
   (Theorem~\ref{thm:phase-transition}), and the spectral gap scaling
-  (Theorem~\ref{thm:scaling})---hold unconditionally at bounded-loss critical points.
+  (Theorem~\ref{thm:scaling}), hold unconditionally at bounded-loss critical points.
 \end{theorem}
 
 \begin{proof}
@@ -1408,8 +1408,8 @@ requisite scale.
 Since the deterministic equivalent $G_{\mathrm{det}}(z)$ and the limiting measure
 $\rho_\gamma$ are identical to those computed under Assumption~\ref{ass:mean-field},
 all results that depend on the spectrum of $H_{\mathrm{dec}}$ at bounded-loss critical
-points---the critical ratio $\gamma_\star$, the phase transition, and the spectral gap
-scaling---hold without invoking Assumption~\ref{ass:mean-field}.
+points, the critical ratio $\gamma_\star$, the phase transition, and the spectral gap
+scaling, hold without invoking Assumption~\ref{ass:mean-field}.
 \end{proof}
 
 \begin{remark}[Assumption~\ref{ass:mean-field} superseded]\label{rem:mean-field-superseded}
