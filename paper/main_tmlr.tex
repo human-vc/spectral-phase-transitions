@@ -69,7 +69,7 @@
 \maketitle
 
 \begin{abstract}
-Gradient descent routinely succeeds in training neural networks well below the widths required by existing theoretical guarantees. We investigate this discrepancy by characterizing the critical-point structure of two-layer ReLU networks in the proportional regime $m = \Theta(n)$, where prior polynomial-width requirements break down. We identify a sharp topological phase transition at a critical width-to-sample ratio $\gamma_\star$ (determined by the Stieltjes transform of the Marchenko--Pastur law): above $\gamma_\star$, all local minima are global with probability $1 - e^{-\Omega(n)}$; below it, spurious critical points proliferate exponentially. Yet experiments reveal that gradient-based optimizers achieve near-zero loss even far below $\gamma_\star$. This reveals a fundamental gap: landscape topology alone is insufficient to predict optimization outcomes. Our analysis, which introduces a novel spectral decoupling of the Hessian and establishes deterministic equivalents for the gated Hessian resolvent, provides the exact tool needed to diagnose where theory and practice diverge.
+Gradient descent routinely succeeds in training neural networks well below the widths required by existing theoretical guarantees. We investigate this discrepancy by characterizing the critical-point structure of two-layer ReLU networks in the proportional regime $m = \Theta(n)$, where prior polynomial-width requirements break down. We identify a sharp topological phase transition at a critical width-to-sample ratio $\gamma_\star$ (determined by the Stieltjes transform of the Marchenko--Pastur law): above $\gamma_\star$, all local minima are global with probability $1 - e^{-\Omega(n)}$; below it, spurious critical points proliferate exponentially. Yet experiments reveal that gradient-based optimizers achieve near-zero loss even far below $\gamma_\star$. This reveals a fundamental gap: landscape topology alone is insufficient to predict optimization outcomes. Our analysis, which introduces a novel spectral decoupling of the Hessian and establishes deterministic equivalents for the gated Hessian resolvent, provides the first sharp quantitative demarcation of where theory and practice diverge.
 \end{abstract}
 
 \section{Introduction}
@@ -684,15 +684,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
 \end{remark}
 
 \begin{remark}[Landscape geometry vs.\ optimization dynamics]\label{rem:landscape-dynamics}
-  Theorem~\ref{thm:phase-transition} characterizes the \emph{static geometry} of the loss
-  surface: it counts the number and type of critical points as a function of $\gamma$.
-  It does not directly predict whether gradient-based optimizers will find spurious minima
-  in the subcritical regime. Indeed, our numerical experiments
-  (Section~\ref{sec:landscape-dynamics}) show that standard optimizers, and even
-  gradient-norm minimization aimed at finding \emph{any} critical point, consistently
-  converge to global minima well below $\gamma_\star$. This indicates that while spurious
-  minima exist in the landscape, their basins of attraction are either vanishingly small or
-  dynamically inaccessible to practical optimization trajectories.
+  Theorem~\ref{thm:phase-transition} characterizes the \emph{static geometry} of the loss surface and does not predict optimization outcomes directly. The obvious implication --- that gradient descent should fail below $\gamma_\star$ --- is empirically false. In 960 independent optimization runs spanning $\gamma \in [0.2\gamma_\star, 2.0\gamma_\star]$, every converged run found a global minimum (Section~\ref{sec:landscape-dynamics}), including at $\gamma = 0.2\gamma_\star$, deep in the subcritical regime where the expected number of spurious minima is $e^{\Omega(n)}$. The gap between landscape topology and optimization difficulty is not a finite-size artifact: it persists at $n = 1500$ (Table~\ref{tab:hero}). We return to possible explanations --- vanishing basin widths, optimization inductive bias --- in Section~\ref{sec:landscape-dynamics}.
 \end{remark}
 
 \begin{figure}[H]
