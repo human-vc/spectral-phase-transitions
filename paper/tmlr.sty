@@ -48,6 +48,7 @@
 
 \oddsidemargin 0in    %   Note \oddsidemargin = \evensidemargin
 \evensidemargin 0in
+
 \marginparwidth 0.07 true in
 %\marginparwidth 0.75 true in
 %\topmargin 0 true pt           % Nominal distance from top of page to top of
@@ -59,8 +60,7 @@
 \widowpenalty=10000
 \clubpenalty=10000
 
-
-% \thispagestyle{empty}        \pagestyle{empty}
+% \thispagestyle{empty} \pagestyle{empty}
 \flushbottom \sloppy
 
 % We're never going to need a table of contents, so just flush it to
@@ -73,8 +73,8 @@
    \def\thefootnote{\fnsymbol{footnote}}
    \def\@makefnmark{\hbox to 0pt{$^{\@thefnmark}$\hss}} % for perfect author
                                                         % name centering
-%   The footnote-mark was overlapping the footnote-text,
-%   added the following to fix this problem               (MK)
+   % The footnote-mark was overlapping the footnote-text,
+   % added the following to fix this problem (MK)
    \long\def\@makefntext##1{\parindent 1em\noindent
                             \hbox to1.8em{\hss $\m@th ^{\@thefnmark}$}##1}
    \@maketitle \@thanks
@@ -83,8 +83,10 @@
 \let\maketitle\relax \let\@maketitle\relax
 \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax}
 
-\newlength\aftertitskip     \newlength\beforetitskip
-\newlength\interauthorskip  \newlength\aftermaketitskip
+\newlength\aftertitskip
+\newlength\beforetitskip
+\newlength\interauthorskip
+\newlength\aftermaketitskip
 
 %% Changeable parameters.
 \setlength\aftertitskip{0.3in plus 0.2in minus 0.2in}
@@ -92,9 +94,9 @@
 \setlength\interauthorskip{0.08in plus 0.1in minus 0.1in}
 \setlength\aftermaketitskip{0.3in plus 0.1in minus 0.1in}
 
+
 \def\@startauthor{\noindent \normalsize\bf}
 \def\@endauthor{}
-
 \def\addr{\small\it}%
 \def\email{\hfill\small\it}%
 \def\name{\normalsize\bf}%
@@ -102,34 +104,35 @@
 \def\AND{\@endauthor\rm\hss \vskip \interauthorskip \@startauthor}
 
 % The toptitlebar has been raised to top-justify the first page
-
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhead{}
-
 \if@accepted
-    \if@preprint
-        \lhead{}
-    \else
-        \lhead{Published in Transactions on Machine Learning Research (\month/\year)}
-    \fi
+  \if@preprint
+    \lhead{}
+  \else
+    \lhead{Published in Transactions on Machine Learning Research (\month/\year)}
+  \fi
 \else
-       \lhead{Under review as submission to TMLR}
+  \lhead{Under review as submission to TMLR}
 \fi
 
 % Title (includes both anonymized and non-anonymized versions)
 \def\@maketitle{\vbox{\hsize\textwidth
-%\linewidth\hsize \vskip 0.1in \toptitlebar \centering
+%\linewidth\hsize
+\vskip 0.1in
+\toptitlebar
+\centering
 {\LARGE\bf\sffamily \@title\par}\vskip \aftertitskip
-%\bottomtitlebar % \vskip 0.1in %  minus
+%\bottomtitlebar % \vskip 0.1in % minus
 \if@accepted
-    \if@preprint
-        \@startauthor \@author \@endauthor
-    \else
-        \@startauthor \@author \\ \\ {\bf Reviewed on OpenReview:} \openreview \@endauthor
-    \fi
+\if@preprint
+  \@startauthor \@author \@endauthor
 \else
-    \@startauthor Anonymous authors\\Paper under double-blind review \@endauthor
+  \@startauthor \@author \\ \\ {\bf Reviewed on OpenReview:} \openreview \@endauthor
+\fi
+\else
+  \@startauthor Anonymous authors\\Paper under double-blind review \@endauthor
 \fi
 \vskip 0.3in minus 0.1in}}
 
@@ -138,18 +141,15 @@ Abstract}\vspace{0.5ex}\begin{quote}}{\par\end{quote}\vskip 1ex}
 
 % sections with less space
 \def\section{\@startsection {section}{1}{\z@}{-2.0ex plus
-    -0.5ex minus -.2ex}{1.5ex plus 0.3ex
-minus0.2ex}{\large\bf\raggedright\sffamily}}
-
+    -0.5ex minus -.2ex}{1.5ex plus 0.3ex minus0.2ex}{\large\bf\raggedright\sffamily}}
 \def\subsection{\@startsection{subsection}{2}{\z@}{-1.8ex plus
--0.5ex minus -.2ex}{0.8ex plus .2ex}{\normalsize\bf\raggedright\sffamily}}
-\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-1.5ex
-plus      -0.5ex minus -.2ex}{0.5ex plus
-.2ex}{\normalsize\bf\raggedright\sffamily}}
+    -0.5ex minus -.2ex}{0.8ex plus .2ex}{\normalsize\bf\raggedright\sffamily}}
+\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-1.5ex plus
+    -0.5ex minus -.2ex}{0.5ex plus .2ex}{\normalsize\bf\raggedright\sffamily}}
 \def\paragraph{\@startsection{paragraph}{4}{\z@}{1.5ex plus
-0.5ex minus .2ex}{-1em}{\normalsize\bf}}
+    0.5ex minus .2ex}{-1em}{\normalsize\bf}}
 \def\subparagraph{\@startsection{subparagraph}{5}{\z@}{1.5ex plus
-  0.5ex minus .2ex}{-1em}{\normalsize\bf}}
+    0.5ex minus .2ex}{-1em}{\normalsize\bf}}
 \def\subsubsubsection{\vskip
 5pt{\noindent\normalsize\rm\raggedright\sffamily}}
 
@@ -172,7 +172,7 @@ plus      -0.5ex minus -.2ex}{0.5ex plus
 %\leftmargin2em
 \leftmargin3pc
 \leftmargini\leftmargin \leftmarginii 2em
-\leftmarginiii 1.5em \leftmarginiv 1.0em \leftmarginv .5em
+\leftmarginiii 1.5em \leftmarginiv 1.0em \leftmarginv .5em 
 
 %\labelsep \labelsep 5pt
 
@@ -196,11 +196,10 @@ plus      -0.5ex minus -.2ex}{0.5ex plus
 
 \abovedisplayskip 7pt plus2pt minus5pt%
 \belowdisplayskip \abovedisplayskip
-\abovedisplayshortskip  0pt plus3pt%
-\belowdisplayshortskip  4pt plus3pt minus3pt%
-
+\abovedisplayshortskip 0pt plus3pt%
+\belowdisplayshortskip 4pt plus3pt minus3pt%
 
 \def\toptitlebar{\hrule height4pt\vskip .25in\vskip-\parskip}
+\def\bottomtitlebar{\vskip .29in\vskip-\parskip\hrule height1pt\vskip .09in}
 
-\def\bottomtitlebar{\vskip .29in\vskip-\parskip\hrule height1pt\vskip
-.09in} %
+%
