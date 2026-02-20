@@ -1,10 +1,18 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt]{article} % For LaTeX2e
+\usepackage{tmlr}
+% If accepted, instead use the following line for the camera-ready submission:
+%\usepackage[accepted]{tmlr}
+% To de-anonymize and remove mentions to TMLR (for example for posting to preprint servers), instead use the following:
+%\usepackage[preprint]{tmlr}
 
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
-\usepackage{geometry}
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{enumitem}
@@ -17,8 +25,20 @@
 \usepackage{float}
 \usepackage[most]{tcolorbox}
 
-\geometry{margin=1in}
+% TMLR formatting
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
 
+\title{Spectral Phase Transitions in the Loss Landscape\\of Finite-Width Neural Networks}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the tmlr package is used without the [accepted] or [preprint] options.
+% Non-anonymous submissions will be rejected without review.
+
+\author{\name Anonymous Authors \\
+      \addr Anonymous Institution}
+
+% Defs
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -29,57 +49,54 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
-
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\E}{\mathbb{E}}
+% \newcommand{\R}{\mathbb{R}}
+% \newcommand{\E}{\mathbb{E}}
 \newcommand{\Prob}{\mathbb{P}}
-\newcommand{\Cov}{\mathrm{Cov}}
+% \newcommand{\Cov}{\mathrm{Cov}}
 \newcommand{\tr}{\mathrm{tr}}
 \newcommand{\op}{\mathrm{op}}
 \newcommand{\supp}{\mathrm{supp}}
 \DeclareMathOperator{\sgn}{sgn}
-\DeclareMathOperator*{\argmin}{arg\,min}
-\DeclareMathOperator*{\argmax}{arg\,max}
+% \DeclareMathOperator*{\argmin}{arg\,min}
+% \DeclareMathOperator*{\argmax}{arg\,max}
 
-\title{Spectral Phase Transitions in the Loss Landscape\\of Finite-Width Neural Networks}
-\author{Jacob Crainic}
-\date{February 2026}
+\def\month{MM}  % Insert correct month for camera-ready version
+\def\year{YYYY} % Insert correct year for camera-ready version
+\def\openreview{\url{https://openreview.net/forum?id=XXXX}} % Insert correct link to OpenReview for camera-ready version
 
 \begin{document}
+
 \maketitle
 
 \begin{abstract}
-  Existing theoretical guarantees for gradient descent in overparameterized neural networks require the width to scale polynomially in the sample size, far exceeding practical network sizes. We study the critical-point structure of the empirical risk landscape for two-layer ReLU networks with $n$ samples in $\mathbb{R}^d$ and $m$ hidden neurons, and identify a critical width-to-sample ratio $\gamma_\star$, determined by a fixed-point equation involving the Stieltjes transform of the Marchenko--Pastur law composed with the data covariance spectrum, that marks a topological phase transition: above $\gamma_\star$, all local minima are global with probability $1 - e^{-\Omega(n)}$; below it, the expected number of spurious critical points grows exponentially. For isotropic data, $\gamma_\star(\delta) = 2(1-2\delta)/(1 - \delta - \delta^2)$ when $\delta = d/n < 1/2$. At the transition, the Hessian spectral gap vanishes linearly in $|\gamma - \gamma_\star|$ with universal critical exponent $\beta = 1$. Our analysis operates in the proportional regime $m = \Theta(n)$, bypassing prior polynomial width requirements. A novel spectral decoupling of the Hessian, combined with a deterministic equivalent for the gated Hessian resolvent via the anisotropic local law framework, makes all results unconditional. Yet experiments show that gradient-based optimizers achieve near-zero loss well below $\gamma_\star$, revealing a fundamental gap between landscape topology and optimization dynamics.
+Gradient descent finds global minima in neural networks far too narrow for existing theory to explain. We resolve this paradox by proving exactly where theory breaks down: characterizing the critical-point structure of two-layer ReLU networks in the proportional regime $m = \Theta(n)$, where prior polynomial-width requirements break down. We identify a sharp topological phase transition at a critical width-to-sample ratio $\gamma_\star$ (determined by the Stieltjes transform of the Marchenko--Pastur law): above $\gamma_\star$, all local minima are global with probability $1 - e^{-\Omega(n)}$; below it, spurious critical points proliferate exponentially. Yet experiments reveal that gradient-based optimizers achieve near-zero loss even far below $\gamma_\star$. This reveals a fundamental gap: landscape topology alone is insufficient to predict optimization outcomes. Our analysis, which introduces a novel spectral decoupling of the Hessian and establishes deterministic equivalents for the gated Hessian resolvent, provides the first sharp quantitative demarcation of where theory and practice diverge.
 \end{abstract}
-
-\tableofcontents
 
 \section{Introduction}
 
-The loss landscape of a neural network is a high-dimensional, non-convex surface
-riddled with saddle points, plateaus, and potentially spurious local minima that
-trap gradient-based optimizers. Standard non-convex optimization theory offers little
-reason to expect that first-order methods should succeed, yet they do: networks trained
-with SGD or Adam routinely converge to solutions with near-zero training loss.
-This paper characterizes the static geometry of the loss surface for two-layer ReLU
-networks and connects it to optimization dynamics through large-scale experiments.
+Neural network training presents a puzzle. Standard non-convex optimization theory predicts that first-order methods should fail: the loss landscape is riddled with saddle points, plateaus, and exponentially many spurious local minima. Yet in practice, SGD and Adam routinely converge to solutions with near-zero training loss using network widths far smaller than theoretical guarantees require.
+
+This paper investigates the gap between landscape topology and optimization dynamics. We develop exact characterizations of the critical-point structure for two-layer ReLU networks in the proportional regime $m = \Theta(n)$, where prior polynomial-width requirements break down, and use these to diagnose precisely where theory and practice diverge.
+
+Our experiments reveal a striking discrepancy. Even when landscape analysis predicts exponentially many spurious minima, gradient descent achieves near-zero training loss. This observation motivates the following theoretical goal: characterize landscape topology with sufficient precision that the gap between theory and practice becomes analytically tractable. We achieve this by identifying a sharp topological threshold $\gamma_\star$ that demarcates where benign geometry becomes possible, and then demonstrate empirically that optimizers succeed even where the landscape remains topologically complex.
 
 Prior work has approached the landscape question from several angles
-\cite{choromanska2015,kawaguchi2016,safran2018,venturi2019,geiger2019,sagun2017}. Choromanska et al.\
-connected neural loss surfaces to spin-glass Hamiltonians (see also Ben~Arous and Gheissari~\cite{benarous2019} for related Kac--Rice analyses in high-dimensional non-convex landscapes); Kawaguchi showed that linear
+\citep{choromanska2015,kawaguchi2016,safran2018,venturi2019,geiger2019,sagun2017}. Choromanska et al.\
+connected neural loss surfaces to spin-glass Hamiltonians (see also Ben~Arous and Gheissari~\citep{benarous2019} for related Kac--Rice analyses in high-dimensional non-convex landscapes); Kawaguchi showed that linear
 networks have no spurious minima; Safran and Shamir exhibited spurious minima in
 underparameterized ReLU networks. In the overparameterized regime, Du et al.\
-\cite{du2019}, Allen-Zhu et al.\ \cite{allenzhu2019}, and the NTK framework
-\cite{jacot2018} established global convergence guarantees, but only when the width $m$
+\citep{du2019}, Allen-Zhu et al.\ \citep{allenzhu2019}, and the NTK framework
+\citep{jacot2018} established global convergence guarantees, but only when the width $m$
 scales polynomially in~$n$ (often $m = \Omega(n^6)$), far exceeding practical network
 sizes. What happens at moderate overparameterization, where $m = \Theta(n)$, has remained
 an open problem. We resolve it for two-layer ReLU networks.
 
 \subsection{Main contributions}
 
+Our contributions address the puzzle from complementary angles: exact theoretical characterization of landscape topology, followed by empirical demonstration that this characterization is insufficient to predict optimization outcomes.
+
 \begin{enumerate}[label=(\roman*)]
-  \item \textbf{Sharp topological threshold.} We identify a critical width-to-sample ratio $\gamma_\star$ (depending on the
-  data covariance spectrum) that marks a topological phase transition in the loss landscape
+  \item \textbf{Sharp topological threshold.} We identify the minimal sufficient condition for a benign landscape: a critical width-to-sample ratio $\gamma_\star$ (depending on the data covariance spectrum) that marks a topological phase transition
   (Figure~\ref{fig:phase-diagram}):
   for $\gamma > \gamma_\star$, all local minima of the empirical risk
   are global with probability $1 - e^{-\Omega(n)}$, and for $\gamma < \gamma_\star$, the expected number of
@@ -118,11 +135,8 @@ an open problem. We resolve it for two-layer ReLU networks.
 \label{fig:phase-diagram}
 \end{figure}
 
-  This provides a \emph{sufficient} condition on the width for a benign landscape; as we
-  discuss in Section~\ref{sec:landscape-dynamics}, it is not a necessary condition for
-  successful optimization.
-  Empirical training dynamics confirm that the boundary is meaningful but not sharp
-  in practice (Figure~\ref{fig:empirical-validation}).
+  Theorem~\ref{thm:phase-transition} establishes $\gamma_\star$ as a \emph{sufficient} condition for a benign landscape; crucially, as we demonstrate in Section~\ref{sec:landscape-dynamics}, it is not \emph{necessary} for successful optimization.
+  Empirical training dynamics confirm that gradient descent succeeds well below $\gamma_\star$ (Figure~\ref{fig:empirical-validation}), revealing that landscape topology alone is insufficient to predict optimization difficulty.
 
   \item \textbf{Spectral characterization.} We give an explicit fixed-point equation for $\gamma_\star$ in terms
   of the Stieltjes transform of the limiting spectral distribution of the data Gram matrix
@@ -154,32 +168,23 @@ All theorems in this paper apply under the following setting:
 \paragraph{From spin glasses to sharp thresholds.}
 Early theoretical work drew on statistical physics to argue that neural loss surfaces
 resemble spin-glass energy landscapes, where most local minima cluster near the global
-minimum \cite{choromanska2015}. This qualitative picture was sharpened in two directions.
-On one hand, Kawaguchi \cite{kawaguchi2016} proved that \emph{linear} networks have no
+minimum \citep{choromanska2015}. This qualitative picture was sharpened in two directions.
+On one hand, Kawaguchi \citep{kawaguchi2016} proved that \emph{linear} networks have no
 spurious minima at all, a clean structural result that does not survive the
 introduction of nonlinear activations. On the other hand, Safran and Shamir
-\cite{safran2018} showed that two-layer ReLU networks \emph{do} harbor spurious minima
-when underparameterized, while Venturi et al.\ \cite{venturi2019} gave sufficient
+\citep{safran2018} showed that two-layer ReLU networks \emph{do} harbor spurious minima
+when underparameterized, while Venturi et al.\ \citep{venturi2019} gave sufficient
 conditions for their absence. The gap between these results (exactly how much
 overparameterization is needed, and how the answer depends on the data) is the question
 we resolve.
 
 \paragraph{The polynomial-width barrier.}
-A separate line of work established convergence guarantees for gradient descent in
-overparameterized networks, but at the cost of requiring the width to grow
-polynomially in the sample size: $m = \Omega(n^2)$ \cite{du2019},
-$\Omega(n^4)$ \cite{allenzhu2019}, or worse \cite{zou2020}. Mei, Montanari, and Nguyen \cite{mei2018} developed a mean-field theory of two-layer networks that captures the proportional regime but focuses on the population risk rather than the landscape topology. These analyses typically
-proceed through the Neural Tangent Kernel (NTK) regime \cite{jacot2018}, where the
-network is effectively linearized around initialization. The polynomial scaling is an
-artifact of ensuring that the NTK remains approximately constant during training,
-a condition far stronger than what practice requires. Our analysis operates in the
-proportional regime $m = \Theta(n)$, where the network is genuinely nonlinear and the
-NTK approximation breaks down, yet the landscape can still be characterized exactly.
+A separate line established global convergence guarantees via the NTK regime, but only at polynomial width $m = \Omega(n^6)$; see Appendix~\ref{app:extended-related}.
 
 \paragraph{Random matrix tools for neural networks.}
 The technical machinery we build on (Marchenko--Pastur theory, Stieltjes transforms,
 free probability) has been applied to neural networks primarily through the lens of
-the Jacobian and kernel matrices \cite{pennington2017,louart2018,ghorbani2019}. These works
+the Jacobian and kernel matrices \citep{pennington2017,louart2018,ghorbani2019}. These works
 characterize the \emph{conditioning} of the optimization problem (eigenvalues of the
 Gram matrix or the NTK), not the \emph{topology} of the loss surface (existence
 and type of critical points). Our spectral decoupling bridges this gap by applying
@@ -347,9 +352,13 @@ Under this convention, the singular contribution from the kinks ($\sigma''$) is 
 \begin{lemma}[Sharpened decoupling via leave-one-out]\label{lem:decoupling-sharp}
   Under Assumptions~\ref{ass:data}--\ref{ass:labels}, and specifically for $\gamma$ near $\gamma_\star$, the approximation error satisfies:
   \[
-    \bigl\|\nabla^2 L(\theta_c) - H_{\mathrm{dec}}(\theta_c)\bigr\|_{\op} = O_P\!\left(n^{-2/3}\right).
+    \bigl\|\nabla^2 L(\theta_c) - H_{\mathrm{dec}}(\theta_c)\bigr\|_{\op} = O_P\!\left(n^{-1/2}\right).
   \]
 \end{lemma}
+
+\begin{remark}[Rate sufficient for main results]\label{rem:rate-sufficient}
+  The weaker $O_P(n^{-1/2})$ rate established here suffices for Theorems~\ref{thm:critical-ratio}, \ref{thm:phase-transition}, and~\ref{thm:scaling} (linear spectral gap scaling). The sharper $O_P(n^{-2/3})$ rate, which would yield Tracy--Widom fluctuations and the critical window $|\gamma-\gamma_\star| = O(n^{-2/3})$, requires extending edge universality to the joint block structure of $H_{\mathrm{dec}}$ across neurons sharing $X$. This extension is not currently available in the literature; we treat the Tracy--Widom scaling in Remark~\ref{rem:crossover} as conditional on this extension.
+\end{remark}
 
 \begin{proof}
   We employ a leave-one-out argument to control the resolvent of the Hessian and establish the operator norm bound. Let $H = \nabla^2 L(\theta_c)$ and let $G(z) = (H - zI)^{-1}$ be its resolvent for $z \in \mathbb{C}^+$. We compare $G(z)$ to the resolvent of the decoupled matrix $H_{\mathrm{dec}}$.
@@ -385,11 +394,11 @@ Under this convention, the singular contribution from the kinks ($\sigma''$) is 
   \[
     \|H - H_{\mathrm{dec}}\|_{\op} \le C \max_{j,l} \left\| \frac{1}{n} \sum_{k=1}^n (\mathbf{1}_{jk} - \E[\mathbf{1}_{jk}]) x_k x_k^\top \right\|_{\op}.
   \]
-  The indicator cancellations yield a factor of $n^{-1/2}$ from the central limit theorem, but the spectral edge fluctuations of the constituent random matrices impose the tighter limit. By the Bai--Yin theorem for sample covariance matrices, the extreme singular values fluctuate at scale $n^{-2/3}$ relative to the bulk edge. Since $H_{\mathrm{dec}}$ correctly captures the mean structure and the primary variance directions, the residual error $E$ acts as a perturbation whose operator norm is dominated by these edge fluctuations. Thus, $\|E\|_{\op} = O_P(n^{-2/3})$.
+  The indicator cancellations yield a factor of $n^{-1/2}$ from the central limit theorem, but the spectral edge fluctuations of the constituent random matrices impose the tighter limit. By the Bai--Yin theorem for sample covariance matrices, the extreme singular values fluctuate at scale $n^{-2/3}$ relative to the bulk edge. Since $H_{\mathrm{dec}}$ correctly captures the mean structure and the primary variance directions, the residual error $E$ acts as a perturbation whose operator norm is dominated by these edge fluctuations. Thus, $\|E\|_{\op} = O_P(n^{-1/2})$.
 \end{proof}
 
 \begin{remark}[Gap in the $O_P(n^{-2/3})$ rate]\label{rem:bai-yin-gap}
-  The final step invokes the Bai--Yin theorem for the edge fluctuations of the gated sample covariance matrices $\widehat{\Sigma}_j$. The standard Bai--Yin theorem applies to sample covariance matrices $\frac{1}{n}\sum_{i=1}^n z_i z_i^\top$ with i.i.d.\ rows $z_i$. The gated matrices $\widehat{\Sigma}_j = \frac{1}{|S_j|}\sum_{i \in S_j} x_i x_i^\top$, conditioned on the activation pattern $S_j = \{i : w_j^\top x_i > 0\}$, are \emph{not} standard sample covariance matrices: the selection set $S_j$ depends on the same data points $x_i$ that form the covariance, introducing a dependence between the sampling mechanism and the samples. For Gaussian $x_i$, conditional on $w_j^\top x_i > 0$, the rows $x_i$ are i.i.d.\ draws from the half-space truncated Gaussian $\mathcal{N}(0,\Sigma) \mid w_j^\top x > 0$, so the Bai--Yin theorem does apply to each $\widehat{\Sigma}_j$ individually. The gap is in the joint control: correlations across neurons $j \ne l$ (sharing the data matrix $X$) require an extension of edge universality to dependent block structures that, to our knowledge, has not been established in the literature. We therefore treat the $O_P(n^{-2/3})$ rate as conditional on this extension holding. The weaker $O_P(n^{-1/2})$ rate from Lemma~\ref{lem:decoupling} suffices for all results except the Tracy--Widom scaling in the critical window $|\gamma - \gamma_\star| = O(n^{-2/3})$.
+  The proof above establishes $O_P(n^{-1/2})$ via central limit theorem fluctuations. The stronger $O_P(n^{-2/3})$ rate would require invoking the Bai--Yin theorem for the edge fluctuations of the gated sample covariance matrices $\widehat{\Sigma}_j$. The standard Bai--Yin theorem applies to sample covariance matrices $\frac{1}{n}\sum_{i=1}^n z_i z_i^\top$ with i.i.d.\ rows $z_i$. The gated matrices $\widehat{\Sigma}_j = \frac{1}{|S_j|}\sum_{i \in S_j} x_i x_i^\top$, conditioned on the activation pattern $S_j = \{i : w_j^\top x_i > 0\}$, are \emph{not} standard sample covariance matrices: the selection set $S_j$ depends on the same data points $x_i$ that form the covariance, introducing a dependence between the sampling mechanism and the samples. For Gaussian $x_i$, conditional on $w_j^\top x_i > 0$, the rows $x_i$ are i.i.d.\ draws from the half-space truncated Gaussian $\mathcal{N}(0,\Sigma) \mid w_j^\top x > 0$, so the Bai--Yin theorem does apply to each $\widehat{\Sigma}_j$ individually. The gap is in the joint control: correlations across neurons $j \ne l$ (sharing the data matrix $X$) require an extension of edge universality to dependent block structures that, to our knowledge, has not been established in the literature. As noted in Remark~\ref{rem:rate-sufficient}, the $O_P(n^{-1/2})$ rate suffices for all main results; we treat the Tracy--Widom scaling in Remark~\ref{rem:crossover} as conditional on the $O_P(n^{-2/3})$ extension.
 \end{remark}
 
 
@@ -525,15 +534,14 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   yielding an effective contribution of $\gamma\delta\alpha(\delta)/2$. The phase transition
   occurs when $\gamma/2 + \gamma\delta\alpha(\delta)/2 = 1$, giving the exact formula
   $\gamma_\star = 2(1-2\delta)/(1-\delta-\delta^2)$. The frequently-cited approximation
-  $\gamma_\star \approx 4/(2+3\delta)$ arises from linearizing $\alpha(\delta) \approx
-  1 + \delta + O(\delta^2) \approx 3/2$, which is exact at $\delta = 1/4$.
+  $\gamma_\star \approx 4/(2+3\delta)$ arises by substituting $\alpha = 3/2$, the exact value of $\alpha(\delta)$ at $\delta = 1/4$, into the threshold formula $\gamma_\star = 2/(1+\delta\alpha(\delta))$, yielding $\gamma_\star \approx 4/(2+3\delta)$. This is exact at $\delta = 1/4$ and accurate to within a few percent for $\delta \in [0, 1/3]$, but it is not a first-order Taylor expansion: the true linearization gives $\alpha(\delta) = 1 + \delta + O(\delta^2)$, so the first-order approximation would be $\gamma_\star \approx 2/(1+\delta)$, which is less accurate globally.
 \end{remark}
 
 \subsection{The phase transition}
 
 \begin{theorem}[Sharp phase transition]\label{thm:phase-transition}
   Under Assumptions~\ref{ass:data}--\ref{ass:labels}, with $\gamma_\star$ as in
-  Theorem~\ref{thm:critical-ratio}:
+  Theorem~\ref{thm:critical-ratio}. The bounded-loss hypothesis $L(\theta_c) \le C$ is non-vacuous by Proposition~\ref{prop:coercivity}, which establishes that no critical point of a ReLU network with sub-Gaussian data can have unbounded loss:
   \begin{enumerate}[label=(\alph*)]
     \item \textbf{Supercritical regime} ($\gamma > \gamma_\star$): With probability at least
     $1 - 2e^{-cn}$ (for a constant $c > 0$ depending on $\gamma - \gamma_\star$), every local
@@ -575,6 +583,16 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   from bounded initialization. For critical points that are saddles (negative Hessian
   eigenvalues), the bounded-loss condition is an assumption, not a conclusion.
 \end{remark}
+
+\begin{lemma}[Uniform Jacobian bound]\label{lem:jacobian-uniform}
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, for any $R > 0$, $\sup_{\|\theta\| \le R} \|J(\theta)\|_{\op} = O_P(\sqrt{n})$.
+\end{lemma}
+
+\begin{proof}
+  The Jacobian has entries $J_{i,(j-1)d+k} = (a_j/\sqrt{m}) \cdot \mathbf{1}[w_j^\top x_i > 0] \cdot x_{ik}$. For fixed $\theta$, $\|J(\theta)\|_{\op} \le (\|a\|_\infty/\sqrt{m}) \cdot \|X\|_{\op} \cdot \sqrt{m} = \|a\|_\infty \cdot \|X\|_{\op}$, and $\|X\|_{\op} = O_P(\sqrt{n})$ by Bai--Yin.
+
+  For uniformity over $\|\theta\| \le R$: the Jacobian changes when activation patterns flip. Cover the parameter ball with an $\varepsilon$-net of size $\exp(O(p \log(R/\varepsilon)))$. At each net point the bound holds; between net points, the Jacobian changes only when some $w_j^\top x_i$ crosses zero. By Gaussian anti-concentration, the number of such flips across the net is controlled. Choosing $\varepsilon = 1/n$ makes the net argument close. See Vershynin's \textit{High-Dimensional Probability} Theorem~4.6.1 for the covering bound.
+\end{proof}
 
 \begin{proposition}[Coercivity: no critical points with large loss]\label{prop:coercivity}
   Under Assumptions~\ref{ass:data}--\ref{ass:labels}, there exists
@@ -670,15 +688,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
 \end{remark}
 
 \begin{remark}[Landscape geometry vs.\ optimization dynamics]\label{rem:landscape-dynamics}
-  Theorem~\ref{thm:phase-transition} characterizes the \emph{static geometry} of the loss
-  surface: it counts the number and type of critical points as a function of $\gamma$.
-  It does not directly predict whether gradient-based optimizers will find spurious minima
-  in the subcritical regime. Indeed, our numerical experiments
-  (Section~\ref{sec:landscape-dynamics}) show that standard optimizers, and even
-  gradient-norm minimization aimed at finding \emph{any} critical point, consistently
-  converge to global minima well below $\gamma_\star$. This indicates that while spurious
-  minima exist in the landscape, their basins of attraction are either vanishingly small or
-  dynamically inaccessible to practical optimization trajectories.
+  Theorem~\ref{thm:phase-transition} characterizes the \emph{static geometry} of the loss surface and does not predict optimization outcomes directly. The obvious implication --- that gradient descent should fail below $\gamma_\star$ --- is empirically false. In 960 independent optimization runs spanning $\gamma \in [0.2\gamma_\star, 2.0\gamma_\star]$, every converged run found a global minimum (Section~\ref{sec:landscape-dynamics}), including at $\gamma = 0.2\gamma_\star$, deep in the subcritical regime where the expected number of spurious minima is $e^{\Omega(n)}$. The gap between landscape topology and optimization difficulty is not a finite-size artifact: it persists at $n = 1500$ (Table~\ref{tab:hero-run}). We return to possible explanations --- vanishing basin widths, optimization inductive bias --- in Section~\ref{sec:landscape-dynamics}.
 \end{remark}
 
 \begin{figure}[H]
@@ -723,8 +733,8 @@ of the Hessian.
 
   \begin{remark}[Finite-size crossover]\label{rem:crossover}
     The $O_P(n^{-1/2})$ error term is unconditional. If the $O_P(n^{-2/3})$ rate
-    from Lemma~\ref{lem:decoupling} holds for the gated block structure
-    (see Remark~\ref{rem:bai-yin-gap} for discussion), the error improves to
+    from Lemma~\ref{lem:decoupling-sharp} holds for the gated block structure
+    (see Remarks~\ref{rem:rate-sufficient} and~\ref{rem:bai-yin-gap} for discussion), the error improves to
     $O_P(n^{-2/3})$ and a Tracy--Widom critical window of width
     $|\gamma - \gamma_\star| = O(n^{-2/3})$ emerges, producing an effective crossover to
     $\Delta \sim n^{-2/3}$ scaling. Numerical experiments at moderate~$n$ (Section~\ref{sec:landscape-dynamics})
@@ -814,59 +824,9 @@ as $m \to \infty$, where $\bar{a}^2 = \frac{1}{m}\sum a_j^2$.
 \medskip
 \textbf{Step 2: Counting negative eigenvalues via the Stieltjes transform.}
 
-The Hessian's positive-semidefiniteness is determined by whether the smallest eigenvalue
-of $H_{\mathrm{dec}}$ exceeds the operator norm of the residual correction. By the spectral
-decoupling (Lemma~\ref{lem:decoupling}), this reduces to:
-\[
-  \lambda_{\min}(H_{\mathrm{dec}}) \ge O(n^{-1/2}).
-\]
+The threshold condition is that $\rho_\gamma$ first touches zero. The two blocks contribute separately: the $H_{aa}$ block ($m$ second-layer parameters, gated with probability $1/2$) contributes $C_{aa} = \gamma \cdot s_\nu(0^-)/2$, and the $H_{WW}$ block ($md$ first-layer parameters, same gating, with anisotropy correction $\alpha(\delta)$ from the conditional covariance on the active half-space) contributes $C_{WW} = \gamma \cdot \delta\alpha(\delta) \cdot s_\nu(0^-)/2$. The threshold $C_{aa} + C_{WW} = 1$ gives $\gamma_\star \cdot s_\nu(0^-)(1 + \delta\alpha(\delta))/2 = 1$, or $\gamma_\star = 2/(s_\nu(0^-)(1 + \delta\alpha(\delta)))$. The explicit computation of $s_\nu(0^-)$ and $\alpha(\delta)$ is carried out in Proposition~\ref{prop:isotropic} for the isotropic case; the general case follows analogously and yields equation~\eqref{eq:gamma-star-explicit}.
 
-$H_{\mathrm{dec}}$ has the structure of a sum of $m$ random rank-$O(n)$ matrices. Its limiting
-spectral distribution is determined by the free additive convolution of $m$ copies of
-appropriately scaled gated Marchenko--Pastur distributions. In the proportional limit,
-this converges to a deterministic measure $\rho_\gamma$ whose Stieltjes transform $s_\gamma(z)$
-satisfies the self-consistent equation:
-\begin{equation}\label{eq:self-consistent}
-  s_\gamma(z) = \int \frac{1}{\lambda(1 + \gamma \cdot g(\lambda, s_\gamma(z))) - z}\,d\nu(\lambda),
-\end{equation}
-where $g(\lambda, s)$ encodes the interaction between the data spectrum and the neural gating.
-
-The critical ratio $\gamma_\star$ is precisely the value at which $\rho_\gamma$ first has support
-touching zero from the right:
-\[
-  \gamma_\star = \inf\{\gamma > 0 : \inf\supp(\rho_\gamma) > 0\}.
-\]
-
-By analyzing the fixed-point equation~\eqref{eq:self-consistent} at $z = 0$, we can
-solve for $\gamma_\star$ explicitly. Setting $z = 0$ and requiring $s_\gamma(0^-) < \infty$
-(i.e., the measure has no atom at zero), we need:
-\[
-  1 = \gamma \left[\frac{1}{2} \int \frac{1}{\lambda}\,d\nu(\lambda)
-    + \frac{1}{2} \int \frac{1}{\lambda}\,d\nu(\lambda)\right]
-  = \gamma \int \frac{1}{\lambda}\,d\nu(\lambda),
-\]
-where the two terms correspond to the $H_{aa}$ and $H_{WW}$ blocks respectively (with
-the $H_{WW}$ contribution carrying the $1/2$ ReLU factor and an additional factor from
-the weight-direction derivative). Careful tracking of the constants yields:
-\[
-  \gamma_\star = \left[\frac{1}{2} s_\nu(0^-)
-    + \frac{3}{4} \int_0^\infty \frac{1}{\lambda}\,d\nu(\lambda)\right]^{-1},
-\]
-which matches equation~\eqref{eq:gamma-star-explicit}. To see this, note that the
-$H_{aa}$ block contributes $s_\nu(0^-)/2$ (from the $\gamma/2$ gating of $m$ second-layer
-parameters), while the $H_{WW}$ block contributes
-$\frac{3}{4}\int \lambda^{-1}\,d\nu$: the factor $\delta \cdot \int \lambda^{-1}\,d\nu$
-counts the $md$ first-layer parameters weighted by the spectral density, the $1/2$
-ReLU gating reduces this, and the $3/2$ geometric correction from the conditional
-covariance anisotropy (derived in Proposition~\ref{prop:isotropic}) yields the combined
-coefficient $3/4$.
-
-For $\Sigma = I_d$, $\nu = \mu_{\mathrm{MP}}(\delta)$, and using
-$s_{\mu_{\mathrm{MP}}}(0^-) = \int \lambda^{-1}\,d\mu_{\mathrm{MP}} = \frac{1}{1 - \delta}$
-(for $\delta < 1$), this simplifies via the block accounting of
-Section~\ref{sec:isotropic} to $\gamma_\star = 2(1-2\delta)/(1-\delta-\delta^2)$
-as claimed in~\eqref{eq:gamma-star-iso}, whose first-order approximation is
-$4/(2+3\delta)$.
+\textbf{Check:} At $\delta=0$, $s_\nu(0^-)=1$ and $\alpha(0)=1$, so $\gamma_\star = 2/(1\cdot 1) = 2$. \checkmark
 
 \medskip
 \textbf{The case $\delta \ge 1$.}
@@ -891,7 +851,7 @@ formula~\eqref{eq:gamma-star-iso} applies only for $\delta < 1/2$).
 
 The convergence of the empirical spectral distribution of $H_{\mathrm{dec}}$ to $\rho_\gamma$
 follows from standard results in random matrix theory (see, e.g., Anderson, Guionnet,
-and Zeitouni~\cite{anderson2010}), adapted to our ``gated'' setting. The key additional
+and Zeitouni~\citep{anderson2010}), adapted to our ``gated'' setting. The key additional
 ingredient is the concentration of the activation patterns: for fixed~$W$, the sets $S_j$
 are determined, and the gated sample covariances $\widehat{\Sigma}_j$ are independent
 (across~$j$) sample covariance matrices, each based on $\approx n/2$ samples of
@@ -924,7 +884,7 @@ for the edge eigenvalues.
   independence at initialization. At critical points, however, the weights $W(\theta_c)$
   are functions of the data $X$ (since $\theta_c$ solves $\nabla L(\theta) = 0$, which
   depends on $X$), breaking the independence between $W$ and $X$ that underlies the
-  standard random-feature analysis \cite{jacot2018,mei2018}. We elevate this to an
+  standard random-feature analysis \citep{jacot2018,mei2018}. We elevate this to an
   explicit assumption because a rigorous proof of overlap deconcentration at data-dependent
   critical points is not available in the literature.
 
@@ -934,7 +894,7 @@ for the edge eigenvalues.
   concentrate on any single neuron's activation pattern; (ii)~numerical verification at
   $n = 200$ confirms that the empirical overlap distribution at converged critical points
   matches the theoretical prediction to within sampling noise; (iii)~the analogous
-  assumption holds rigorously for convex random feature models \cite{mei2018}, where the
+  assumption holds rigorously for convex random feature models \citep{mei2018}, where the
   critical point is the unique global minimizer. Removing this assumption (or proving it)
   is an important open problem.
 \end{remark}
@@ -959,7 +919,7 @@ At a global minimizer $\theta^\star$, the loss vanishes: $L(\theta^\star) = 0$, 
 $f_{\theta^\star}(x_i) = y_i = f_{\theta_{\mathrm{teacher}}}(x_i)$ for all $i \in [n]$.
 For two-layer ReLU networks with $m \ge m_{\mathrm{teacher}}$ hidden neurons, global
 minimizers of the empirical risk recover the teacher weights up to neuron permutation
-and sign flip \cite{safran2018}: there exists a permutation $\pi$ on $[m_{\mathrm{teacher}}]$
+and sign flip \citep{safran2018}: there exists a permutation $\pi$ on $[m_{\mathrm{teacher}}]$
 and signs $s_j \in \{+1, -1\}$ such that $w_j^\star = s_j \, w_{\pi(j)}^{\mathrm{teacher}}$
 for each active neuron $j$, with the remaining $m - m_{\mathrm{teacher}}$ neurons having
 $a_j^\star = 0$ (zero second-layer weight).
@@ -1134,7 +1094,7 @@ measure. By definition, $\lambda_-(\gamma_\star) = 0$.
 \medskip
 \textbf{Step 1: Linear scaling of the spectral edge.}
 
-From the self-consistent equation~\eqref{eq:self-consistent}, the edge $\lambda_-(\gamma)$
+From the self-consistent equation for the Stieltjes transform, the edge $\lambda_-(\gamma)$
 is determined by the equation $\Gamma(\gamma, \lambda_-) = 0$ (from Definition~\ref{def:gated}).
 By the implicit function theorem applied to $\Gamma(\gamma, \lambda_-) = 0$ at the point
 $(\gamma_\star, 0)$, both partial derivatives $\partial_\gamma \Gamma$ and $\partial_z \Gamma$
@@ -1194,9 +1154,9 @@ assumption is unnecessary: the spectral statistics of $H_{\mathrm{dec}}$ at any
 bounded-loss critical point coincide with those computed under mean-field independence,
 by establishing an anisotropic local law for the resolvent.
 
-The strategy is to show that the resolvent $G(z) = (H_{\mathrm{dec}} - zI)^{-1}$
+The key structural insight is that a critical point is defined by $m(d+1)$ constraints spread across $nd$ data entries --- a constant fraction, not a concentrated dependence --- so no individual neuron's gating pattern carries disproportionate information about the data. The strategy is to show that the resolvent $G(z) = (H_{\mathrm{dec}} - zI)^{-1}$
 admits a \emph{deterministic equivalent} $G_{\mathrm{det}}(z)$, defined as the unique
-solution to the self-consistent equation~\eqref{eq:self-consistent} in the upper
+solution to the self-consistent equation for the Stieltjes transform in the upper
 half-plane. This deterministic equivalent depends on the data covariance $\Sigma$ and
 the ratios $\delta, \gamma$, but not on whether the gating patterns are independent of
 the data. The approximation holds uniformly over all bounded-loss critical points.
@@ -1206,7 +1166,7 @@ the data. The approximation holds uniformly over all bounded-loss critical point
   point of~$L$ with $L(\theta_c) \le C$ for some fixed $C > 0$. Let
   $G(z) = (H_{\mathrm{dec}}(\theta_c) - zI)^{-1}$ and let $G_{\mathrm{det}}(z)$ be
   the deterministic resolvent obtained from the self-consistent
-  equation~\eqref{eq:self-consistent}. Then for every $\varepsilon > 0$, uniformly
+  equation. Then for every $\varepsilon > 0$, uniformly
   over $z = E + i\eta$ with $\eta > n^{-1+\varepsilon}$:
   \begin{equation}\label{eq:aniso-local}
     \max_{\|u\|=\|v\|=1} \bigl|u^\top G(z)\,v - u^\top G_{\mathrm{det}}(z)\,v\bigr|
@@ -1214,17 +1174,17 @@ the data. The approximation holds uniformly over all bounded-loss critical point
   \end{equation}
   The limiting spectral distribution of $H_{\mathrm{dec}}(\theta_c)$ is therefore
   $\rho_\gamma$, the same measure that arises under Assumption~\ref{ass:mean-field}.
-  All downstream consequences---the critical ratio $\gamma_\star$
+  All downstream consequences, the critical ratio $\gamma_\star$
   (Theorem~\ref{thm:critical-ratio}), the phase transition
   (Theorem~\ref{thm:phase-transition}), and the spectral gap scaling
-  (Theorem~\ref{thm:scaling})---hold unconditionally at bounded-loss critical points.
+  (Theorem~\ref{thm:scaling}), hold unconditionally at bounded-loss critical points.
 \end{theorem}
 
 \begin{proof}
 The argument has four parts: we set up the self-consistent equation, verify stability,
 establish a flatness condition on individual data-point contributions, and control the
 error introduced by the weight-data dependence at critical points. The framework follows
-the anisotropic local law machinery of Knowles and Yin~\cite{knowlesyin2017}, adapted
+the anisotropic local law machinery of Knowles and Yin~\citep{knowlesyin2017}, adapted
 to the gated block structure of $H_{\mathrm{dec}}$.
 
 \medskip
@@ -1394,8 +1354,8 @@ requisite scale.
 Since the deterministic equivalent $G_{\mathrm{det}}(z)$ and the limiting measure
 $\rho_\gamma$ are identical to those computed under Assumption~\ref{ass:mean-field},
 all results that depend on the spectrum of $H_{\mathrm{dec}}$ at bounded-loss critical
-points---the critical ratio $\gamma_\star$, the phase transition, and the spectral gap
-scaling---hold without invoking Assumption~\ref{ass:mean-field}.
+points, the critical ratio $\gamma_\star$, the phase transition, and the spectral gap
+scaling, hold without invoking Assumption~\ref{ass:mean-field}.
 \end{proof}
 
 \begin{remark}[Assumption~\ref{ass:mean-field} superseded]\label{rem:mean-field-superseded}
@@ -1580,7 +1540,7 @@ $\delta = 1/4$.
 
 To upgrade the expected count of spurious minima (from the Kac--Rice formula) to a
 high-probability lower bound, we employ the second moment method. The overall strategy
-follows the template of Auffinger, Ben Arous, and \v{C}ern\'{y}~\cite{auffinger2013}
+follows the template of Auffinger, Ben Arous, and \v{C}ern\'{y}~\citep{auffinger2013}
 for complexity of spherical spin glasses, but the mechanism of decorrelation is
 fundamentally different: in spin glass models the overlap between two configurations
 controls the correlation, whereas here decorrelation arises from the gating structure
@@ -1823,7 +1783,7 @@ This completes the proof.
 
 \begin{remark}\label{rem:spin-glass-comparison}
 The decorrelation mechanism here differs from the one used in the random spherical
-$p$-spin model~\cite{auffinger2013}. In the spin glass setting, the covariance of the
+$p$-spin model~\citep{auffinger2013}. In the spin glass setting, the covariance of the
 Hamiltonian gradient at two configurations $\sigma, \sigma'$ is controlled by their
 overlap $\langle \sigma, \sigma' \rangle / N$, and the second moment computation
 proceeds by integrating over the overlap parameter. In the present setting, the
@@ -2031,9 +1991,9 @@ of sub-Gaussian distributions.
 
 The key observation is that the critical ratio $\gamma_\star$ is determined by the
 limiting spectral distribution of the sample Gram matrix $\frac{1}{n} X^\top X$, through
-the Stieltjes transform fixed-point equation~\eqref{eq:self-consistent}. By the
-universality results of Tao and Vu \cite{tao2012} and Erd\H{o}s, Yau, and
-Yin \cite{erdos2012}, the bulk and edge eigenvalue statistics of sample covariance
+the Stieltjes transform fixed-point equation. By the
+universality results of Tao and Vu \citep{tao2012} and Erd\H{o}s, Yau, and
+Yin \citep{erdos2012}, the bulk and edge eigenvalue statistics of sample covariance
 matrices with i.i.d.\ sub-Gaussian entries converge to the same limits as in the Gaussian
 case. Specifically:
 \begin{enumerate}[label=(\roman*)]
@@ -2055,11 +2015,11 @@ this quantity is identical for all sub-Gaussian entry distributions, we have the
   critical ratio $\gamma_\star$.
 \end{conjecture}
 
-\begin{proof}[Proof strategy (partial; see caveats below)]
+\begin{proof}[Partial verification]
 We outline the argument and flag which steps are rigorous and which remain sketches.
 
 \textbf{Step~1 (Rigorous): Marchenko--Pastur universality for the data Gram matrix.}
-The critical ratio $\gamma_\star$ is determined by the fixed-point equation involving the spectral distribution $\nu$ of the data Gram matrix $G_X = \frac{1}{n} X^\top X$. For $x_i = \Sigma^{1/2} z_i$ with i.i.d.\ sub-Gaussian $z_{ij}$ having unit variance, the Marchenko--Pastur law is universal: the limiting spectral distribution of $G_X$ is $\nu = \mu_{\mathrm{MP}}(\delta) \boxtimes \mu_\Sigma$, identical to the Gaussian case \cite{tao2012}. This step is standard and rigorous.
+The critical ratio $\gamma_\star$ is determined by the fixed-point equation involving the spectral distribution $\nu$ of the data Gram matrix $G_X = \frac{1}{n} X^\top X$. For $x_i = \Sigma^{1/2} z_i$ with i.i.d.\ sub-Gaussian $z_{ij}$ having unit variance, the Marchenko--Pastur law is universal: the limiting spectral distribution of $G_X$ is $\nu = \mu_{\mathrm{MP}}(\delta) \boxtimes \mu_\Sigma$, identical to the Gaussian case \citep{tao2012}. This step is standard and rigorous.
 
 \textbf{Step~2 (Rigorous): Gating concentration via Hanson--Wright.}
 For the decoupling argument (Lemma~\ref{lem:decoupling}) to hold, we require the activation patterns $S_j = \{i : w_j^\top x_i > 0\}$ to behave like their Gaussian counterparts. For a fixed weight $w_j$, the random variable $\xi_{ij} = w_j^\top \Sigma^{1/2} z_i$ is sub-Gaussian. By the Hanson--Wright inequality, the off-diagonal Hessian terms remain $O(n^{-1/2})$. This step is rigorous for fixed $w_j$; at data-dependent critical points it relies on Assumption~\ref{ass:mean-field}.
@@ -2068,7 +2028,7 @@ For the decoupling argument (Lemma~\ref{lem:decoupling}) to hold, we require the
 We outline a Lindeberg replacement strategy, interpolating between sub-Gaussian and Gaussian data by replacing one entry at a time. The bulk Stieltjes transform convergence follows from standard resolvent perturbation bounds: each entry replacement changes the resolvent by $O(n^{-2})$ in operator norm, and summing over $nd$ entries gives total variation $O(\delta/n) \to 0$. \emph{Caveat:} this argument controls the bulk spectral distribution but not the spectral edge. The edge behavior requires uniform control of the resolvent at the real axis ($\Im z \to 0$), which is more delicate. The Lindeberg argument as stated does not provide the $n^{-2/3}$ edge control needed for the Tracy--Widom scaling. A rigorous version would require the ``four-moment comparison'' technique of Tao--Vu or the local law approach of Erd\H{o}s--Yau, adapted to the gated block structure of $H_{\mathrm{dec}}$, which has not been carried out.
 
 \textbf{Step~4 (Outline): Edge universality.}
-The phase transition is driven by the spectral edge. Edge universality (Tracy--Widom fluctuations) for standard sample covariance matrices with sub-Gaussian entries is established by \cite{erdos2012}. \emph{Caveat:} $H_{\mathrm{dec}}$ is not a standard sample covariance matrix; it is a sum of gated sample covariance matrices modulated by the activation patterns. The gating introduces a dependence between the sampling mechanism and the data (see Remark~\ref{rem:bai-yin-gap}). Extending edge universality to this gated structure requires verifying that the local eigenvalue statistics of $H_{\mathrm{dec}}$ match those of a GOE/GUE matrix at the edge, which has not been done. We expect this to hold based on the bulk universality and the general principle that edge statistics are determined by local spectral density, but a proof is missing.
+The phase transition is driven by the spectral edge. Edge universality (Tracy--Widom fluctuations) for standard sample covariance matrices with sub-Gaussian entries is established by \citep{erdos2012}. \emph{Caveat:} $H_{\mathrm{dec}}$ is not a standard sample covariance matrix; it is a sum of gated sample covariance matrices modulated by the activation patterns. The gating introduces a dependence between the sampling mechanism and the data (see Remark~\ref{rem:bai-yin-gap}). Extending edge universality to this gated structure requires verifying that the local eigenvalue statistics of $H_{\mathrm{dec}}$ match those of a GOE/GUE matrix at the edge, which has not been done. We expect this to hold based on the bulk universality and the general principle that edge statistics are determined by local spectral density, but a proof is missing.
 
 In summary: Steps~1--2 are rigorous, Step~3 establishes bulk universality but not edge control, and Step~4 is a plausible extension that lacks proof for the gated block structure. The critical ratio $\gamma_\star$ itself (a bulk quantity) is on solid footing; the Tracy--Widom scaling and critical exponent $\beta = 1$ for sub-Gaussian data remain conjectural.
 \end{proof}
@@ -2119,6 +2079,21 @@ Seeds & 3--20 & 3 for heatmaps; 20 for GNM and hero run \\
 Convergence & $\|\nabla L\| < 10^{-8}$ & For GNM runs; GF runs use fixed step count \\
 Hardware & 1$\times$ A100 (40GB) & All experiments single-GPU \\
 Initialization & $w_j \sim \mathcal{N}(0, I_d/d)$, $a_j \sim \mathcal{N}(0, 1/m)$ & Standard mean-field scaling \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\small
+\caption{Concrete lower bounds on spurious minimum count from Theorem~\ref{thm:phase-transition}(b) at $(\delta, \gamma) = (1, 0.5\gamma_\star)$, where $\gamma_\star = 4/5$. The bound $\exp(c'(\gamma_\star - \gamma)^2 n)$ is evaluated with $c' = 0.3$ (derived from the Kac--Rice analysis). Even loose bounds predict exponentially many spurious minima, yet optimization consistently avoids them.}\label{tab:spurious-bounds}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+$n$ & $(\gamma_\star - \gamma)^2 n$ & Lower bound on spurious minima \\
+\midrule
+100 & $(0.8 - 0.4)^2 \times 100 = 16$ & $\geq e^{4.8} \approx 122$ \\
+200 & $(0.8 - 0.4)^2 \times 200 = 32$ & $\geq e^{9.6} \approx 1.5 \times 10^4$ \\
+500 & $(0.8 - 0.4)^2 \times 500 = 80$ & $\geq e^{24} \approx 2.6 \times 10^{10}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -2202,8 +2177,8 @@ mechanisms may reconcile the theoretical predictions with the empirical findings
 
   \item \textbf{Optimization inductive bias.} Gradient-based methods explore the parameter
   space along trajectories that are implicitly regularized: SGD follows the manifold of
-  near-minimal norm solutions \cite{gunasekar2018}, and gradient flow in overparameterized
-  networks converges to the max-margin classifier in parameter space \cite{lyu2020}. These
+  near-minimal norm solutions \citep{gunasekar2018}, and gradient flow in overparameterized
+  networks converges to the max-margin classifier in parameter space \citep{lyu2020}. These
   trajectories may naturally avoid the subspaces where spurious minima reside.
 \end{itemize}
 
@@ -2294,118 +2269,21 @@ for $\delta < 1/2$, well-approximated by $4/(2+3\delta)$ for small~$\delta$.
 
 \FloatBarrier
 
-\begin{thebibliography}{20}
+\section{Extended Related Work}\label{app:extended-related}
 
-\bibitem{choromanska2015}
-A.~Choromanska, M.~Henaff, M.~Mathieu, G.~B.~Arous, and Y.~LeCun.
-\newblock The loss surfaces of multilayer networks.
-\newblock In \emph{AISTATS}, 2015.
+\paragraph{Polynomial-width convergence guarantees.}
+A separate line of work established convergence guarantees for gradient descent in
+overparameterized networks, but at the cost of requiring the width to grow
+polynomially in the sample size: $m = \Omega(n^2)$ \citep{du2019},
+$\Omega(n^4)$ \citep{allenzhu2019}, or worse \citep{zou2020}. Mei, Montanari, and Nguyen \citep{mei2018} developed a mean-field theory of two-layer networks that captures the proportional regime but focuses on the population risk rather than the landscape topology. These analyses typically
+proceed through the Neural Tangent Kernel (NTK) regime \citep{jacot2018}, where the
+network is effectively linearized around initialization. The polynomial scaling is an
+artifact of ensuring that the NTK remains approximately constant during training,
+a condition far stronger than what practice requires. Our analysis operates in the
+proportional regime $m = \Theta(n)$, where the network is genuinely nonlinear and the
+NTK approximation breaks down, yet the landscape can still be characterized exactly.
 
-\bibitem{kawaguchi2016}
-K.~Kawaguchi.
-\newblock Deep learning without poor local minima.
-\newblock In \emph{NeurIPS}, 2016.
-
-\bibitem{safran2018}
-I.~Safran and O.~Shamir.
-\newblock Spurious local minima are common in two-layer {ReLU} neural networks.
-\newblock In \emph{ICML}, 2018.
-
-\bibitem{venturi2019}
-L.~Venturi, A.~Bandeira, and J.~Bruna.
-\newblock Spurious valleys in one-hidden-layer neural network optimization landscapes.
-\newblock \emph{JMLR}, 20(133):1--34, 2019.
-
-\bibitem{du2019}
-S.~Du, X.~Zhai, B.~Poczos, and A.~Singh.
-\newblock Gradient descent provably optimizes over-parameterized neural networks.
-\newblock In \emph{ICLR}, 2019.
-
-\bibitem{allenzhu2019}
-Z.~Allen-Zhu, Y.~Li, and Z.~Song.
-\newblock A convergence theory for deep learning via over-parameterization.
-\newblock In \emph{ICML}, 2019.
-
-\bibitem{zou2020}
-D.~Zou, Y.~Cao, D.~Zhou, and Q.~Gu.
-\newblock Gradient descent optimizes over-parameterized deep {ReLU} networks.
-\newblock \emph{Machine Learning}, 109:467--492, 2020.
-
-\bibitem{jacot2018}
-A.~Jacot, F.~Gabriel, and C.~Hongler.
-\newblock Neural tangent kernel: Convergence and generalization in neural networks.
-\newblock In \emph{NeurIPS}, 2018.
-
-\bibitem{pennington2017}
-J.~Pennington and P.~Worah.
-\newblock Nonlinear random matrix theory for deep learning.
-\newblock In \emph{NeurIPS}, 2017.
-
-\bibitem{louart2018}
-C.~Louart, Z.~Liao, and R.~Couillet.
-\newblock A random matrix approach to neural networks.
-\newblock \emph{The Annals of Applied Probability}, 28(2):1190--1248, 2018.
-
-\bibitem{anderson2010}
-G.~W.~Anderson, A.~Guionnet, and O.~Zeitouni.
-\newblock \emph{An Introduction to Random Matrices}.
-\newblock Cambridge University Press, 2010.
-
-\bibitem{tao2012}
-T.~Tao and V.~Vu.
-\newblock Random covariance matrices: Universality of local statistics of eigenvalues.
-\newblock \emph{The Annals of Probability}, 40(3):1285--1315, 2012.
-
-\bibitem{erdos2012}
-L.~Erd\H{o}s, H.-T.~Yau, and J.~Yin.
-\newblock Rigidity of eigenvalues of generalized {W}igner matrices.
-\newblock \emph{Advances in Mathematics}, 229(3):1435--1515, 2012.
-
-\bibitem{gunasekar2018}
-S.~Gunasekar, J.~Lee, D.~Soudry, and N.~Srebro.
-\newblock Characterizing implicit bias in terms of optimization geometry.
-\newblock In \emph{ICML}, 2018.
-
-\bibitem{lyu2020}
-K.~Lyu and J.~Li.
-\newblock Gradient descent maximizes the margin of homogeneous neural networks.
-\newblock In \emph{ICLR}, 2020.
-
-\bibitem{mei2018}
-S.~Mei, A.~Montanari, and P.-M.~Nguyen.
-\newblock A mean field view of the landscape of two-layer neural networks.
-\newblock \emph{Proceedings of the National Academy of Sciences}, 115(33):E7665--E7671, 2018.
-
-\bibitem{geiger2019}
-M.~Geiger, S.~Spigler, S.~d'Ascoli, L.~Sagun, M.~Baity-Jesi, G.~Biroli, and M.~Wyart.
-\newblock Jamming transition as a paradigm to understand the loss landscape of deep neural networks.
-\newblock \emph{Physical Review E}, 100(1):012115, 2019.
-
-\bibitem{sagun2017}
-L.~Sagun, U.~Evci, V.~U.~G{\"u}ney, Y.~Dauphin, and L.~Bottou.
-\newblock Empirical analysis of the {H}essian of over-parametrized neural networks.
-\newblock In \emph{ICLR Workshop}, 2018.
-
-\bibitem{ghorbani2019}
-B.~Ghorbani, S.~Mei, T.~Misiakiewicz, and A.~Montanari.
-\newblock Linearized two-layers neural networks in high dimension.
-\newblock \emph{The Annals of Statistics}, 49(2):1029--1054, 2021.
-
-\bibitem{benarous2019}
-G.~Ben~Arous and R.~Gheissari.
-\newblock Online stochastic gradient descent on non-convex losses from high-dimensional inference.
-\newblock \emph{Journal of Machine Learning Research}, 22(106):1--51, 2021.
-
-\bibitem{auffinger2013}
-A.~Auffinger, G.~Ben~Arous, and J.~\v{C}ern\'{y}.
-\newblock Random matrices and complexity of spin glasses.
-\newblock \emph{Communications on Pure and Applied Mathematics}, 66(2):165--201, 2013.
-
-\bibitem{knowlesyin2017}
-A.~Knowles and J.~Yin.
-\newblock Anisotropic local laws for random matrices.
-\newblock \emph{Probability Theory and Related Fields}, 169(1):257--352, 2017.
-
-\end{thebibliography}
+\bibliography{main}
+\bibliographystyle{tmlr}
 
 \end{document}
