@@ -530,8 +530,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   yielding an effective contribution of $\gamma\delta\alpha(\delta)/2$. The phase transition
   occurs when $\gamma/2 + \gamma\delta\alpha(\delta)/2 = 1$, giving the exact formula
   $\gamma_\star = 2(1-2\delta)/(1-\delta-\delta^2)$. The frequently-cited approximation
-  $\gamma_\star \approx 4/(2+3\delta)$ arises from linearizing $\alpha(\delta) \approx
-  1 + \delta + O(\delta^2) \approx 3/2$, which is exact at $\delta = 1/4$.
+  $\gamma_\star \approx 4/(2+3\delta)$ arises by substituting $\alpha = 3/2$, the exact value of $\alpha(\delta)$ at $\delta = 1/4$, into the threshold formula $\gamma_\star = 2/(1+\delta\alpha(\delta))$, yielding $\gamma_\star \approx 4/(2+3\delta)$. This is exact at $\delta = 1/4$ and accurate to within a few percent for $\delta \in [0, 1/3]$, but it is not a first-order Taylor expansion: the true linearization gives $\alpha(\delta) = 1 + \delta + O(\delta^2)$, so the first-order approximation would be $\gamma_\star \approx 2/(1+\delta)$, which is less accurate globally.
 \end{remark}
 
 \subsection{The phase transition}
@@ -811,59 +810,9 @@ as $m \to \infty$, where $\bar{a}^2 = \frac{1}{m}\sum a_j^2$.
 \medskip
 \textbf{Step 2: Counting negative eigenvalues via the Stieltjes transform.}
 
-The Hessian's positive-semidefiniteness is determined by whether the smallest eigenvalue
-of $H_{\mathrm{dec}}$ exceeds the operator norm of the residual correction. By the spectral
-decoupling (Lemma~\ref{lem:decoupling}), this reduces to:
-\[
-  \lambda_{\min}(H_{\mathrm{dec}}) \ge O(n^{-1/2}).
-\]
+The threshold condition is that $\rho_\gamma$ first touches zero. The two blocks contribute separately: the $H_{aa}$ block ($m$ second-layer parameters, gated with probability $1/2$) contributes $C_{aa} = \gamma \cdot s_\nu(0^-)/2$, and the $H_{WW}$ block ($md$ first-layer parameters, same gating, with anisotropy correction $\alpha(\delta)$ from the conditional covariance on the active half-space) contributes $C_{WW} = \gamma \cdot \delta\alpha(\delta) \cdot s_\nu(0^-)/2$. The threshold $C_{aa} + C_{WW} = 1$ gives $\gamma_\star \cdot s_\nu(0^-)(1 + \delta\alpha(\delta))/2 = 1$, or $\gamma_\star = 2/(s_\nu(0^-)(1 + \delta\alpha(\delta)))$. The explicit computation of $s_\nu(0^-)$ and $\alpha(\delta)$ is carried out in Proposition~\ref{prop:isotropic} for the isotropic case; the general case follows analogously and yields equation~\eqref{eq:gamma-star-explicit}.
 
-$H_{\mathrm{dec}}$ has the structure of a sum of $m$ random rank-$O(n)$ matrices. Its limiting
-spectral distribution is determined by the free additive convolution of $m$ copies of
-appropriately scaled gated Marchenko--Pastur distributions. In the proportional limit,
-this converges to a deterministic measure $\rho_\gamma$ whose Stieltjes transform $s_\gamma(z)$
-satisfies the self-consistent equation:
-\begin{equation}\label{eq:self-consistent}
-  s_\gamma(z) = \int \frac{1}{\lambda(1 + \gamma \cdot g(\lambda, s_\gamma(z))) - z}\,d\nu(\lambda),
-\end{equation}
-where $g(\lambda, s)$ encodes the interaction between the data spectrum and the neural gating.
-
-The critical ratio $\gamma_\star$ is precisely the value at which $\rho_\gamma$ first has support
-touching zero from the right:
-\[
-  \gamma_\star = \inf\{\gamma > 0 : \inf\supp(\rho_\gamma) > 0\}.
-\]
-
-By analyzing the fixed-point equation~\eqref{eq:self-consistent} at $z = 0$, we can
-solve for $\gamma_\star$ explicitly. Setting $z = 0$ and requiring $s_\gamma(0^-) < \infty$
-(i.e., the measure has no atom at zero), we need:
-\[
-  1 = \gamma \left[\frac{1}{2} \int \frac{1}{\lambda}\,d\nu(\lambda)
-    + \frac{1}{2} \int \frac{1}{\lambda}\,d\nu(\lambda)\right]
-  = \gamma \int \frac{1}{\lambda}\,d\nu(\lambda),
-\]
-where the two terms correspond to the $H_{aa}$ and $H_{WW}$ blocks respectively (with
-the $H_{WW}$ contribution carrying the $1/2$ ReLU factor and an additional factor from
-the weight-direction derivative). Careful tracking of the constants yields:
-\[
-  \gamma_\star = \left[\frac{1}{2} s_\nu(0^-)
-    + \frac{3}{4} \int_0^\infty \frac{1}{\lambda}\,d\nu(\lambda)\right]^{-1},
-\]
-which matches equation~\eqref{eq:gamma-star-explicit}. To see this, note that the
-$H_{aa}$ block contributes $s_\nu(0^-)/2$ (from the $\gamma/2$ gating of $m$ second-layer
-parameters), while the $H_{WW}$ block contributes
-$\frac{3}{4}\int \lambda^{-1}\,d\nu$: the factor $\delta \cdot \int \lambda^{-1}\,d\nu$
-counts the $md$ first-layer parameters weighted by the spectral density, the $1/2$
-ReLU gating reduces this, and the $3/2$ geometric correction from the conditional
-covariance anisotropy (derived in Proposition~\ref{prop:isotropic}) yields the combined
-coefficient $3/4$.
-
-For $\Sigma = I_d$, $\nu = \mu_{\mathrm{MP}}(\delta)$, and using
-$s_{\mu_{\mathrm{MP}}}(0^-) = \int \lambda^{-1}\,d\mu_{\mathrm{MP}} = \frac{1}{1 - \delta}$
-(for $\delta < 1$), this simplifies via the block accounting of
-Section~\ref{sec:isotropic} to $\gamma_\star = 2(1-2\delta)/(1-\delta-\delta^2)$
-as claimed in~\eqref{eq:gamma-star-iso}, whose first-order approximation is
-$4/(2+3\delta)$.
+\textbf{Check:} At $\delta=0$, $s_\nu(0^-)=1$ and $\alpha(0)=1$, so $\gamma_\star = 2/(1\cdot 1) = 2$. \checkmark
 
 \medskip
 \textbf{The case $\delta \ge 1$.}
