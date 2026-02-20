@@ -1,0 +1,46 @@
+# LaTeX
+*.aux
+*.log
+*.bbl
+*.blg
+*.toc
+*.out
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.xdv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data/logs (keep structure, ignore generated files)
+*.log
+experiments/results/*.png
+experiments/results/*.pdf
+experiments/results/*.npy
+experiments/results/*.npz
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
+*.tmp
