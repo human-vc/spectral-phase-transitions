@@ -1094,7 +1094,7 @@ measure. By definition, $\lambda_-(\gamma_\star) = 0$.
 \medskip
 \textbf{Step 1: Linear scaling of the spectral edge.}
 
-From the self-consistent equation~\eqref{eq:self-consistent}, the edge $\lambda_-(\gamma)$
+From the self-consistent equation for the Stieltjes transform, the edge $\lambda_-(\gamma)$
 is determined by the equation $\Gamma(\gamma, \lambda_-) = 0$ (from Definition~\ref{def:gated}).
 By the implicit function theorem applied to $\Gamma(\gamma, \lambda_-) = 0$ at the point
 $(\gamma_\star, 0)$, both partial derivatives $\partial_\gamma \Gamma$ and $\partial_z \Gamma$
@@ -1156,7 +1156,7 @@ by establishing an anisotropic local law for the resolvent.
 
 The key structural insight is that a critical point is defined by $m(d+1)$ constraints spread across $nd$ data entries --- a constant fraction, not a concentrated dependence --- so no individual neuron's gating pattern carries disproportionate information about the data. The strategy is to show that the resolvent $G(z) = (H_{\mathrm{dec}} - zI)^{-1}$
 admits a \emph{deterministic equivalent} $G_{\mathrm{det}}(z)$, defined as the unique
-solution to the self-consistent equation~\eqref{eq:self-consistent} in the upper
+solution to the self-consistent equation for the Stieltjes transform in the upper
 half-plane. This deterministic equivalent depends on the data covariance $\Sigma$ and
 the ratios $\delta, \gamma$, but not on whether the gating patterns are independent of
 the data. The approximation holds uniformly over all bounded-loss critical points.
@@ -1166,7 +1166,7 @@ the data. The approximation holds uniformly over all bounded-loss critical point
   point of~$L$ with $L(\theta_c) \le C$ for some fixed $C > 0$. Let
   $G(z) = (H_{\mathrm{dec}}(\theta_c) - zI)^{-1}$ and let $G_{\mathrm{det}}(z)$ be
   the deterministic resolvent obtained from the self-consistent
-  equation~\eqref{eq:self-consistent}. Then for every $\varepsilon > 0$, uniformly
+  equation. Then for every $\varepsilon > 0$, uniformly
   over $z = E + i\eta$ with $\eta > n^{-1+\varepsilon}$:
   \begin{equation}\label{eq:aniso-local}
     \max_{\|u\|=\|v\|=1} \bigl|u^\top G(z)\,v - u^\top G_{\mathrm{det}}(z)\,v\bigr|
@@ -1991,7 +1991,7 @@ of sub-Gaussian distributions.
 
 The key observation is that the critical ratio $\gamma_\star$ is determined by the
 limiting spectral distribution of the sample Gram matrix $\frac{1}{n} X^\top X$, through
-the Stieltjes transform fixed-point equation~\eqref{eq:self-consistent}. By the
+the Stieltjes transform fixed-point equation. By the
 universality results of Tao and Vu \citep{tao2012} and Erd\H{o}s, Yau, and
 Yin \citep{erdos2012}, the bulk and edge eigenvalue statistics of sample covariance
 matrices with i.i.d.\ sub-Gaussian entries converge to the same limits as in the Gaussian
