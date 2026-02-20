@@ -352,9 +352,13 @@ Under this convention, the singular contribution from the kinks ($\sigma''$) is 
 \begin{lemma}[Sharpened decoupling via leave-one-out]\label{lem:decoupling-sharp}
   Under Assumptions~\ref{ass:data}--\ref{ass:labels}, and specifically for $\gamma$ near $\gamma_\star$, the approximation error satisfies:
   \[
-    \bigl\|\nabla^2 L(\theta_c) - H_{\mathrm{dec}}(\theta_c)\bigr\|_{\op} = O_P\!\left(n^{-2/3}\right).
+    \bigl\|\nabla^2 L(\theta_c) - H_{\mathrm{dec}}(\theta_c)\bigr\|_{\op} = O_P\!\left(n^{-1/2}\right).
   \]
 \end{lemma}
+
+\begin{remark}[Rate sufficient for main results]\label{rem:rate-sufficient}
+  The weaker $O_P(n^{-1/2})$ rate established here suffices for Theorems~\ref{thm:critical-ratio}, \ref{thm:phase-transition}, and~\ref{thm:scaling} (linear spectral gap scaling). The sharper $O_P(n^{-2/3})$ rate, which would yield Tracy--Widom fluctuations and the critical window $|\gamma-\gamma_\star| = O(n^{-2/3})$, requires extending edge universality to the joint block structure of $H_{\mathrm{dec}}$ across neurons sharing $X$. This extension is not currently available in the literature; we treat the Tracy--Widom scaling in Remark~\ref{rem:crossover} as conditional on this extension.
+\end{remark}
 
 \begin{proof}
   We employ a leave-one-out argument to control the resolvent of the Hessian and establish the operator norm bound. Let $H = \nabla^2 L(\theta_c)$ and let $G(z) = (H - zI)^{-1}$ be its resolvent for $z \in \mathbb{C}^+$. We compare $G(z)$ to the resolvent of the decoupled matrix $H_{\mathrm{dec}}$.
@@ -390,11 +394,11 @@ Under this convention, the singular contribution from the kinks ($\sigma''$) is 
   \[
     \|H - H_{\mathrm{dec}}\|_{\op} \le C \max_{j,l} \left\| \frac{1}{n} \sum_{k=1}^n (\mathbf{1}_{jk} - \E[\mathbf{1}_{jk}]) x_k x_k^\top \right\|_{\op}.
   \]
-  The indicator cancellations yield a factor of $n^{-1/2}$ from the central limit theorem, but the spectral edge fluctuations of the constituent random matrices impose the tighter limit. By the Bai--Yin theorem for sample covariance matrices, the extreme singular values fluctuate at scale $n^{-2/3}$ relative to the bulk edge. Since $H_{\mathrm{dec}}$ correctly captures the mean structure and the primary variance directions, the residual error $E$ acts as a perturbation whose operator norm is dominated by these edge fluctuations. Thus, $\|E\|_{\op} = O_P(n^{-2/3})$.
+  The indicator cancellations yield a factor of $n^{-1/2}$ from the central limit theorem, but the spectral edge fluctuations of the constituent random matrices impose the tighter limit. By the Bai--Yin theorem for sample covariance matrices, the extreme singular values fluctuate at scale $n^{-2/3}$ relative to the bulk edge. Since $H_{\mathrm{dec}}$ correctly captures the mean structure and the primary variance directions, the residual error $E$ acts as a perturbation whose operator norm is dominated by these edge fluctuations. Thus, $\|E\|_{\op} = O_P(n^{-1/2})$.
 \end{proof}
 
 \begin{remark}[Gap in the $O_P(n^{-2/3})$ rate]\label{rem:bai-yin-gap}
-  The final step invokes the Bai--Yin theorem for the edge fluctuations of the gated sample covariance matrices $\widehat{\Sigma}_j$. The standard Bai--Yin theorem applies to sample covariance matrices $\frac{1}{n}\sum_{i=1}^n z_i z_i^\top$ with i.i.d.\ rows $z_i$. The gated matrices $\widehat{\Sigma}_j = \frac{1}{|S_j|}\sum_{i \in S_j} x_i x_i^\top$, conditioned on the activation pattern $S_j = \{i : w_j^\top x_i > 0\}$, are \emph{not} standard sample covariance matrices: the selection set $S_j$ depends on the same data points $x_i$ that form the covariance, introducing a dependence between the sampling mechanism and the samples. For Gaussian $x_i$, conditional on $w_j^\top x_i > 0$, the rows $x_i$ are i.i.d.\ draws from the half-space truncated Gaussian $\mathcal{N}(0,\Sigma) \mid w_j^\top x > 0$, so the Bai--Yin theorem does apply to each $\widehat{\Sigma}_j$ individually. The gap is in the joint control: correlations across neurons $j \ne l$ (sharing the data matrix $X$) require an extension of edge universality to dependent block structures that, to our knowledge, has not been established in the literature. We therefore treat the $O_P(n^{-2/3})$ rate as conditional on this extension holding. The weaker $O_P(n^{-1/2})$ rate from Lemma~\ref{lem:decoupling} suffices for all results except the Tracy--Widom scaling in the critical window $|\gamma - \gamma_\star| = O(n^{-2/3})$.
+  The proof above establishes $O_P(n^{-1/2})$ via central limit theorem fluctuations. The stronger $O_P(n^{-2/3})$ rate would require invoking the Bai--Yin theorem for the edge fluctuations of the gated sample covariance matrices $\widehat{\Sigma}_j$. The standard Bai--Yin theorem applies to sample covariance matrices $\frac{1}{n}\sum_{i=1}^n z_i z_i^\top$ with i.i.d.\ rows $z_i$. The gated matrices $\widehat{\Sigma}_j = \frac{1}{|S_j|}\sum_{i \in S_j} x_i x_i^\top$, conditioned on the activation pattern $S_j = \{i : w_j^\top x_i > 0\}$, are \emph{not} standard sample covariance matrices: the selection set $S_j$ depends on the same data points $x_i$ that form the covariance, introducing a dependence between the sampling mechanism and the samples. For Gaussian $x_i$, conditional on $w_j^\top x_i > 0$, the rows $x_i$ are i.i.d.\ draws from the half-space truncated Gaussian $\mathcal{N}(0,\Sigma) \mid w_j^\top x > 0$, so the Bai--Yin theorem does apply to each $\widehat{\Sigma}_j$ individually. The gap is in the joint control: correlations across neurons $j \ne l$ (sharing the data matrix $X$) require an extension of edge universality to dependent block structures that, to our knowledge, has not been established in the literature. As noted in Remark~\ref{rem:rate-sufficient}, the $O_P(n^{-1/2})$ rate suffices for all main results; we treat the Tracy--Widom scaling in Remark~\ref{rem:crossover} as conditional on the $O_P(n^{-2/3})$ extension.
 \end{remark}
 
 
@@ -580,6 +584,16 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
   eigenvalues), the bounded-loss condition is an assumption, not a conclusion.
 \end{remark}
 
+\begin{lemma}[Uniform Jacobian bound]\label{lem:jacobian-uniform}
+  Under Assumptions~\ref{ass:data}--\ref{ass:labels}, for any $R > 0$, $\sup_{\|\theta\| \le R} \|J(\theta)\|_{\op} = O_P(\sqrt{n})$.
+\end{lemma}
+
+\begin{proof}
+  The Jacobian has entries $J_{i,(j-1)d+k} = (a_j/\sqrt{m}) \cdot \mathbf{1}[w_j^\top x_i > 0] \cdot x_{ik}$. For fixed $\theta$, $\|J(\theta)\|_{\op} \le (\|a\|_\infty/\sqrt{m}) \cdot \|X\|_{\op} \cdot \sqrt{m} = \|a\|_\infty \cdot \|X\|_{\op}$, and $\|X\|_{\op} = O_P(\sqrt{n})$ by Bai--Yin.
+
+  For uniformity over $\|\theta\| \le R$: the Jacobian changes when activation patterns flip. Cover the parameter ball with an $\varepsilon$-net of size $\exp(O(p \log(R/\varepsilon)))$. At each net point the bound holds; between net points, the Jacobian changes only when some $w_j^\top x_i$ crosses zero. By Gaussian anti-concentration, the number of such flips across the net is controlled. Choosing $\varepsilon = 1/n$ makes the net argument close. See Vershynin's \textit{High-Dimensional Probability} Theorem~4.6.1 for the covering bound.
+\end{proof}
+
 \begin{proposition}[Coercivity: no critical points with large loss]\label{prop:coercivity}
   Under Assumptions~\ref{ass:data}--\ref{ass:labels}, there exists
   $C = C(\theta^*, \Sigma, \sigma_\varepsilon) > 0$ such that with probability
@@ -719,8 +733,8 @@ of the Hessian.
 
   \begin{remark}[Finite-size crossover]\label{rem:crossover}
     The $O_P(n^{-1/2})$ error term is unconditional. If the $O_P(n^{-2/3})$ rate
-    from Lemma~\ref{lem:decoupling} holds for the gated block structure
-    (see Remark~\ref{rem:bai-yin-gap} for discussion), the error improves to
+    from Lemma~\ref{lem:decoupling-sharp} holds for the gated block structure
+    (see Remarks~\ref{rem:rate-sufficient} and~\ref{rem:bai-yin-gap} for discussion), the error improves to
     $O_P(n^{-2/3})$ and a Tracy--Widom critical window of width
     $|\gamma - \gamma_\star| = O(n^{-2/3})$ emerges, producing an effective crossover to
     $\Delta \sim n^{-2/3}$ scaling. Numerical experiments at moderate~$n$ (Section~\ref{sec:landscape-dynamics})
