@@ -2098,7 +2098,7 @@ $n$ & $(\gamma_\star - \gamma)^2 n$ & Lower bound on spurious minima \\
 \end{tabular}
 \end{table}
 
-We further investigate the basin structure through exhaustive search in the 2D underparameterized regime ($d=40$, $m=5$, $n=80$, random labels). Across 100 random initializations, we identify 49 distinct loss basins, providing direct empirical evidence that spurious minima exist. To quantify their accessibility, we measure the basin width: the maximum initialization distance from a spurious minimum that still converges to it. Table~\ref{tab:basin-structure} summarizes these findings.
+We further investigate the basin structure through exhaustive search in the 2D underparameterized regime ($d=40$, $m=5$, $n=80$, random labels). Across 100 random initializations, we identify 49 distinct loss basins, providing direct empirical evidence that spurious minima exist. To quantify their accessibility, we measure the basin width: the maximum initialization distance from a spurious minimum that still converges to it. Table~\ref{tab:basin-structure} summarizes these findings. Table 4 says: we find 49 distinct basins with the global minimum at loss 0.013 and spurious minima reaching up to 2.57; critically, the maximum trap distance is only $\approx 0.1$, meaning random initialization almost always escapes to the global basin.
 
 \begin{table}[h]
 \centering
