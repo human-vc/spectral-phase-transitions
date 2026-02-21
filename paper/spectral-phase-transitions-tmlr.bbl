@@ -1,0 +1,144 @@
+\begin{thebibliography}{22}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Allen-Zhu et~al.(2019)Allen-Zhu, Li, and Song]{allenzhu2019}
+Zeyuan Allen-Zhu, Yuanzhi Li, and Zhao Song.
+\newblock A convergence theory for deep learning via over-parameterization.
+\newblock In \emph{International Conference on Machine Learning}, 2019.
+
+\bibitem[Anderson et~al.(2010)Anderson, Guionnet, and Zeitouni]{anderson2010}
+Greg~W Anderson, Alice Guionnet, and Ofer Zeitouni.
+\newblock \emph{An introduction to random matrices}.
+\newblock Cambridge university press, 2010.
+
+\bibitem[Auffinger et~al.(2013)Auffinger, Ben~Arous, and
+  {\v{C}}ern{\`y}]{auffinger2013}
+Antonio Auffinger, Gerard Ben~Arous, and Ji{\v{r}}{\'\i} {\v{C}}ern{\`y}.
+\newblock Random matrices and complexity of spin glasses.
+\newblock \emph{Communications on Pure and Applied Mathematics}, 66\penalty0
+  (2):\penalty0 165--201, 2013.
+
+\bibitem[Ben~Arous \& Gheissari(2021)Ben~Arous and Gheissari]{benarous2019}
+G{\'e}rard Ben~Arous and Reza Gheissari.
+\newblock Online stochastic gradient descent on non-convex losses from
+  high-dimensional inference.
+\newblock \emph{Journal of Machine Learning Research}, 22\penalty0
+  (106):\penalty0 1--51, 2021.
+
+\bibitem[Choromanska et~al.(2015)Choromanska, Henaff, Mathieu, Arous, and
+  LeCun]{choromanska2015}
+Anna Choromanska, Mikael Henaff, Michael Mathieu, G{\'e}rard~Ben Arous, and
+  Yann LeCun.
+\newblock The loss surfaces of multilayer networks.
+\newblock In \emph{Artificial Intelligence and Statistics}, 2015.
+
+\bibitem[Du et~al.(2019)Du, Zhai, Poczos, and Singh]{du2019}
+Simon~S Du, Xiyu Zhai, Barnabas Poczos, and Aarti Singh.
+\newblock Gradient descent provably optimizes over-parameterized neural
+  networks.
+\newblock In \emph{International Conference on Learning Representations}, 2019.
+
+\bibitem[Erd{\H{o}}s et~al.(2012)Erd{\H{o}}s, Yau, and Yin]{erdos2012}
+L{\'a}szl{\'o} Erd{\H{o}}s, Horng-Tzer Yau, and Jun Yin.
+\newblock Rigidity of eigenvalues of generalized wigner matrices.
+\newblock \emph{Advances in Mathematics}, 229\penalty0 (3):\penalty0
+  1435--1515, 2012.
+
+\bibitem[Geiger et~al.(2019)Geiger, Spigler, d'Ascoli, Sagun, Baity-Jesi,
+  Biroli, and Wyart]{geiger2019}
+Mario Geiger, Stefano Spigler, St{\'e}phane d'Ascoli, Levent Sagun, Marco
+  Baity-Jesi, Giulio Biroli, and Matthieu Wyart.
+\newblock Jamming transition as a paradigm to understand the loss landscape of
+  deep neural networks.
+\newblock \emph{Physical Review E}, 100\penalty0 (1):\penalty0 012115, 2019.
+
+\bibitem[Ghorbani et~al.(2021)Ghorbani, Mei, Misiakiewicz, and
+  Montanari]{ghorbani2019}
+Behrooz Ghorbani, Song Mei, Theodor Misiakiewicz, and Andrea Montanari.
+\newblock Linearized two-layers neural networks in high dimension.
+\newblock \emph{The Annals of Statistics}, 49\penalty0 (2):\penalty0
+  1029--1054, 2021.
+
+\bibitem[Gunasekar et~al.(2018)Gunasekar, Lee, Soudry, and
+  Srebro]{gunasekar2018}
+Suriya Gunasekar, Jason~D Lee, Daniel Soudry, and Nathan Srebro.
+\newblock Characterizing implicit bias in terms of optimization geometry.
+\newblock In \emph{International Conference on Machine Learning}, 2018.
+
+\bibitem[Jacot et~al.(2018)Jacot, Gabriel, and Hongler]{jacot2018}
+Arthur Jacot, Franck Gabriel, and Cl{\'e}ment Hongler.
+\newblock Neural tangent kernel: Convergence and generalization in neural
+  networks.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2018.
+
+\bibitem[Kawaguchi(2016)]{kawaguchi2016}
+Kenji Kawaguchi.
+\newblock Deep learning without poor local minima.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2016.
+
+\bibitem[Knowles \& Yin(2017)Knowles and Yin]{knowlesyin2017}
+Antti Knowles and Jun Yin.
+\newblock Anisotropic local laws for random matrices.
+\newblock \emph{Probability Theory and Related Fields}, 169\penalty0
+  (1):\penalty0 257--352, 2017.
+
+\bibitem[Louart et~al.(2018)Louart, Liao, and Couillet]{louart2018}
+Cosme Louart, Zhenyu Liao, and Romain Couillet.
+\newblock A random matrix approach to neural networks.
+\newblock \emph{The Annals of Applied Probability}, 28\penalty0 (2):\penalty0
+  1190--1248, 2018.
+
+\bibitem[Lyu \& Li(2020)Lyu and Li]{lyu2020}
+Kaifeng Lyu and Jian Li.
+\newblock Gradient descent maximizes the margin of homogeneous neural networks.
+\newblock In \emph{International Conference on Learning Representations}, 2020.
+
+\bibitem[Mei et~al.(2018)Mei, Montanari, and Nguyen]{mei2018}
+Song Mei, Andrea Montanari, and Phan-Minh Nguyen.
+\newblock A mean field view of the landscape of two-layer neural networks.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 115\penalty0
+  (33):\penalty0 E7665--E7671, 2018.
+
+\bibitem[Pennington \& Worah(2017)Pennington and Worah]{pennington2017}
+Jeffrey Pennington and Pratik Worah.
+\newblock Nonlinear random matrix theory for deep learning.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2017.
+
+\bibitem[Safran \& Shamir(2018)Safran and Shamir]{safran2018}
+Itay Safran and Ohad Shamir.
+\newblock Spurious local minima are common in two-layer relu neural networks.
+\newblock In \emph{International Conference on Machine Learning}, 2018.
+
+\bibitem[Sagun et~al.(2018)Sagun, Evci, G{\"u}ney, Dauphin, and
+  Bottou]{sagun2017}
+Levent Sagun, Utku Evci, V~U{\u{g}}ur G{\"u}ney, Yann Dauphin, and L{\'e}on
+  Bottou.
+\newblock Empirical analysis of the hessian of over-parametrized neural
+  networks.
+\newblock In \emph{International Conference on Learning Representations
+  Workshop}, 2018.
+
+\bibitem[Tao \& Vu(2012)Tao and Vu]{tao2012}
+Terence Tao and Van Vu.
+\newblock Random covariance matrices: Universality of local statistics of
+  eigenvalues.
+\newblock \emph{The Annals of Probability}, 40\penalty0 (3):\penalty0
+  1285--1315, 2012.
+
+\bibitem[Venturi et~al.(2019)Venturi, Bandeira, and Bruna]{venturi2019}
+Luca Venturi, Afonso~S Bandeira, and Joan Bruna.
+\newblock Spurious valleys in one-hidden-layer neural network optimization
+  landscapes.
+\newblock \emph{Journal of Machine Learning Research}, 20\penalty0
+  (133):\penalty0 1--34, 2019.
+
+\bibitem[Zou et~al.(2020)Zou, Cao, Zhou, and Gu]{zou2020}
+Difan Zou, Yuan Cao, Dongruo Zhou, and Quanquan Gu.
+\newblock Gradient descent optimizes over-parameterized deep relu networks.
+\newblock \emph{Machine Learning}, 109:\penalty0 467--492, 2020.
+
+\end{thebibliography}

@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2025)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: spectral-phase-transitions-tmlr.aux
+The style file: tmlr.bst
+Database file #1: main.bib
+You've used 22 entries,
+            2773 wiz_defined-function locations,
+            710 strings with 8435 characters,
+and the built_in function-call counts, 10648 in all, are:
+= -- 893
+> -- 694
+< -- 7
++ -- 232
+- -- 210
+* -- 908
+:= -- 1633
+add.period$ -- 66
+call.type$ -- 22
+change.case$ -- 135
+chr.to.int$ -- 22
+cite$ -- 44
+duplicate$ -- 485
+empty$ -- 892
+format.name$ -- 244
+if$ -- 2213
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 23
+newline$ -- 118
+num.names$ -- 88
+pop$ -- 288
+preamble$ -- 1
+purify$ -- 114
+quote$ -- 0
+skip$ -- 346
+stack$ -- 0
+substring$ -- 330
+swap$ -- 32
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 237
+warning$ -- 0
+while$ -- 87
+width$ -- 0
+write$ -- 282
