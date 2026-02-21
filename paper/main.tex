@@ -688,7 +688,7 @@ Let $s_\nu(z) = \int \frac{1}{\lambda - z}\,d\nu(\lambda)$ denote the Stieltjes 
 \end{remark}
 
 \begin{remark}[Landscape geometry vs.\ optimization dynamics]\label{rem:landscape-dynamics}
-  Theorem~\ref{thm:phase-transition} characterizes the \emph{static geometry} of the loss surface and does not predict optimization outcomes directly. The obvious implication --- that gradient descent should fail below $\gamma_\star$ --- is empirically false. In 960 independent optimization runs spanning $\gamma \in [0.2\gamma_\star, 2.0\gamma_\star]$, every converged run found a global minimum (Section~\ref{sec:landscape-dynamics}), including at $\gamma = 0.2\gamma_\star$, deep in the subcritical regime where the expected number of spurious minima is $e^{\Omega(n)}$. The gap between landscape topology and optimization difficulty is not a finite-size artifact: it persists at $n = 1500$ (Table~\ref{tab:hero-run}). We return to possible explanations --- vanishing basin widths, optimization inductive bias --- in Section~\ref{sec:landscape-dynamics}.
+  Theorem~\ref{thm:phase-transition} characterizes the \emph{static geometry} of the loss surface and does not predict optimization outcomes directly. The obvious implication -- that gradient descent should fail below $\gamma_\star$ -- is empirically false. In 960 independent optimization runs spanning $\gamma \in [0.2\gamma_\star, 2.0\gamma_\star]$, every converged run found a global minimum (Section~\ref{sec:landscape-dynamics}), including at $\gamma = 0.2\gamma_\star$, deep in the subcritical regime where the expected number of spurious minima is $e^{\Omega(n)}$. The gap between landscape topology and optimization difficulty is not a finite-size artifact: it persists at $n = 1500$ (Table~\ref{tab:hero-run}). We return to possible explanations -- vanishing basin widths, optimization inductive bias -- in Section~\ref{sec:landscape-dynamics}.
 \end{remark}
 
 \begin{figure}[H]
@@ -1154,7 +1154,7 @@ assumption is unnecessary: the spectral statistics of $H_{\mathrm{dec}}$ at any
 bounded-loss critical point coincide with those computed under mean-field independence,
 by establishing an anisotropic local law for the resolvent.
 
-The key structural insight is that a critical point is defined by $m(d+1)$ constraints spread across $nd$ data entries --- a constant fraction, not a concentrated dependence --- so no individual neuron's gating pattern carries disproportionate information about the data. The strategy is to show that the resolvent $G(z) = (H_{\mathrm{dec}} - zI)^{-1}$
+The key structural insight is that a critical point is defined by $m(d+1)$ constraints spread across $nd$ data entries -- a constant fraction, not a concentrated dependence -- so no individual neuron's gating pattern carries disproportionate information about the data. The strategy is to show that the resolvent $G(z) = (H_{\mathrm{dec}} - zI)^{-1}$
 admits a \emph{deterministic equivalent} $G_{\mathrm{det}}(z)$, defined as the unique
 solution to the self-consistent equation for the Stieltjes transform in the upper
 half-plane. This deterministic equivalent depends on the data covariance $\Sigma$ and
