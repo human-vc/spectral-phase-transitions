@@ -1,7 +1,0 @@
-Starting run_safe.sh at Mon Feb 16 22:29:38 EST 2026
-Launching scripts...
-Started empirical_phase_boundary.py with PID 78210
-Started spectral_density.py with PID 78211
-Started spectral_gap.py with PID 78212
-Waiting for PIDs: 78210 78211 78212
-All scripts finished at Mon Feb 16 22:39:41 EST 2026
