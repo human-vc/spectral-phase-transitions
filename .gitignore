@@ -44,3 +44,6 @@ experiments/results/*.npz
 tmp/
 temp/
 *.tmp
+*_log.txt
+fix_json.py
+monitor.sh
